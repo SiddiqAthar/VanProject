@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.AddDetails">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name" />
+
+    <EditText
+        android:id="@+id/AdminName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CNIC" />
+
+    <EditText
+        android:id="@+id/AdminCnic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Cnic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact" />
+
+    <EditText
+        android:id="@+id/AdminContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Contact" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address" />
+
+    <EditText
+        android:id="@+id/AdminAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address" />
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/btn_AdminInfo"
+        android:text="Save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

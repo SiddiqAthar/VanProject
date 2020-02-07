@@ -1,0 +1,111 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/button_default"
+        android:padding="@dimen/dialog_header_padding">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_launcher" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/dialog_body_padding">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/tick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/positive_negative_button_margin"
+                android:layout_toRightOf="@+id/tick"
+                android:gravity="top">
+
+                <TextView
+                    android:id="@+id/errorcode_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/BlackColor"
+                    android:textSize="@dimen/text_size_3"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/successTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/errorcode_tv"
+                    android:text=""
+                    android:textColor="@color/BlackColor"
+                    android:textSize="@dimen/text_size_1"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/cnicDialog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/login_panel_items_margin_top"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/okButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_height"
+                android:layout_marginTop="@dimen/login_panel_items_margin_top"
+                android:layout_marginRight="@dimen/login_panel_items_margin_top"
+                android:layout_weight=".5"
+                android:background="@drawable/fm_button_pressed"
+                android:text="YES"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_1"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/login_height"
+                android:layout_marginTop="@dimen/login_panel_items_margin_top"
+                android:layout_weight=".5"
+                android:background="@drawable/fm_button_pressed"
+                android:text="NO"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_1"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

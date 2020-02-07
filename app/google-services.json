@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "366857850942",
+    "firebase_url": "https://van-management.firebaseio.com",
+    "project_id": "van-management",
+    "storage_bucket": "van-management.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366857850942:android:86de67b9e4449c4dad016f",
+        "android_client_info": {
+          "package_name": "com.example.privatevanmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "366857850942-ra00eulqlsc30fhg58dj5qtm2lqo2kg6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-LFspJZJBv1WywtGkITgZN7d3LUMn4WU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "366857850942-ra00eulqlsc30fhg58dj5qtm2lqo2kg6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
