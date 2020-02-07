@@ -40,7 +40,7 @@ class RegisterationActivity : BaseActivity() {
             return
         }
 
-//        showProgressBar()
+
         Objects.getInstance()!!.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
