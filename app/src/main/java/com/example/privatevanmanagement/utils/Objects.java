@@ -16,17 +16,6 @@ public class Objects {
         return mAuth;
     }
 
-    static public FirebaseDatabase database = FirebaseDatabase.getInstance();
-    static public DatabaseReference myRef = database.getReference("message");
-
-    public static DatabaseReference getDBInstance() {
-        if (myRef == null) {
-            myRef = database.getReference("message");
-            return myRef;
-        }
-        return myRef;
-    }
-
     static public Location location = new Location();
 
     static public class Location {

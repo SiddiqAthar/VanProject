@@ -36,9 +36,7 @@ class RegisterationActivity : BaseActivity() {
     }
 
     private fun createAccount(email: String, password: String) {
-        if (!validateForm()) {
-            return
-        }
+
 
 
         Objects.getInstance()!!.createUserWithEmailAndPassword(email, password)
@@ -48,7 +46,7 @@ class RegisterationActivity : BaseActivity() {
                     var user_id = Objects.getInstance()!!.currentUser?.uid.toString()
                     user.Globaluser_ID = user_id
 
-//                    startActivity(Intent(this@RegisterationActivity, MainActivity::class.java))
+                    startActivity(Intent(this@RegisterationActivity, AddDetails::class.java))
                     // updateUI(user)
                 } else {
                     Toast.makeText(
