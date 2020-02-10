@@ -40,7 +40,7 @@ public class Objects {
 
     static public class UserID {
         static public UserID userID = new UserID();
-        public String Globaluser_ID = "";
+        public static String Globaluser_ID = "";
 
         public UserID() {
             Globaluser_ID = "";

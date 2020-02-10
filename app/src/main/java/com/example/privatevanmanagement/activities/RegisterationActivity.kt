@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -44,7 +45,7 @@ class RegisterationActivity : BaseActivity() {
                 if (task.isSuccessful) {
 //                    val user = mAuth!!.currentUser
                     var user_id = Objects.getInstance()!!.currentUser?.uid.toString()
-                    user.Globaluser_ID = user_id
+                     Globaluser_ID = user_id
 
                     startActivity(Intent(this@RegisterationActivity, AddDetails::class.java))
                     // updateUI(user)

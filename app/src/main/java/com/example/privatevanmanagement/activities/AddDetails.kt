@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -28,12 +29,13 @@ class AddDetails : AppCompatActivity() {
         AdminContact = findViewById(R.id.AdminContact) as EditText
         AdminAddress = findViewById(R.id.AdminAddress) as EditText
 
-        databaseReference = FirebaseDatabase.getInstance().reference.child("AddDetails")
+        databaseReference = FirebaseDatabase.getInstance().reference.child("AdminDetails")
 
 //        Objects.getDBInstance().child("Detail")
         btn_AdminInfo?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val newPost = databaseReference.child(Objects.UserID.userID.Globaluser_ID)
+                databaseReference.setValue("Hello, World!");
+                val newPost = databaseReference.child(Globaluser_ID)
                 newPost.push()
                 newPost.child("AdminName").setValue(AdminName!!.text.toString())
                 newPost.child("AdminCnic").setValue(AdminCnic!!.text.toString())

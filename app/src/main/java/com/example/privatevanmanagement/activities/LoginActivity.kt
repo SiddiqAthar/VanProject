@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -35,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
 
-        user.Globaluser_ID = ""
 
 
 
@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener(OnCompleteListener<AuthResult> { task ->
                             if (task.isSuccessful) {
                                 user_id = FirebaseAuth.getInstance().currentUser?.uid.toString()
-                                user.Globaluser_ID = user_id
+                                 Globaluser_ID = user_id
                                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                             } else {
                                 Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG)
