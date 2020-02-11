@@ -47,6 +47,7 @@ import static android.location.LocationManager.NETWORK_PROVIDER;
 
 public class BaseActivity extends AppCompatActivity implements LocationListener {
 
+    Dialog dialog;
     protected FrameLayout frameLayout;
     LocationManager locationManager;
     static public final int REQUEST_LOCATION = 1;
@@ -68,13 +69,15 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
     }
     public void changeFragment(Fragment fragment, Bundle bundle) {
 
-        FrameLayout fl = (FrameLayout) findViewById(R.id.frameLayout);
+        FrameLayout fl = (FrameLayout) findViewById(R.id.mlayout);
         fl.removeAllViews();
+//        FrameLayout fl = (FrameLayout) findViewById(R.id.frameLayout);
+//        fl.removeAllViews();
         if (bundle != null)
             fragment.setArguments(bundle);
         Field field = null;
@@ -90,7 +93,7 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
         }
         FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
 //        transaction1.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
-        transaction1.replace(R.id.frameLayout, fragment);
+        transaction1.replace(R.id.mlayout, fragment);
         transaction1.commitAllowingStateLoss();
     }
     public boolean checkInternetConnection() {

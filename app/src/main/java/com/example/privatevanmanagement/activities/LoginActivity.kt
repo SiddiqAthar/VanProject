@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 user_id = FirebaseAuth.getInstance().currentUser?.uid.toString()
                                  Globaluser_ID = user_id
-                                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
                             } else {
                                 Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG)
                                     .show()

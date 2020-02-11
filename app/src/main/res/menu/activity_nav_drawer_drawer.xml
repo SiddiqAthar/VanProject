@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_addStudent"
+            android:icon="@drawable/home"
+            android:title="Add Students" />
+        <item
+            android:id="@+id/nav_addDrivers"
+            android:icon="@drawable/home"
+            android:title="Add Drivers" />
+        <item
+            android:id="@+id/myProfile_User_icon"
+            android:icon="@drawable/home"
+            android:title="Edit Profile" />
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/contactUs"
+                android:icon="@drawable/home"
+                android:title="Contact Us" />
+            <item
+                android:id="@+id/aboutUs"
+                android:icon="@drawable/home"
+                android:title="About Us" />
+        </menu>
+    </item>
+
+</menu>

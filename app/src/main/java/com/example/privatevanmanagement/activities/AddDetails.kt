@@ -1,5 +1,6 @@
 package com.example.privatevanmanagement.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -34,13 +35,13 @@ class AddDetails : AppCompatActivity() {
 //        Objects.getDBInstance().child("Detail")
         btn_AdminInfo?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                databaseReference.setValue("Hello, World!");
                 val newPost = databaseReference.child(Globaluser_ID)
                 newPost.push()
                 newPost.child("AdminName").setValue(AdminName!!.text.toString())
                 newPost.child("AdminCnic").setValue(AdminCnic!!.text.toString())
                 newPost.child("AdminContact").setValue(AdminContact!!.text.toString())
                 newPost.child("AdminAddress").setValue(AdminAddress!!.text.toString())
+                startActivity(Intent(this@AddDetails, NavDrawer::class.java))
             }})
 
     }
