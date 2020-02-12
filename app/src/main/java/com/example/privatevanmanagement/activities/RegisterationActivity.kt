@@ -14,18 +14,23 @@ import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class RegisterationActivity : BaseActivity() {
-//    var mAuth: FirebaseAuth? = null
+    //    var mAuth: FirebaseAuth? = null
     var fieldEmail: EditText? = null
     var fieldPassword: EditText? = null
     var CreateAccountButton: Button? = null
     val user: Objects.UserID = Objects.UserID()
+    lateinit var databaseReference: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registeration)
-//        mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().reference.child("UserType")
+
         CreateAccountButton = findViewById(R.id.btn_Registeration) as Button
         fieldEmail = findViewById(R.id.et_email) as EditText
         fieldPassword = findViewById(R.id.et_password) as EditText
@@ -42,8 +47,12 @@ class RegisterationActivity : BaseActivity() {
                 if (task.isSuccessful) {
 //                    val user = mAuth!!.currentUser
                     var user_id = Objects.getInstance()!!.currentUser?.uid.toString()
-                     Globaluser_ID = user_id
-
+                    Globaluser_ID = user_id
+                    //add Admin in USer Table and set his id as user type => Admin
+                    val newPost =
+                        databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
+                    newPost.push()
+                    newPost.child("User Type").setValue("Admin")
                     startActivity(Intent(this@RegisterationActivity, AddDetails::class.java))
                     // updateUI(user)
                 } else {

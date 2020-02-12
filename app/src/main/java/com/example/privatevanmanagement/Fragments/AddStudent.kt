@@ -78,6 +78,12 @@ class AddStudent : Fragment() {
                     newPost.child("StudentCnic").setValue(StudentCnic!!.text.toString())
                     newPost.child("StudentContact").setValue(StudentContact!!.text.toString())
                     newPost.child("StudentAddress").setValue(StudentAddress!!.text.toString())
+
+                    databaseReference = FirebaseDatabase.getInstance().reference.child("UserType")
+                    val newPost2 = databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
+                    newPost2.push()
+                    newPost2.child("User Type").setValue("Student")
+
                     Toast.makeText(
                         activity, "Authentication Succedd.",
                         Toast.LENGTH_SHORT
@@ -93,7 +99,6 @@ class AddStudent : Fragment() {
                     ).show()
                 }
             }
-
     }
 
 

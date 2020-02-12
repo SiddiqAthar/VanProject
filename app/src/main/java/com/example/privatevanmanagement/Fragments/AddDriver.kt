@@ -81,6 +81,13 @@ class AddDriver : Fragment() {
                     newPost.child("DriverCnic").setValue(DriverCnic!!.text.toString())
                     newPost.child("DriverContact").setValue(DriverContact!!.text.toString())
                     newPost.child("DriverAddress").setValue(DriverAddress!!.text.toString())
+
+                    databaseReference = FirebaseDatabase.getInstance().reference.child("UserType")
+                    val newPost2 = databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
+                    newPost2.push()
+                    newPost2.child("User Type").setValue("Driver")
+
+
                     Toast.makeText(
                         activity, "Authentication Succedd.",
                         Toast.LENGTH_SHORT
