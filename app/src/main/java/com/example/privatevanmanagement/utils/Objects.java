@@ -7,13 +7,21 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Objects {
 
     static public FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    static public FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    static public  String UserType="";
     public static FirebaseAuth getInstance() {
         if (mAuth == null) {
             mAuth = FirebaseAuth.getInstance();
             return mAuth;
         }
         return mAuth;
+    }
+    public static FirebaseDatabase getFirebaseInstance() {
+        if (mFirebaseDatabase == null) {
+            mFirebaseDatabase = FirebaseDatabase.getInstance();
+            return mFirebaseDatabase;
+        }
+        return mFirebaseDatabase;
     }
 
     static public Location location = new Location();

@@ -11,9 +11,14 @@ import android.widget.Toast
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
+import com.example.privatevanmanagement.utils.Objects.UserType
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
@@ -51,8 +56,8 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener(OnCompleteListener<AuthResult> { task ->
                             if (task.isSuccessful) {
                                 user_id = FirebaseAuth.getInstance().currentUser?.uid.toString()
-                                 Globaluser_ID = user_id
-                                startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
+                                Globaluser_ID = user_id
+                                checkUserType()
                             } else {
                                 Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG)
                                     .show()
@@ -71,6 +76,22 @@ class LoginActivity : AppCompatActivity() {
             override fun onClick(v: View?) {
             }
         })
+    }
+
+    fun checkUserType() {
+        val rootRef = FirebaseDatabase.getInstance().reference
+        val ordersRef = rootRef.child("UserType").child(Objects.UserID.Globaluser_ID)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                UserType = dataSnapshot.child("User Type").value.toString()
+                startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+        ordersRef.addListenerForSingleValueEvent(valueEventListener)
     }
 
 }

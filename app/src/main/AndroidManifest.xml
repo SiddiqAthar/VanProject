@@ -18,15 +18,17 @@
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.AddDetails" />
         <activity android:name=".activities.RegisterationActivity" />
-        <activity android:name=".activities.LoginActivity" />
+        <activity
+            android:name=".activities.NavDrawer"
+            android:label="@string/title_activity_nav"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.BaseActivity"
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.NavDrawer"
-            android:label="@string/title_activity_nav"
-            android:theme="@style/AppTheme.NoActionBar">
+
+        <activity android:name=".activities.LoginActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

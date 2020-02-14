@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.privatevanmanagement.Fragments.AddDriver
 import com.example.privatevanmanagement.Fragments.AddStudent
+import com.example.privatevanmanagement.Fragments.AdminAddVan
 import com.example.privatevanmanagement.Fragments.HomeFragment
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.UserType
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -26,7 +28,6 @@ import com.google.firebase.database.ValueEventListener
 class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
-    var UserType:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nav_drawer)
@@ -48,18 +49,18 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         //check user type to show daa
 
+
         val menu = navigationView.menu
         for (menuItemIndex in 0 until menu.size()) {
-            val menuItem = menu.getItem(menuItemIndex)
             val menu = navigationView.menu
             for (menuItemIndex in 0 until menu.size()) {
                 val menuItem = menu.getItem(menuItemIndex)
-                if ("Student".equals(checkUserType())) {
+                if (UserType.equals("Student")) {
                     if (menuItem.itemId == R.id.nav_addStudent) {
                         menuItem.isVisible = false
                     }
-                } else if ("Driver".equals(checkUserType())) {
-                    if (menuItem.itemId == R.id.nav_addStudent) {
+                } else if (UserType.equals("Driver")) {
+                    if (menuItem.itemId == R.id.nav_addDrivers) {
                         menuItem.isVisible = false
                     }
                 }
@@ -97,6 +98,9 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         } else if (id == R.id.nav_addDrivers) {
             val home = AddDriver()
             ChangeFragments(home)
+        }else if (id == R.id.nav_addVan) {
+            val home = AdminAddVan()
+            ChangeFragments(home)
         }
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         drawer.closeDrawer(GravityCompat.START)
@@ -116,17 +120,5 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
             .addToBackStack("std").commit()
     }
 
-
-    fun checkUserType(): String? {
-        var databaseReferenc = FirebaseDatabase.getInstance().reference.child("UserType").child(Objects.UserID.Globaluser_ID)
-        databaseReferenc.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                UserType= dataSnapshot.child("User Type").getValue().toString()
-            }
-        })
-        return UserType
-    }
 
 }

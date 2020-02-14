@@ -13,13 +13,14 @@
         <EditText
             android:hint="Email"
             android:id="@+id/Email"
+            android:text="siddiqathar.1@gmail.com"
             android:padding="10dp"
             android:layout_width="match_parent" android:layout_height="40dp"/>
         <EditText
             android:layout_marginTop="10dp"
             android:inputType="textPassword"
             android:layout_below="@id/Email"
-            android:hint="Password"
+            android:text="qwerty"
             android:padding="10dp"
             android:id="@+id/Password"
             android:layout_width="match_parent" android:layout_height="40dp"/>

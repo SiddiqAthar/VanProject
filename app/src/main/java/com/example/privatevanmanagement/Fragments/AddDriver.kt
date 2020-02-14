@@ -10,8 +10,6 @@ import androidx.fragment.app.FragmentTransaction
 
 import com.example.privatevanmanagement.activities.BaseActivity
 import com.example.privatevanmanagement.utils.Objects
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.example.privatevanmanagement.R
 import com.google.firebase.auth.FirebaseAuth
 import android.content.Intent
@@ -20,6 +18,7 @@ import android.view.Window
 import android.widget.*
 import java.nio.file.Files.delete
 import android.widget.TextView
+import com.google.firebase.database.*
 
 
 class AddDriver : Fragment() {
@@ -30,10 +29,20 @@ class AddDriver : Fragment() {
     var DriverCnic: EditText? = null
     var DriverContact: EditText? = null
     var DriverAddress: EditText? = null
+    var spinnerVan_Driver: Spinner? = null
+    var van_array: ArrayList<String> = ArrayList()
+    var arrayAdapter: ArrayAdapter<String>? = null
+    var van_allocated: String = ""
     var btn_DriverInfo: Button? = null
     lateinit var databaseReference: DatabaseReference
     var mAuth: FirebaseAuth? = null
     lateinit var dialog: Dialog
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getVanDta()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,20 +68,64 @@ class AddDriver : Fragment() {
         DriverCnic = rootView?.findViewById(R.id.DriverCnic) as EditText
         DriverContact = rootView?.findViewById(R.id.DriverContact) as EditText
         DriverAddress = rootView?.findViewById(R.id.DriverAddress) as EditText
+        spinnerVan_Driver = rootView?.findViewById(R.id.spinnerVan_Driver) as Spinner
 
-        databaseReference = FirebaseDatabase.getInstance().reference.child("DriverDetails")
 
         btn_DriverInfo?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 createAccount(DriverEmail!!.text.toString(), password)
             }
         })
+
+        arrayAdapter = ArrayAdapter<String>(
+            activity!!.applicationContext,
+            android.R.layout.simple_list_item_1,
+            van_array
+        )
+
+        spinnerVan_Driver?.adapter = arrayAdapter
+        spinnerVan_Driver?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                println("Error")
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
+                van_allocated = parent?.getItemAtPosition(position).toString()
+            }
+
+        }
+
+    }
+
+    private fun getVanDta() {
+        val ordersRef = Objects.getFirebaseInstance().reference.child("AddVan")
+            .child(Objects.UserID.Globaluser_ID)
+        val valueEventListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.getChildren()) {
+                    van_array.add(postSnapshot.key.toString())
+
+                }
+                arrayAdapter?.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
+            }
+        }
+        ordersRef.addListenerForSingleValueEvent(valueEventListener)
+
     }
 
     private fun createAccount(email: String, password: String) {
         mAuth?.createUserWithEmailAndPassword(email, password)
             ?.addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
+                    databaseReference =
+                        FirebaseDatabase.getInstance().reference.child("DriverDetails")
+
                     val newPost =
                         databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
                     newPost.push()
@@ -81,11 +134,18 @@ class AddDriver : Fragment() {
                     newPost.child("DriverCnic").setValue(DriverCnic!!.text.toString())
                     newPost.child("DriverContact").setValue(DriverContact!!.text.toString())
                     newPost.child("DriverAddress").setValue(DriverAddress!!.text.toString())
+                    newPost.child("Van_ID").setValue(van_allocated)
 
                     databaseReference = FirebaseDatabase.getInstance().reference.child("UserType")
-                    val newPost2 = databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
+                    val newPost2 =
+                        databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
                     newPost2.push()
                     newPost2.child("User Type").setValue("Driver")
+
+                    databaseReference =
+                        Objects.getFirebaseInstance().reference.child("Allocated_to_Driver")
+                    val newPost3 = databaseReference.child(van_allocated)
+                    newPost3.child("Driver_id").setValue(newPost.key.toString())
 
 
                     Toast.makeText(
@@ -156,7 +216,8 @@ class AddDriver : Fragment() {
         dialog.show()
         dialog.window!!.setLayout(
             LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT)
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
 
     }
 }

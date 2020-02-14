@@ -18,9 +18,9 @@
             android:icon="@drawable/home"
             android:title="Add Drivers" />
         <item
-            android:id="@+id/myProfile_User_icon"
+            android:id="@+id/nav_addVan"
             android:icon="@drawable/home"
-            android:title="Edit Profile" />
+            android:title="Add Van" />
 
     </group>
 

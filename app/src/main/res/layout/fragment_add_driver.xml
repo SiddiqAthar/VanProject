@@ -61,10 +61,22 @@
         android:layout_height="wrap_content"
         android:hint="Address" />
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allocate Van" />
+
+    <Spinner
+        android:id="@+id/spinnerVan_Driver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"  />
+
     <Button
         android:id="@+id/btn_DriverInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:text="Add Driver" />
+
 </LinearLayout>
