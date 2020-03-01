@@ -13,13 +13,13 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/bus" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -37,9 +37,8 @@
             android:id="@+id/header_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:singleLine="true"
-            android:text="Android Studio"
+             android:singleLine="true"
+            android:text="User Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/white" />
     </LinearLayout>
@@ -62,7 +61,7 @@
             android:layout_height="23dp"
             android:layout_marginLeft="5dp"
             android:singleLine="true"
-            android:text="android.studio@android.com"
+            android:text="03xxxxxxxxx"
             android:textColor="@color/white"
             android:textSize="15dp" />
     </LinearLayout>

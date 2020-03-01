@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_marginLeft="@dimen/frame_layout_left_right_top"
+    android:layout_marginRight="@dimen/frame_layout_left_right_top"
+    android:background="@drawable/dialog_design"
+
+    >
+
+    <ImageButton
+        android:id="@+id/btn_closeDialog"
+        android:layout_marginTop="@dimen/margin10dp"
+        android:layout_marginRight="@dimen/margin10dp"
+        android:src="@drawable/ic_close_dialog"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/round_design"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/margin10dp"
+        android:id="@+id/headerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/screenTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="@dimen/margin10dp"
+            android:text=" Make Announcement"
+            android:textAllCaps="true"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/text_size_4"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="@dimen/margin10dp"
+            android:background="@color/button_focused" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headerText"
+        android:layout_centerInParent="true"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/screenTitleTextView"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="@dimen/margin10dp"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/step1_lso_reg_padding_left_right"
+            android:paddingRight="@dimen/step1_lso_reg_padding_left_right">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:text="Write an announcment"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/edittext_design">
+
+                <ImageView
+                    android:id="@+id/crm_number_ImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/user_password_image_margin_right"
+                    android:src="@mipmap/edit" />
+
+                <EditText
+                    android:id="@+id/make_Annoncment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/edit_text_padding"
+                    android:layout_toLeftOf="@+id/crm_number_ImageView"
+                    android:background="@null"
+                    android:enabled="true"
+                    android:hint="Write Something... "
+                     android:inputType="text"
+                    android:maxLines="35"
+                    android:singleLine="false"
+                    android:textColor="@color/textColor"
+                    android:textColorHint="@color/hint"
+                    android:textSize="@dimen/text_size_2" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+    <Button
+        android:id="@+id/btn_sendNotficaion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scrollView"
+        android:layout_marginLeft="@dimen/step1_lso_reg_padding_left_right"
+        android:layout_marginRight="@dimen/step1_lso_reg_padding_left_right"
+        android:layout_marginTop="@dimen/margin10dp"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:background="@drawable/button_design"
+        android:text="Send Notification" />
+
+
+</RelativeLayout>
+
+

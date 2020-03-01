@@ -47,4 +47,15 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+
+    <string name="signout">SignOut</string>
+    <string name="message">Message…</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="no_account_yet_create_one">No account yet? Create one</string>
+    <string name="have_account_sign_in">Have account? sign in</string>
+    <string name="no_users_found">No users found!</string>
+    <string name="register">Register</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

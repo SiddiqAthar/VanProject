@@ -6,4 +6,9 @@
         android:orderInCategory="100"
         android:title="Sign Out"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_chat"
+        android:orderInCategory="100"
+        android:title="Chat"
+        app:showAsAction="never" />
 </menu>

@@ -17,13 +17,14 @@
     <dimen name="text_size_2">16sp</dimen>
     <dimen name="other_deatils_textsize">15sp</dimen>
     <dimen name="text_size_5">12sp</dimen>
-    <dimen name="edit_text_height">45dp</dimen>
+    <dimen name="edit_text_height">40dp</dimen>
     <dimen name="other_details_edittext_height">60dp</dimen>
     <dimen name="user_password_image_margin_right">10dp</dimen>
     <dimen name="edit_text_padding">7dp</dimen>
     <dimen name="header_height">70dp</dimen>
     <dimen name="step1_lso_reg_padding_left_right">20dp</dimen>
-    <dimen name="step1_lso_reg_items_margin_top">10dp</dimen>
+    <dimen name="step1_lso_reg_items_margin_top">5dp</dimen>
+    <dimen name="step2_lso_reg_items_margin_top">10dp</dimen>
     <dimen name="biometric_layout_width_height">250dp</dimen>
     <dimen name="thumb_image_view_width_height">190dp</dimen>
     <dimen name="capture_button_height">60dp</dimen>

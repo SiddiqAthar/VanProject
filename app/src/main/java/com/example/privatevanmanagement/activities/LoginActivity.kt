@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.privatevanmanagement.ChatModule.ShowActivities.Users
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
@@ -85,6 +86,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 UserType = dataSnapshot.child("User Type").value.toString()
                 startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
+//                startActivity(Intent(this@LoginActivity, Users::class.java))
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

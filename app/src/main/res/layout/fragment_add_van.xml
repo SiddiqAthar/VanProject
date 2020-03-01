@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/frame_layout_left_right_top"
+    android:layout_marginTop="@dimen/margin20dp"
+    android:layout_marginRight="@dimen/frame_layout_left_right_top">
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_AddVan"
+        android:layout_marginBottom="@dimen/margin20dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Registeration Num:"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/van_Registeration"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="XYZ-123"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="10"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Model:"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/van_Model"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Daewoo"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="15"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Makes:"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/van_Make"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="2015"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="4"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Color:"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/van_Color"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Red"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="20"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Type:"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/van_Type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Single Deck"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="30"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Seating Capacity:"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/van_Capacity"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="18"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="2"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+
+            <Spinner
+                android:id="@+id/spinnerVan_Driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_AddVan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_design"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:text="Add Van" />
+
+</RelativeLayout>

@@ -6,34 +6,34 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_manageFee"
             android:icon="@drawable/home"
-            android:title="Home" />
+            android:title="Manage Fee Result" />
         <item
-            android:id="@+id/nav_addStudent"
+            android:id="@+id/nav_paySalary"
             android:icon="@drawable/home"
-            android:title="Add Students" />
+            android:title="Pay Salary" />
         <item
-            android:id="@+id/nav_addDrivers"
+            android:id="@+id/nav_manageStudents"
             android:icon="@drawable/home"
-            android:title="Add Drivers" />
+            android:title="Manage Student" />
         <item
-            android:id="@+id/nav_addVan"
+            android:id="@+id/nav_manageDrivers"
             android:icon="@drawable/home"
-            android:title="Add Van" />
+            android:title="Manage Drivers" />
 
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
+                android:id="@+id/nav_complaintBox"
+                android:icon="@drawable/home"
+                android:title="Complaint Box" />
+            <item
                 android:id="@+id/contactUs"
                 android:icon="@drawable/home"
                 android:title="Contact Us" />
-            <item
-                android:id="@+id/aboutUs"
-                android:icon="@drawable/home"
-                android:title="About Us" />
         </menu>
     </item>
 

@@ -1,82 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Fragments.AddDriver">
+    android:layout_marginLeft="@dimen/frame_layout_left_right_top"
+    android:layout_marginTop="@dimen/margin20dp"
+    android:layout_marginRight="@dimen/frame_layout_left_right_top">
 
-    <TextView
+
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_DriverInfo"
+        android:layout_marginBottom="@dimen/margin20dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
-    <EditText
-        android:id="@+id/DriverName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Email" />
-
-    <EditText
-        android:id="@+id/DriverEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CNIC" />
-
-    <EditText
-        android:id="@+id/DriverCnic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Cnic" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Contact" />
-
-    <EditText
-        android:id="@+id/DriverContact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Contact" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Address" />
-
-    <EditText
-        android:id="@+id/DriverAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Address" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Allocate Van" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Name"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
 
-    <Spinner
-        android:id="@+id/spinnerVan_Driver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"  />
+            <EditText
+                android:id="@+id/DriverName"
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Name"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="30"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Email"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/DriverEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Email"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:maxLength="30"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="CNIC"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/DriverCnic"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Cnic"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="13"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Contact"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/DriverContact"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Contact"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="12"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Address"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/DriverAddress"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Address"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="30"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+
+            <Spinner
+                android:id="@+id/spinnerVan_Driver"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/btn_DriverInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/button_design"
+        android:layout_marginBottom="@dimen/margin10dp"
         android:text="Add Driver" />
 
-</LinearLayout>
+</RelativeLayout>

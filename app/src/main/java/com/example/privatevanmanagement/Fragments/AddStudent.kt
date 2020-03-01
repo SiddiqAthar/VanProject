@@ -15,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.Toast
 import com.google.firebase.database.*
 import android.widget.ArrayAdapter
+import com.example.privatevanmanagement.models.VanDetail_Model
 
 
 class AddStudent : Fragment() {
@@ -35,7 +36,8 @@ class AddStudent : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getVanDta()
+//        getVanDta()
+        getVanDta2()
     }
 
     override fun onCreateView(
@@ -49,7 +51,7 @@ class AddStudent : Fragment() {
             R.layout.fragment_add_student, container,
             false
         )
-
+        activity?.setTitle("Add Student")
 
         init(rootView)
 
@@ -90,6 +92,7 @@ class AddStudent : Fragment() {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
+//                van_allocated = (parent?.getItemAtPosition(position) as VanDetail_Model).vanNumber
                 van_allocated = parent?.getItemAtPosition(position).toString()
             }
 
@@ -97,31 +100,60 @@ class AddStudent : Fragment() {
 
     }
 
-    private fun getVanDta() {
-        val ordersRef = Objects.getFirebaseInstance().reference.child("AddVan")
+
+    private fun getVanDta2() {
+        var databaseReferenc = Objects.getFirebaseInstance().reference.child("AddVan")
             .child(Objects.UserID.Globaluser_ID)
-        val valueEventListener = object : ValueEventListener {
+
+        databaseReferenc.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.getChildren()) {
-                    van_array.add(postSnapshot.key.toString())
+                for (productSnapshot in dataSnapshot.getChildren()) {
+//                var request_key = productSnapshot.key.toString()
+                    var From_UId = productSnapshot.key.toString()
+                    var userInfo = databaseReferenc.child(From_UId)
+                    userInfo.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {}
+                        override fun onDataChange(p0: DataSnapshot) {
+                            Objects.getVanDetailInstance().vanID = From_UId.toString()
+                            Objects.getVanDetailInstance()!!.vanModel =
+                                p0.child("VanModel").getValue().toString()
+                            Objects.getVanDetailInstance().vanName =
+                                p0.child("VanName").getValue().toString()
+                            Objects.getVanDetailInstance().vanNumber =
+                                p0.child("VanNumber").getValue().toString()
+//                            van_array!!.add(
+//                                VanDetail_Model(
+//                                    Objects.getVanDetailInstance().vanID,
+//                                    Objects.getVanDetailInstance().vanModel,
+//                                    Objects.getVanDetailInstance().vanName,
+//                                    Objects.getVanDetailInstance().vanNumber
+//                                )
+//                            )
+                            van_array!!.add(
+                                    Objects.getVanDetailInstance().vanID.toString()
+                                )
+                            arrayAdapter!!.notifyDataSetChanged()
+                        }
+                    })
 
                 }
-                arrayAdapter?.notifyDataSetChanged()
+//            itemArrayAdapter.setListData(postArray)
+//            itemArrayAdapter.notifyDataSetChanged()
             }
+        })
 
-            override fun onCancelled(databaseError: DatabaseError) {
-
-            }
-        }
-        ordersRef.addListenerForSingleValueEvent(valueEventListener)
 
     }
+
 
     private fun createAccount(email: String, password: String) {
         Objects.getInstance()?.createUserWithEmailAndPassword(email, password)
             ?.addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
-                    databaseReference = FirebaseDatabase.getInstance().reference.child("StudentDetails")
+                    databaseReference =
+                        FirebaseDatabase.getInstance().reference.child("StudentDetails")
 
                     val newPost =
                         databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
@@ -138,9 +170,12 @@ class AddStudent : Fragment() {
                     newPost2.push()
                     newPost2.child("User Type").setValue("Student")
 
-                    databaseReference = Objects.getFirebaseInstance().reference.child("Allocated_to_Student")
+                    databaseReference =
+                        Objects.getFirebaseInstance().reference.child("Allocated_to_Student")
+//                    val newPost3 = databaseReference.child(van_allocated)
+//                    newPost3.child("Student_id").setValue(newPost.key.toString())
                     val newPost3 = databaseReference.child(van_allocated)
-                    newPost3.child("Student_id").setValue(newPost.key.toString())
+                    newPost3.child(newPost.key.toString()).child("Student_i d").setValue(newPost.key.toString())
 
                     Toast.makeText(
                         activity, "Authentication Succedd.",

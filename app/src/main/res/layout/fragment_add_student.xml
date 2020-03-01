@@ -1,79 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/frame_layout_left_right_top"
+    android:layout_marginTop="@dimen/margin20dp"
+    android:layout_marginRight="@dimen/frame_layout_left_right_top"
     tools:context=".Fragments.AddStudent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name" />
 
-    <EditText
-        android:id="@+id/StudentName"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_marginBottom="@dimen/margin20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Email" />
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        android:layout_above="@+id/btn_StudentInfo"
+ >
 
-    <EditText
-        android:id="@+id/StudentEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CNIC" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Name: "
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/StudentCnic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Cnic" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Contact" />
+            <EditText
+                android:id="@+id/StudentName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Name"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="30"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
 
-    <EditText
-        android:id="@+id/StudentContact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Contact" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                 android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold"
+                android:text="Email" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Address" />
+            <EditText
+                android:id="@+id/StudentEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Email"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:maxLength="30"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
 
-    <EditText
-        android:id="@+id/StudentAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Address" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Allocate Van" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold"
+                android:text="CNIC" />
 
-    <Spinner
-        android:id="@+id/spinnerVan_Student"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"  />
+            <EditText
+                android:id="@+id/StudentCnic"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Cnic"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="13"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold"
+                android:text="Contact" />
+
+            <EditText
+                android:id="@+id/StudentContact"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Contact"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="12"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold"
+                android:text="Address" />
+
+            <EditText
+                android:id="@+id/StudentAddress"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="Address"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="30"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+
+            <Spinner
+                android:id="@+id/spinnerVan_Student"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
 
     <Button
-        android:layout_alignParentBottom="true"
         android:id="@+id/btn_StudentInfo"
-        android:text="Add Student"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_design"
+        android:layout_marginBottom="@dimen/margin10dp"
+         android:text="Add Student" />
+</RelativeLayout>

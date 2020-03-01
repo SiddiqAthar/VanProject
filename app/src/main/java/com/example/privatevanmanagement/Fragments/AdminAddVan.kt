@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+
 
 class AdminAddVan : Fragment() {
 
@@ -25,7 +27,6 @@ class AdminAddVan : Fragment() {
     var btn_AddVan: Button? = null
     lateinit var databaseReference: DatabaseReference
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,10 +35,13 @@ class AdminAddVan : Fragment() {
             container.removeAllViews()
         }
         rootView = inflater!!.inflate(
-            R.layout.fragment_admin_add_van, container,
+            R.layout.fragment_add_van, container,
             false
         )
-        init(rootView)
+        activity?.setTitle("Add Van")
+
+
+        // init(rootView)
 
         return rootView
     }
@@ -58,7 +62,8 @@ class AdminAddVan : Fragment() {
     }
 
     private fun addVandetails() {
-        val newPost = databaseReference.child(Objects.getInstance().currentUser?.uid.toString()).push()
+        val newPost =
+            databaseReference.child(Objects.getInstance().currentUser?.uid.toString()).push()
         newPost.child("VanName").setValue(vanName!!.text.toString())
         newPost.child("VanModel").setValue(vanModel!!.text.toString())
         newPost.child("VanNumber").setValue(vanNumber!!.text.toString())

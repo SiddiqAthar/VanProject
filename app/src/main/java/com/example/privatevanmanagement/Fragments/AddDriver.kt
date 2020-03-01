@@ -55,6 +55,7 @@ class AddDriver : Fragment() {
             R.layout.fragment_add_driver, container,
             false
         )
+        activity?.setTitle("Add Driver")
         init(rootView)
 
         return rootView
