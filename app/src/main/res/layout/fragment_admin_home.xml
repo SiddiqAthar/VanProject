@@ -82,7 +82,7 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="2"
-                    android:src="@drawable/bus" />
+                    android:src="@drawable/addstudent" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="2"
-                    android:src="@drawable/track" />
+                    android:src="@drawable/add_driver" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -227,7 +227,7 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="2"
-                    android:src="@drawable/bus" />
+                    android:src="@drawable/schedule" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -276,7 +276,7 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="2"
-                    android:src="@drawable/bus" />
+                    android:src="@drawable/map" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -324,7 +324,7 @@
                     android:layout_height="0dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="2"
-                    android:src="@drawable/bus" />
+                    android:src="@drawable/announcment"/>
 
                 <TextView
                     android:layout_width="wrap_content"

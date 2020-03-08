@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+            android:layout_weight="1.5"
+            android:fontFamily="sans-serif-medium"
+            android:text="User Name"
+            android:textColor="@color/aqua"
+            android:textSize="@dimen/text_size_1" />
+
+
+        <Button
+            android:id="@+id/btn_block_unBLock"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="0.75"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/button_design_green"
+            android:text="Block"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_2"
+            android:textStyle="bold" />
+
+        <Button
+            android:paddingRight="05dp"
+            android:id="@+id/btn_edit"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="0.75"
+            android:background="@drawable/button_design_tag"
+            android:text="Edit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_2"
+            android:textStyle="bold" />
+    </LinearLayout>
+</RelativeLayout>

@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import com.example.privatevanmanagement.ChatModule.ShowActivities.Users
 import com.example.privatevanmanagement.R
@@ -24,6 +27,9 @@ import com.google.firebase.database.ValueEventListener
 class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
     lateinit var user_id: String
+    var animZoomIn: Animation? = null
+    var animslideUp: Animation? = null
+    var image: ImageView? = null
     var btnSignIn: Button? = null
     var btnNewUser: Button? = null
     var btnForgotPassword: Button? = null
@@ -34,11 +40,24 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        animZoomIn = AnimationUtils.loadAnimation(
+            applicationContext,
+            R.anim.zoomin
+        )
+
+        animslideUp = AnimationUtils.loadAnimation(
+            applicationContext,
+            R.anim.slideuo
+        )
+        image = findViewById(R.id.iv_icon) as ImageView
+        image!!.startAnimation(animZoomIn)
         btnSignIn = findViewById(R.id.btn_SignIn) as Button
         btnNewUser = findViewById(R.id.btn_createaccount) as Button
         btnForgotPassword = findViewById(R.id.btn_forgotpassword) as Button
         email = findViewById(R.id.Email) as EditText
+        email!!.startAnimation(animslideUp)
         password = findViewById(R.id.Password) as EditText
+        password!!.startAnimation(animslideUp)
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -48,8 +67,18 @@ class LoginActivity : AppCompatActivity() {
         btnSignIn?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
+                //==>dummy login
+                if (email!!.text.toString().equals("admin@gmail.com")) {
+                    UserType = "admin"
+                } else if (email!!.text.toString().equals("driver@gmail.com")) {
+                    UserType = "driver"
+                } else if (email!!.text.toString().equals("student@gmail.com")) {
+                    UserType = "student"
+                }
+                startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
+                //<==
 
-                if (!TextUtils.isEmpty(email?.text.toString()) && !TextUtils.isEmpty(password?.text.toString())) {
+            /*    if (!TextUtils.isEmpty(email?.text.toString()) && !TextUtils.isEmpty(password?.text.toString())) {
                     mAuth.signInWithEmailAndPassword(
                         email?.text.toString(),
                         password?.text.toString()
@@ -64,7 +93,7 @@ class LoginActivity : AppCompatActivity() {
                                     .show()
                             }
                         })
-                }
+                }*/
 
             }
         })
@@ -84,8 +113,18 @@ class LoginActivity : AppCompatActivity() {
         val ordersRef = rootRef.child("UserType").child(Objects.UserID.Globaluser_ID)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                UserType = dataSnapshot.child("User Type").value.toString()
+//                UserType = dataSnapshot.child("User Type").value.toString()
+
+                //dummy login
+                if (email!!.equals("admin@gmail.com")) {
+                    UserType = "admin"
+                } else if (email!!.equals("driver@gmail.com")) {
+                    UserType = "driver"
+                } else if (email!!.equals("student@gmail.com")) {
+                    UserType = "student"
+                }
                 startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
+
 //                startActivity(Intent(this@LoginActivity, Users::class.java))
             }
 
@@ -95,5 +134,10 @@ class LoginActivity : AppCompatActivity() {
         }
         ordersRef.addListenerForSingleValueEvent(valueEventListener)
     }
+
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        finish()
+//    }
 
 }

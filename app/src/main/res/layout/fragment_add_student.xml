@@ -6,7 +6,7 @@
     android:layout_marginLeft="@dimen/frame_layout_left_right_top"
     android:layout_marginTop="@dimen/margin20dp"
     android:layout_marginRight="@dimen/frame_layout_left_right_top"
-    tools:context=".Fragments.AddStudent">
+    tools:context=".Fragments.admin.AddStudent">
 
 
     <ScrollView
@@ -42,6 +42,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Name"
@@ -70,6 +72,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Email"
@@ -98,6 +102,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Cnic"
@@ -126,6 +132,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Contact"
@@ -154,6 +162,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Address"
@@ -164,14 +174,47 @@
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/hint"
                 android:textSize="@dimen/text_size_2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold"
+                android:text="Group" />
 
-
-            <Spinner
-                android:id="@+id/spinnerVan_Student"
+            <RelativeLayout
+                android:id="@+id/rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone" />
-        </LinearLayout>
+                android:layout_below="@id/tv2"
+                android:background="@drawable/edittext_design">
+
+
+                <Spinner
+                    android:id="@+id/group_Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:popupBackground="@color/input_bg"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/text_size_2" />
+
+                <ImageView
+                    android:id="@+id/spinner_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/user_password_image_margin_right"
+                    android:src="@mipmap/drop_down" />
+
+            </RelativeLayout>
+
+
+         </LinearLayout>
     </ScrollView>
 
     <Button

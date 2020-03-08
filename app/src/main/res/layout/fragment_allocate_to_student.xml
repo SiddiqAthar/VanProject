@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/frame_layout_left_right_top"
+    android:layout_marginTop="@dimen/margin20dp"
+    android:layout_marginRight="@dimen/frame_layout_left_right_top">
+    >
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="5dp"
+        android:layout_marginBottom="@dimen/text_size_5"
+        android:text="Van Number"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_size_1"
+        android:textStyle="bold" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv"
+        android:background="@drawable/edittext_design">
+
+        <Spinner
+            android:id="@+id/vanNumber_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:background="@null"
+            android:popupBackground="@color/input_bg"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/text_size_2" />
+
+        <ImageView
+            android:id="@+id/education_ImageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/user_password_image_margin_right"
+            android:src="@mipmap/drop_down" />
+
+    </RelativeLayout>
+
+
+
+    <TextView
+         android:layout_below="@id/rl"
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="10dp"
+        android:layout_marginBottom="@dimen/text_size_5"
+        android:text="Driver Name"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_size_1"
+        android:textStyle="bold" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv2"
+        android:background="@drawable/edittext_design">
+
+        <Spinner
+            android:id="@+id/driverName_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_text_height"
+            android:background="@null"
+            android:popupBackground="@color/input_bg"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/text_size_2" />
+
+        <ImageView
+            android:id="@+id/education_ImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/user_password_image_margin_right"
+            android:src="@mipmap/drop_down" />
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btn_Allocate_toStudent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_design"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:text="Allocate" />
+
+</RelativeLayout>

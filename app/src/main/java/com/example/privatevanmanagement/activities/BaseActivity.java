@@ -215,7 +215,11 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
         dialog.show();
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
-    
+
+
+
+
+
     @Override
     public void onLocationChanged(Location location) {
         Objects.location.Lat = location.getLatitude() + "";

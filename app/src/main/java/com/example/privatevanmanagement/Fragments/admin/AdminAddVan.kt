@@ -1,24 +1,23 @@
-package com.example.privatevanmanagement.Fragments
+package com.example.privatevanmanagement.Fragments.admin
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 
 import com.example.privatevanmanagement.R
+import com.example.privatevanmanagement.activities.NavDrawer
 import com.example.privatevanmanagement.utils.Objects
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
 class AdminAddVan : Fragment() {
+    var mainActivity: NavDrawer?=null
 
     var rootView: View? = null
     var vanName: EditText? = null
@@ -41,12 +40,15 @@ class AdminAddVan : Fragment() {
         activity?.setTitle("Add Van")
 
 
-        // init(rootView)
+         init(rootView)
 
         return rootView
     }
 
     private fun init(rootView: View?) {
+
+        mainActivity=activity as NavDrawer
+
         btn_AddVan = rootView?.findViewById(R.id.btn_AddVan) as Button
         vanName = rootView?.findViewById(R.id.VanName) as EditText
         vanModel = rootView?.findViewById(R.id.VanModel) as EditText
@@ -56,7 +58,10 @@ class AdminAddVan : Fragment() {
 
         btn_AddVan?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                addVandetails()
+                Toast.makeText(activity, "Add Successfully", Toast.LENGTH_SHORT).show();
+                mainActivity!!.replaceFragment(Admin_home(),null)
+
+//                addVandetails()
             }
         })
     }

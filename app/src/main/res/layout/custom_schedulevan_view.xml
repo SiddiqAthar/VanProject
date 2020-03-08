@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+         android:fontFamily="sans-serif-medium"
+        android:text="User Name"
+        android:textColor="@color/aqua"
+        android:textSize="@dimen/text_size_1"
+        />
+
+
+    <TextView
+        android:layout_alignParentEnd="true"
+        android:id="@+id/shiftTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+        android:text="User Name"
+        android:textColor="@color/hint"
+        android:textSize="@dimen/text_size_2"
+        android:textStyle="bold" />
+</RelativeLayout>

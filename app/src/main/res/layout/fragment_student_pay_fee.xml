@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/frame_layout_left_right_top"
+    android:layout_marginTop="@dimen/margin20dp"
+    android:layout_marginRight="@dimen/frame_layout_left_right_top"
+    tools:context=".Fragments.student.Student_payFee">
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_marginBottom="@dimen/margin20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        android:layout_above="@+id/btn_StudentPayFee"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Card Number: "
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:id="@+id/StudentCardNumber"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="XXXX XXXX XXXX XXXX"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLength="19"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold"
+                android:text="Start Date" />
+
+            <EditText
+                android:id="@+id/StudentCardDate"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="MM/YY"
+                android:imeOptions="actionNext"
+                android:inputType="date"
+                android:maxLength="5"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold"
+                android:text="CVV" />
+
+            <EditText
+                android:id="@+id/StudentCardCvv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
+                android:enabled="true"
+                android:gravity="center_vertical"
+                android:hint="123"
+                android:imeOptions="actionNext"
+                android:inputType="numberPassword"
+                android:maxLength="3"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_2"
+                android:textStyle="bold"
+                android:text="Ammount" />
+
+            <EditText
+                android:id="@+id/StudentCardAmmount"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_height"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:background="@drawable/edittext_design"
+                android:drawablePadding="@dimen/margin10dp"
+                android:drawableEnd="@mipmap/edit"
+                android:enabled="false"
+                android:gravity="center_vertical"
+                android:hint="2000"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="12"
+                android:padding="@dimen/edit_text_padding"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/text_size_2" />
+         </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_StudentPayFee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/white"
+        android:background="@drawable/button_design"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:text="Pay Fee" />
+
+</RelativeLayout>

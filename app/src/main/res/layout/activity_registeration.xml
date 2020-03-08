@@ -13,6 +13,8 @@
         android:layout_marginTop="20dp"
         android:id="@+id/et_email"
         android:hint="Email"
+        android:drawablePadding="@dimen/margin10dp"
+        android:drawableEnd="@mipmap/edit"
         android:singleLine="true"
         android:paddingLeft="10dp"
         android:layout_width="match_parent"
@@ -25,7 +27,10 @@
         android:paddingLeft="10dp"
         android:singleLine="true"
         android:layout_width="match_parent"
-        android:layout_height="40dp" />
+        android:layout_height="40dp"
+        android:drawablePadding="@dimen/margin10dp"
+        android:drawableEnd="@mipmap/edit"
+        />
     <Button
 
         android:layout_marginTop="20dp"

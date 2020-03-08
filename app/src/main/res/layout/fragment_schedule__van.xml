@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/frame_layout_left_right_top"
+    android:layout_marginTop="@dimen/margin10dp"
+    android:layout_marginRight="@dimen/frame_layout_left_right_top"
+    tools:context=".Fragments.admin.Schedule_Van">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text=" Schedule Vans "
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_size_1"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_below="@+id/tv"
+        android:layout_alignStart="@+id/tv"
+        android:layout_alignEnd="@+id/tv"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/button_default" />
+
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view"
+        android:text=" Select Group "
+        android:textColor="@color/button_default_green"
+        android:textSize="@dimen/font_size_Normal"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv2"
+        android:background="@drawable/edittext_design">
+
+
+        <Spinner
+            android:id="@+id/group_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:popupBackground="@color/input_bg"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/text_size_2" />
+
+        <ImageView
+            android:id="@+id/spinner_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/user_password_image_margin_right"
+            android:src="@mipmap/drop_down" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl"
+        android:layout_marginTop="5dp"
+        android:text=" Select Shift "
+        android:textColor="@color/button_default_green"
+        android:textSize="@dimen/font_size_Normal"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/rl2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv3"
+        android:background="@drawable/edittext_design">
+
+
+        <Spinner
+            android:id="@+id/shit_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:popupBackground="@color/input_bg"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/text_size_2" />
+
+        <ImageView
+            android:id="@+id/spinner_iv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/user_password_image_margin_right"
+            android:src="@mipmap/drop_down" />
+
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_Schedule"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl2"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/btn_schedule"/>
+
+    <Button
+        android:id="@+id/btn_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_design"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:text="Allocate Van" />
+
+
+</RelativeLayout>

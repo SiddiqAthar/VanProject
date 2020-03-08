@@ -72,6 +72,7 @@
             android:paddingRight="@dimen/step1_lso_reg_padding_left_right">
 
             <TextView
+                android:id="@+id/tv_complaint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -125,6 +126,7 @@
         android:layout_marginLeft="@dimen/step1_lso_reg_padding_left_right"
         android:layout_marginRight="@dimen/step1_lso_reg_padding_left_right"
         android:layout_marginTop="@dimen/margin10dp"
+        android:textColor="@color/white"
         android:layout_marginBottom="@dimen/margin10dp"
         android:background="@drawable/button_design"
         android:text="Send Notification" />

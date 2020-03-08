@@ -14,9 +14,12 @@
     <color name="button_pressed">#535353</color>
     <color name="button_focused">#e01f28</color>
     <color name="button_default">#d60625</color>
-    <color name="hint">#FF606060</color>
+    <color name="button_default_green">#0DB914</color>
+    <color name="aqua">#0368B9</color>
+    <color name="hint">#9E8F0C</color>
     <color name="input_bg">#d60625</color>
     <color name="transparent">#ffffff</color>
     <color name="BlackColor">#000000</color>
     <color name="user_info_row_bg">#9BBB58</color>
+    <color name="lowOpacity">#00FFFFFF</color>
 </resources>

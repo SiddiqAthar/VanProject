@@ -1,25 +1,18 @@
-package com.example.privatevanmanagement.Fragments
+package com.example.privatevanmanagement.Fragments.admin
 
-import android.app.Activity
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.os.SystemClock
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.NavDrawer
-import com.google.firebase.database.FirebaseDatabase
 
 
 class Admin_home : Fragment(), View.OnClickListener {
@@ -63,27 +56,27 @@ class Admin_home : Fragment(), View.OnClickListener {
         add_TrackVan = rootView?.findViewById(R.id.add_TrackVan) as CardView
         add_announcmnet = rootView?.findViewById(R.id.add_announcmnet) as CardView
 
-         add_newStudent!!.setOnClickListener(this)
-         add_newDriver!!.setOnClickListener(this)
-         add_newVan!!.setOnClickListener(this)
-         add_scheduleVan!!.setOnClickListener(this)
-         add_TrackVan!!.setOnClickListener(this)
-         add_announcmnet!!.setOnClickListener(this)
+        add_newStudent!!.setOnClickListener(this)
+        add_newDriver!!.setOnClickListener(this)
+        add_newVan!!.setOnClickListener(this)
+        add_scheduleVan!!.setOnClickListener(this)
+        add_TrackVan!!.setOnClickListener(this)
+        add_announcmnet!!.setOnClickListener(this)
 
 
     }
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.add_newStudent) {
-            mainActivity!!.changeFragment(AddStudent(), null)
+            mainActivity!!.replaceFragment(AddStudent(),null)
         } else if (v?.id == R.id.add_newDriver) {
-            mainActivity!!.changeFragment(AddDriver(), null)
+            mainActivity!!.replaceFragment(AddDriver(),null)
         } else if (v?.id == R.id.add_newVan) {
-            mainActivity!!.changeFragment(AdminAddVan(), null)
+            mainActivity!!.replaceFragment(AdminAddVan(),null)
         } else if (v?.id == R.id.add_scheduleVan) {
-//            mainActivity!!.changeFragment(AddStudent(), null)
+            mainActivity!!.ChangeManagementFragment(Schedule_Van(), null)
         } else if (v?.id == R.id.add_TrackVan) {
-            mainActivity!!.changeFragment(Admin_TrackVans(), null)
+            mainActivity!!.ChangeManagementFragment(Admin_TrackVans(), null)
         } else if (v?.id == R.id.add_announcmnet) {
             showDialogMakeAnnouncment()
         }
@@ -107,10 +100,20 @@ class Admin_home : Fragment(), View.OnClickListener {
         val dialogView = inflater.inflate(R.layout.dialog_make_announcement, null)
         dialogBuilder.setView(dialogView)
         val alertDialog = dialogBuilder.create()
+        val make_Annoncment = dialogView.findViewById(R.id.make_Annoncment) as EditText
         val btn_sendNotficaion = dialogView.findViewById(R.id.btn_sendNotficaion) as Button
         val btn_closeDialog = dialogView.findViewById(R.id.btn_closeDialog) as ImageButton
 
-        btn_sendNotficaion.setOnClickListener(View.OnClickListener { })
+        btn_sendNotficaion.setOnClickListener(View.OnClickListener {
+
+            //add data here on firebase and send notification
+            Toast.makeText(activity, "Notification Sending", Toast.LENGTH_SHORT).show()
+            if (!make_Annoncment.text.isNullOrEmpty())
+                alertDialog.dismiss()
+            else {
+                Toast.makeText(activity, "Announcment field is empty", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         btn_closeDialog.setOnClickListener(View.OnClickListener
         {

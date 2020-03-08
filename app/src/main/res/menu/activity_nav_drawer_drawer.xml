@@ -8,7 +8,7 @@
         <item
             android:id="@+id/nav_manageFee"
             android:icon="@drawable/home"
-            android:title="Manage Fee Result" />
+            android:title="Manage Fee Record" />
         <item
             android:id="@+id/nav_paySalary"
             android:icon="@drawable/home"

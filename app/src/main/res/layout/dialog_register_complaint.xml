@@ -10,28 +10,29 @@
 
     >
 
+
     <ImageButton
         android:id="@+id/btn_closeDialog"
-        android:layout_marginTop="@dimen/margin10dp"
-        android:layout_marginRight="@dimen/margin10dp"
-        android:src="@drawable/ic_close_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/margin10dp"
+        android:layout_marginRight="@dimen/margin10dp"
         android:background="@drawable/round_design"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:src="@drawable/ic_close_dialog" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/headerText"
-        />
+        android:layout_toLeftOf="@id/headerText" />
 
     <LinearLayout
-        android:layout_marginTop="@dimen/margin10dp"
         android:id="@+id/headerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin10dp"
         android:orientation="vertical">
 
         <TextView
@@ -121,17 +122,19 @@
         </LinearLayout>
 
     </ScrollView>
+
     <Button
         android:id="@+id/btn_submitComplaint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/scrollView"
         android:layout_marginLeft="@dimen/step1_lso_reg_padding_left_right"
-        android:layout_marginRight="@dimen/step1_lso_reg_padding_left_right"
         android:layout_marginTop="@dimen/margin10dp"
+        android:layout_marginRight="@dimen/step1_lso_reg_padding_left_right"
         android:layout_marginBottom="@dimen/margin10dp"
         android:background="@drawable/button_design"
-        android:text="Submit Complaint" />
+        android:text="Submit Complaint"
+        android:textColor="@color/white"/>
 
 
 </RelativeLayout>

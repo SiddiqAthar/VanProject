@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    tools:context=".Fragments.admin.Admin_ManageFee">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text=" Coming Trips "
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_size_1"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_below="@+id/tv"
+        android:layout_alignStart="@+id/tv"
+        android:layout_alignEnd="@+id/tv"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:background="@color/button_default" />
+
+    <TextView
+        android:id="@+id/tv_tripDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view"
+        android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+        android:background="@drawable/edittext_design"
+        android:gravity="center_vertical"
+        android:padding="@dimen/edit_text_padding"
+        android:text="You have a ride at 8:30 with following Student. Your Van number is XY-123"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_size_2" />
+
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_tripDetail"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+            android:layout_weight="0.8"
+            android:text=" Name"
+            android:textColor="@color/BlackColor"
+            android:textSize="@dimen/text_size_2"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+            android:layout_weight="1.2"
+            android:gravity="center"
+            android:text="Address"
+            android:textColor="@color/BlackColor"
+            android:textSize="@dimen/text_size_2"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_below="@+id/ll"
+        android:layout_alignStart="@+id/ll"
+        android:layout_alignEnd="@+id/ll"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:background="@color/button_default" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_tripStudents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view2"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/btn_start_ride"/>
+    <Button
+        android:id="@+id/btn_start_ride"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_design"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:text="Start Ride"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

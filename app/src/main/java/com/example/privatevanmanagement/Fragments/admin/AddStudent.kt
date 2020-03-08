@@ -1,4 +1,4 @@
-package com.example.privatevanmanagement.Fragments
+package com.example.privatevanmanagement.Fragments.admin
 
 import android.app.Dialog
 import android.content.Intent
@@ -15,27 +15,33 @@ import android.widget.AdapterView
 import android.widget.Toast
 import com.google.firebase.database.*
 import android.widget.ArrayAdapter
-import com.example.privatevanmanagement.models.VanDetail_Model
+import com.example.privatevanmanagement.activities.NavDrawer
 
 
 class AddStudent : Fragment() {
     lateinit var dialog: Dialog
     var password: String = "default123"
+    var bundle_student_id: String? = null
+    var bundle_student_name: String? = null
     var rootView: View? = null
     var StudentName: EditText? = null
     var StudentEmail: EditText? = null
     var StudentCnic: EditText? = null
     var StudentContact: EditText? = null
     var StudentAddress: EditText? = null
-    var spinnerVan_Student: Spinner? = null
-    var van_array: ArrayList<String> = ArrayList()
+    var group_Spinner: Spinner? = null
+    var group_Array: ArrayList<String> = ArrayList()
     var arrayAdapter: ArrayAdapter<String>? = null
     var van_allocated: String = ""
     var btn_StudentInfo: Button? = null
     lateinit var databaseReference: DatabaseReference
 
+
+    var mainActivity: NavDrawer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 //        getVanDta()
         getVanDta2()
     }
@@ -55,36 +61,74 @@ class AddStudent : Fragment() {
 
         init(rootView)
 
+        if (arguments != null) {
+            if (arguments!!.containsKey("student_id")) {
+                bundle_student_id = arguments!!.getString("student_id")
+            }
+            if (arguments!!.containsKey("student_name")) {
+                bundle_student_name = arguments!!.getString("student_name")
+            }
+            // update wali side sy a rha hai, to update k mutabiq kam karna hai ab uska
+            btn_StudentInfo!!.text = "Update Detail"
+            StudentName!!.isEnabled = false
+            StudentName?.setText(bundle_student_name)
+
+        }
+
 
         return rootView
     }
 
     private fun init(rootView: View?) {
 //        mAuth = FirebaseAuth.getInstance()
+
+        mainActivity = activity as NavDrawer
+
         btn_StudentInfo = rootView?.findViewById(R.id.btn_StudentInfo) as Button
         StudentName = rootView?.findViewById(R.id.StudentName) as EditText
         StudentEmail = rootView?.findViewById(R.id.StudentEmail) as EditText
         StudentCnic = rootView?.findViewById(R.id.StudentCnic) as EditText
         StudentContact = rootView?.findViewById(R.id.StudentContact) as EditText
         StudentAddress = rootView?.findViewById(R.id.StudentAddress) as EditText
-        spinnerVan_Student = rootView?.findViewById(R.id.spinnerVan_Student) as Spinner
+        group_Spinner = rootView?.findViewById(R.id.group_Spinner) as Spinner
 
 
 
         btn_StudentInfo?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                createAccount(StudentEmail!!.text.toString(), "default123")
+//                createAccount(StudentEmail!!.text.toString(), "default123")
+                if(bundle_student_name.isNullOrEmpty())
+                {
+                    // add new
+                Toast.makeText(activity, "Add Successfully", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //update existing
+                    Toast.makeText(activity, "Update Successfully", Toast.LENGTH_SHORT).show();
+                }
+                // at end go to main Home
+                mainActivity!!.replaceFragment(Admin_home(), null)
+
             }
         })
+
+        //dummy data
+        group_Array.add("UF 122")
+        group_Array.add("XYZ  111")
+        group_Array.add("ABC 9273")
+        group_Array.add("RLF 0001")
+        group_Array.add("RIG 3234")
+        group_Array.add("UF 8782")
 
         arrayAdapter = ArrayAdapter<String>(
             activity!!.applicationContext,
             android.R.layout.simple_list_item_1,
-            van_array
+            group_Array
         )
 
-        spinnerVan_Student?.adapter = arrayAdapter
-        spinnerVan_Student?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        group_Spinner?.adapter = arrayAdapter
+        group_Spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 println("Error")
             }
@@ -92,7 +136,6 @@ class AddStudent : Fragment() {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
-//                van_allocated = (parent?.getItemAtPosition(position) as VanDetail_Model).vanNumber
                 van_allocated = parent?.getItemAtPosition(position).toString()
             }
 
@@ -108,6 +151,7 @@ class AddStudent : Fragment() {
         databaseReferenc.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
+
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (productSnapshot in dataSnapshot.getChildren()) {
 //                var request_key = productSnapshot.key.toString()
@@ -131,9 +175,10 @@ class AddStudent : Fragment() {
 //                                    Objects.getVanDetailInstance().vanNumber
 //                                )
 //                            )
-                            van_array!!.add(
-                                    Objects.getVanDetailInstance().vanID.toString()
-                                )
+                            /*                van_array!!.add(
+                                                    Objects.getVanDetailInstance().vanID.toString()
+                                                    )*/
+
                             arrayAdapter!!.notifyDataSetChanged()
                         }
                     })
@@ -175,7 +220,8 @@ class AddStudent : Fragment() {
 //                    val newPost3 = databaseReference.child(van_allocated)
 //                    newPost3.child("Student_id").setValue(newPost.key.toString())
                     val newPost3 = databaseReference.child(van_allocated)
-                    newPost3.child(newPost.key.toString()).child("Student_i d").setValue(newPost.key.toString())
+                    newPost3.child(newPost.key.toString()).child("Student_i d")
+                        .setValue(newPost.key.toString())
 
                     Toast.makeText(
                         activity, "Authentication Succedd.",

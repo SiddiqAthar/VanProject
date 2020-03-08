@@ -1,4 +1,4 @@
-package com.example.privatevanmanagement.Fragments
+package com.example.privatevanmanagement.Fragments.admin
 
 import android.app.Dialog
 import android.os.Bundle
@@ -6,32 +6,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
 
-import com.example.privatevanmanagement.activities.BaseActivity
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.R
 import com.google.firebase.auth.FirebaseAuth
 import android.content.Intent
-import android.util.Log
-import android.view.Window
 import android.widget.*
-import java.nio.file.Files.delete
 import android.widget.TextView
+import com.example.privatevanmanagement.activities.NavDrawer
 import com.google.firebase.database.*
 
 
 class AddDriver : Fragment() {
     var password: String = "default123"
     var rootView: View? = null
+    var mainActivity:NavDrawer?=null
     var DriverName: EditText? = null
     var DriverEmail: EditText? = null
     var DriverCnic: EditText? = null
     var DriverContact: EditText? = null
     var DriverAddress: EditText? = null
     var spinnerVan_Driver: Spinner? = null
-    var van_array: ArrayList<String> = ArrayList()
     var arrayAdapter: ArrayAdapter<String>? = null
+    var van_array: ArrayList<String> = ArrayList()
     var van_allocated: String = ""
     var btn_DriverInfo: Button? = null
     lateinit var databaseReference: DatabaseReference
@@ -63,6 +60,9 @@ class AddDriver : Fragment() {
 
     private fun init(rootView: View?) {
         mAuth = FirebaseAuth.getInstance()
+
+        mainActivity=activity as NavDrawer
+
         btn_DriverInfo = rootView?.findViewById(R.id.btn_DriverInfo) as Button
         DriverName = rootView?.findViewById(R.id.DriverName) as EditText
         DriverEmail = rootView?.findViewById(R.id.DriverEmail) as EditText
@@ -74,7 +74,10 @@ class AddDriver : Fragment() {
 
         btn_DriverInfo?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                createAccount(DriverEmail!!.text.toString(), password)
+                Toast.makeText(activity, "Add Successfully", Toast.LENGTH_SHORT).show();
+                mainActivity!!.replaceFragment(Admin_home(),null)
+
+//                createAccount(DriverEmail!!.text.toString(), password)
             }
         })
 

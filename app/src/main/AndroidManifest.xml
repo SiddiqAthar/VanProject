@@ -15,11 +15,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/myicon_se_background"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/myicon_se_background"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -42,14 +44,16 @@
         <activity android:name=".ChatModule.ShowActivities.Register" />
         <activity android:name=".ChatModule.ShowActivities.Chat" />
         <activity android:name=".ChatModule.ShowActivities.Users" />
-        <activity android:name=".activities.LoginActivity" />
+        <activity
+            android:name=".activities.NavDrawer"
+            android:label="@string/title_activity_nav"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.BaseActivity"
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <activity android:name=".ChatModule.ShowActivities.Login"> -->
-        <activity
-            android:name=".activities.NavDrawer"
-            android:label="@string/title_activity_nav"
+        <activity android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

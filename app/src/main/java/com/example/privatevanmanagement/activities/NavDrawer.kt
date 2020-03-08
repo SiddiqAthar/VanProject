@@ -1,7 +1,8 @@
 package com.example.privatevanmanagement.activities
 
+import android.app.PendingIntent.getActivity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,22 +13,25 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.privatevanmanagement.ChatModule.ShowActivities.Users
-import com.example.privatevanmanagement.Fragments.*
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.UserType
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import android.app.PendingIntent.getActivity
 import android.view.View
-import android.view.Window
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
+import com.example.privatevanmanagement.Fragments.admin.Admin_ManageFee
+import com.example.privatevanmanagement.Fragments.admin.Admin_ManageSalary
+import com.example.privatevanmanagement.Fragments.admin.Admin_ManageStudents
+import com.example.privatevanmanagement.Fragments.admin.Admin_home
+import com.example.privatevanmanagement.Fragments.driver.Driver_home
+import com.example.privatevanmanagement.Fragments.student.Student_home
 
 
 class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -44,7 +48,7 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         val toggle = ActionBarDrawerToggle(
             this,
             drawer,
-            toolbar,
+            null,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
@@ -79,8 +83,29 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
             }
         }
         navigationView.setNavigationItemSelectedListener(this)
-        ChangeManagementFragment(Admin_home())
-    }
+
+        // dummy login
+        if (UserType!!.equals("driver")) {
+            UserType = "driver"
+            replaceFragment(Driver_home(), null)
+        } else if (UserType!!.equals("student")) {
+            UserType = "student"
+            replaceFragment(Student_home(), null)
+        } else {
+            UserType = "admin"
+            replaceFragment(Admin_home(), null)
+        }
+
+        val fm = supportFragmentManager
+
+        fm.addOnBackStackChangedListener(FragmentManager.OnBackStackChangedListener {
+            if (supportFragmentManager.backStackEntryCount == 0)
+            {
+                finish()
+                moveTaskToBack(true)
+            }
+        })
+     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.nav_drawer, menu)
@@ -106,10 +131,16 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
 
 
         if (id == R.id.nav_manageFee) {
-//            val home = Admin_home()
-//            ChangeFragments(home)
+            val home = Admin_ManageFee()
+            replaceFragment(home, null)
+        } else if (id == R.id.nav_paySalary) {
+            val home = Admin_ManageSalary()
+            replaceFragment(home, null)
         } else if (id == R.id.nav_complaintBox) {
             showDialogMakeComplaint()
+        } else if (id == R.id.nav_manageStudents) {
+            val home = Admin_ManageStudents()
+            replaceFragment(home, null)
         }
 
 //        if (id == R.id.nav_home) {
@@ -135,13 +166,32 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         fragmentManager.beginTransaction().replace(R.id.mlayout, newFragment).commit()
     }
 
-    fun ChangeManagementFragment(fragment: Fragment) {
+    fun ChangeManagementFragment(fragment: Fragment, bundle: Bundle?) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.mlayout, fragment)
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .addToBackStack("std").commit()
     }
+
+
+    fun replaceFragment(fragment: Fragment, bundle: Bundle?) {
+        var backStateName: String = fragment.javaClass.name
+
+        if (bundle != null)
+            fragment.arguments = bundle
+
+        val fragmentManager = supportFragmentManager
+        var fragmentPopped: Boolean = fragmentManager.popBackStackImmediate(backStateName, 0)
+
+        if (!fragmentPopped) { //fragment not in back stack, create it.
+            var ft = fragmentManager.beginTransaction()
+            ft.replace(R.id.mlayout, fragment)
+            ft.addToBackStack(backStateName)
+            ft.commit()
+        }
+    }
+
 
     fun student_detail() {
 
@@ -257,6 +307,10 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
 }
