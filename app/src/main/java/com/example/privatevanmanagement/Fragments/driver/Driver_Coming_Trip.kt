@@ -11,11 +11,10 @@ import android.widget.Button
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.privatevanmanagement.Adapters.Adapter_comingTrip
-import com.example.privatevanmanagement.Adapters.Adapter_manageStudent
 
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.adapters.Adapter_comingTrip
 import com.example.privatevanmanagement.models.ManageFee_Model
 import java.util.ArrayList
 

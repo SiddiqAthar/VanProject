@@ -62,7 +62,7 @@ public class Users extends AppCompatActivity {
 //        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("/users");
         DatabaseReference userRef = null;
         if (UserType.equals("Student")) {
-            userRef = FirebaseDatabase.getInstance().getReference("Allocated_to_Driver").child(Objects.getStudentDetailInstance().getStudend_van_id());
+            userRef = FirebaseDatabase.getInstance().getReference("Allocated_to_Driver").child(Objects.getStudentDetailInstance().getStudend_id());
             userRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

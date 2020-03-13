@@ -11,16 +11,20 @@ import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.R
 import com.google.firebase.auth.FirebaseAuth
 import android.content.Intent
+import android.text.TextUtils
 import android.widget.*
 import android.widget.TextView
 import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.models.DriverDetail_Model
 import com.google.firebase.database.*
 
 
 class AddDriver : Fragment() {
+    var bundle_driver_id: String? = null
+    var bundle_driver_name: String? = null
     var password: String = "default123"
     var rootView: View? = null
-    var mainActivity:NavDrawer?=null
+    var mainActivity: NavDrawer? = null
     var DriverName: EditText? = null
     var DriverEmail: EditText? = null
     var DriverCnic: EditText? = null
@@ -37,7 +41,7 @@ class AddDriver : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getVanDta()
+//        getVanDta()
     }
 
     override fun onCreateView(
@@ -54,14 +58,25 @@ class AddDriver : Fragment() {
         )
         activity?.setTitle("Add Driver")
         init(rootView)
-
+        if (arguments != null) {
+            if (arguments!!.containsKey("driver_id")) {
+                bundle_driver_id = arguments!!.getString("driver_id")
+            }
+            if (arguments!!.containsKey("driver_name")) {
+                bundle_driver_name = arguments!!.getString("driver_name")
+            }
+            // update wali side sy a rha hai, to update k mutabiq kam karna hai ab uska
+            btn_DriverInfo!!.text = "Update Detail"
+            DriverName!!.isEnabled = false
+            DriverName?.setText(bundle_driver_name)
+        }
         return rootView
     }
 
     private fun init(rootView: View?) {
         mAuth = FirebaseAuth.getInstance()
 
-        mainActivity=activity as NavDrawer
+        mainActivity = activity as NavDrawer
 
         btn_DriverInfo = rootView?.findViewById(R.id.btn_DriverInfo) as Button
         DriverName = rootView?.findViewById(R.id.DriverName) as EditText
@@ -74,10 +89,20 @@ class AddDriver : Fragment() {
 
         btn_DriverInfo?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                Toast.makeText(activity, "Add Successfully", Toast.LENGTH_SHORT).show();
-                mainActivity!!.replaceFragment(Admin_home(),null)
+                if (validateForm()) {
+                    if (bundle_driver_name.isNullOrEmpty()) {
+                        // add new
+                        createAccount(DriverEmail!!.text.toString(), "default123")
 
-//                createAccount(DriverEmail!!.text.toString(), password)
+                    } else {
+                        //update existing
+                        Toast.makeText(activity, "Update Successfully", Toast.LENGTH_SHORT).show();
+                        // at end go to main Home
+                        mainActivity!!.replaceFragment(Admin_home(), null)
+                    }
+
+
+                }
             }
         })
 
@@ -103,54 +128,60 @@ class AddDriver : Fragment() {
 
     }
 
-    private fun getVanDta() {
-        val ordersRef = Objects.getFirebaseInstance().reference.child("AddVan")
-            .child(Objects.UserID.Globaluser_ID)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.getChildren()) {
-                    van_array.add(postSnapshot.key.toString())
+    /*  private fun getVanDta() {
+          val ordersRef = Objects.getFirebaseInstance().reference.child("AddVan")
+              .child(Objects.UserID.Globaluser_ID)
+          val valueEventListener = object : ValueEventListener {
+              override fun onDataChange(dataSnapshot: DataSnapshot) {
+                  for (postSnapshot in dataSnapshot.getChildren()) {
+                      van_array.add(postSnapshot.key.toString())
 
-                }
-                arrayAdapter?.notifyDataSetChanged()
-            }
+                  }
+                  arrayAdapter?.notifyDataSetChanged()
+              }
 
-            override fun onCancelled(databaseError: DatabaseError) {
+              override fun onCancelled(databaseError: DatabaseError) {
 
-            }
-        }
-        ordersRef.addListenerForSingleValueEvent(valueEventListener)
+              }
+          }
+          ordersRef.addListenerForSingleValueEvent(valueEventListener)
 
-    }
+      }*/
 
     private fun createAccount(email: String, password: String) {
         mAuth?.createUserWithEmailAndPassword(email, password)
             ?.addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
                     databaseReference =
-                        FirebaseDatabase.getInstance().reference.child("DriverDetails")
-
+                        Objects.getFirebaseInstance().reference.child("DriverDetails")
                     val newPost =
                         databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
-                    newPost.push()
-                    newPost.child("DriverName").setValue(DriverName!!.text.toString())
-                    newPost.child("DriverEmail").setValue(DriverEmail!!.text.toString())
-                    newPost.child("DriverCnic").setValue(DriverCnic!!.text.toString())
-                    newPost.child("DriverContact").setValue(DriverContact!!.text.toString())
-                    newPost.child("DriverAddress").setValue(DriverAddress!!.text.toString())
-                    newPost.child("Van_ID").setValue(van_allocated)
+                    newPost.setValue(
+                        DriverDetail_Model(
+                            Objects.getInstance().currentUser?.uid.toString(),
+                            "0.0",
+                            "0.0",
+                            DriverName!!.text.toString(),
+                            DriverEmail!!.text.toString(),
+                            DriverCnic!!.text.toString(),
+                            DriverContact!!.text.toString(),
+                            DriverAddress!!.text.toString(),
+                            "",
+                            "Un-Paid",
+                            "5000",
+                            "UnBlocked",
+                            "",
+                            "",
+                            "",
+                            ""
+                        )
+                    )
 
                     databaseReference = FirebaseDatabase.getInstance().reference.child("UserType")
                     val newPost2 =
                         databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
                     newPost2.push()
                     newPost2.child("User Type").setValue("Driver")
-
-                    databaseReference =
-                        Objects.getFirebaseInstance().reference.child("Allocated_to_Driver")
-                    val newPost3 = databaseReference.child(van_allocated)
-                    newPost3.child("Driver_id").setValue(newPost.key.toString())
-
 
                     Toast.makeText(
                         activity, "Authentication Succedd.",
@@ -206,13 +237,18 @@ class AddDriver : Fragment() {
         dialogButton.setOnClickListener {
             if (!email.toString().isNullOrEmpty()) {
                 sentEmail(email)
+                mainActivity!!.replaceFragment(Admin_home(), null)
+
             } else {
                 dialog.dismiss()
                 Toast.makeText(activity, "Enter Valid Email", Toast.LENGTH_LONG)
+
+
             }
         }
         dialogcancel.setOnClickListener {
             dialog.dismiss()
+            mainActivity!!.replaceFragment(Admin_home(), null)
         }
         if (dialog.isShowing) {
             dialog.dismiss()
@@ -223,6 +259,44 @@ class AddDriver : Fragment() {
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
 
+    }
+
+    private fun validateForm(): Boolean {
+
+        var valid = true
+
+        if (TextUtils.isEmpty(DriverName!!.text.toString())) {
+            DriverName!!.error = "Name Required"
+            valid = false
+        } else {
+            DriverName!!.error = null
+        }
+        if (TextUtils.isEmpty(DriverEmail!!.text.toString())) {
+            DriverEmail!!.error = "Email Required"
+            valid = false
+        } else {
+            DriverEmail!!.error = null
+        }
+        if (TextUtils.isEmpty(DriverCnic!!.text.toString())) {
+            DriverCnic!!.error = "Cnic Required"
+            valid = false
+        } else {
+            DriverCnic!!.error = null
+        }
+        if (TextUtils.isEmpty(DriverContact!!.text.toString())) {
+            DriverContact!!.error = "Contact Required"
+            valid = false
+        } else {
+            DriverContact!!.error = null
+        }
+        if (TextUtils.isEmpty(DriverAddress!!.text.toString())) {
+            DriverAddress!!.error = "Address Required"
+            valid = false
+        } else {
+            DriverAddress!!.error = null
+        }
+
+        return valid
     }
 }
 

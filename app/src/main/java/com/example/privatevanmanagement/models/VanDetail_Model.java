@@ -2,29 +2,38 @@ package com.example.privatevanmanagement.models;
 
 public class VanDetail_Model {
 
-    String vanID = "";
+    String vanRegisteration = "";
     String vanModel = "";
-    String vanName = "";
-    String vanNumber = "";
-    VanDetail_Model detail_model;
+    String vanMake = "";
+    String vanColor = "";
+    String vanType = "";
+    String vanCapacity = "";
+
+    String Assign_Status = "";
+    String Assign_DriverId = "";
+    String Assign_DriverName = "";
 
     public VanDetail_Model() {
-
     }
 
-    public VanDetail_Model(String vanID,String vanModel, String vanName, String vanNumber) {
-        this.vanID = vanID;
+    public VanDetail_Model(String vanRegisteration, String vanModel, String vanMake, String vanColor, String vanType, String vanCapacity, String assign_Status, String assign_DriverId, String assign_DriverName) {
+        this.vanRegisteration = vanRegisteration;
         this.vanModel = vanModel;
-        this.vanName = vanName;
-        this.vanNumber = vanNumber;
+        this.vanMake = vanMake;
+        this.vanColor = vanColor;
+        this.vanType = vanType;
+        this.vanCapacity = vanCapacity;
+        Assign_Status = assign_Status;
+        Assign_DriverId = assign_DriverId;
+        Assign_DriverName = assign_DriverName;
     }
 
-    public String getVanID() {
-        return vanID;
+    public String getVanRegisteration() {
+        return vanRegisteration;
     }
 
-    public void setVanID(String vanID) {
-        this.vanID = vanID;
+    public void setVanRegisteration(String vanRegisteration) {
+        this.vanRegisteration = vanRegisteration;
     }
 
     public String getVanModel() {
@@ -35,19 +44,59 @@ public class VanDetail_Model {
         this.vanModel = vanModel;
     }
 
-    public String getVanName() {
-        return vanName;
+    public String getVanMake() {
+        return vanMake;
     }
 
-    public void setVanName(String vanName) {
-        this.vanName = vanName;
+    public void setVanMake(String vanMake) {
+        this.vanMake = vanMake;
     }
 
-    public String getVanNumber() {
-        return vanNumber;
+    public String getVanColor() {
+        return vanColor;
     }
 
-    public void setVanNumber(String vanNumber) {
-        this.vanNumber = vanNumber;
+    public void setVanColor(String vanColor) {
+        this.vanColor = vanColor;
+    }
+
+    public String getVanType() {
+        return vanType;
+    }
+
+    public void setVanType(String vanType) {
+        this.vanType = vanType;
+    }
+
+    public String getVanCapacity() {
+        return vanCapacity;
+    }
+
+    public void setVanCapacity(String vanCapacity) {
+        this.vanCapacity = vanCapacity;
+    }
+
+    public String getAssign_Status() {
+        return Assign_Status;
+    }
+
+    public void setAssign_Status(String assign_Status) {
+        Assign_Status = assign_Status;
+    }
+
+    public String getAssign_DriverId() {
+        return Assign_DriverId;
+    }
+
+    public void setAssign_DriverId(String assign_DriverId) {
+        Assign_DriverId = assign_DriverId;
+    }
+
+    public String getAssign_DriverName() {
+        return Assign_DriverName;
+    }
+
+    public void setAssign_DriverName(String assign_DriverName) {
+        Assign_DriverName = assign_DriverName;
     }
 }

@@ -193,7 +193,7 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
     }
 
 
-    fun student_detail() {
+   /* fun student_detail() {
 
         val rootRef = Objects.getFirebaseInstance().reference
         val ordersRef = rootRef.child("StudentDetails").child(Objects.UserID.Globaluser_ID)
@@ -220,7 +220,7 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         }
         ordersRef.addListenerForSingleValueEvent(valueEventListener)
 
-    }
+    }*/
 
     fun driver_detail() {
 
