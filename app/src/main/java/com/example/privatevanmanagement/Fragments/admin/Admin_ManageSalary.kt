@@ -15,7 +15,7 @@ import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.models.ManageFee_Model
 import java.util.ArrayList
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.privatevanmanagement.adapters.Adapter_manageSalaryextends
+import com.example.privatevanmanagement.Adapters.Adapter_manageSalaryextends
 import com.example.privatevanmanagement.models.ManageSalary_Model
 
 

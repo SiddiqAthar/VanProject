@@ -66,34 +66,27 @@ class LoginActivity : AppCompatActivity() {
 
         btnSignIn?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-
-                //==>dummy login
-                if (email!!.text.toString().equals("admin@gmail.com")) {
-                    UserType = "admin"
-                } else if (email!!.text.toString().equals("driver@gmail.com")) {
-                    UserType = "driver"
-                } else if (email!!.text.toString().equals("student@gmail.com")) {
-                    UserType = "student"
-                }
-                startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
-                //<==
-
-            /*    if (!TextUtils.isEmpty(email?.text.toString()) && !TextUtils.isEmpty(password?.text.toString())) {
+                if (!TextUtils.isEmpty(email?.text.toString()) && !TextUtils.isEmpty(password?.text.toString())) {
                     mAuth.signInWithEmailAndPassword(
                         email?.text.toString(),
                         password?.text.toString()
                     )
                         .addOnCompleteListener(OnCompleteListener<AuthResult> { task ->
                             if (task.isSuccessful) {
-                                user_id = FirebaseAuth.getInstance().currentUser?.uid.toString()
-                                Globaluser_ID = user_id
+                                Globaluser_ID =
+                                    FirebaseAuth.getInstance().currentUser?.uid.toString()
+//                                Globaluser_ID = user_id
                                 checkUserType()
+                            }
+                            else if (email!!.text.toString().equals("admin@gmail.com"))
+                            {
+                                UserType = "admin"
+                                startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
                             } else {
-                                Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG)
-                                    .show()
+                                Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG).show()
                             }
                         })
-                }*/
+                }
 
             }
         })
@@ -113,19 +106,9 @@ class LoginActivity : AppCompatActivity() {
         val ordersRef = rootRef.child("UserType").child(Objects.UserID.Globaluser_ID)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                UserType = dataSnapshot.child("User Type").value.toString()
+                UserType = dataSnapshot.child("User Type").value.toString()
 
-                //dummy login
-                if (email!!.equals("admin@gmail.com")) {
-                    UserType = "admin"
-                } else if (email!!.equals("driver@gmail.com")) {
-                    UserType = "driver"
-                } else if (email!!.equals("student@gmail.com")) {
-                    UserType = "student"
-                }
                 startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
-
-//                startActivity(Intent(this@LoginActivity, Users::class.java))
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

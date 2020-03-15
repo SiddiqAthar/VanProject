@@ -1,4 +1,4 @@
-package com.example.privatevanmanagement.adapters;
+package com.example.privatevanmanagement.Adapters;
 
 
 import android.app.Dialog;

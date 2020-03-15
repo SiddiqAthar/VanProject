@@ -14,6 +14,8 @@ import com.example.privatevanmanagement.Fragments.admin.Admin_home
 
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.utils.Objects
+
 
 class Student_payFee : Fragment() {
 
@@ -55,11 +57,34 @@ class Student_payFee : Fragment() {
         btn_StudentPayFee?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if (validate()) {
-                    //if status is not paid, then
-                    //add Fee payment data to firebase, set status from UnPid to Paid
-                    Toast.makeText(context, "Fee Payed Successfully", Toast.LENGTH_SHORT).show()
-                    var mainActivity: NavDrawer = activity as NavDrawer
-                    mainActivity.replaceFragment(Student_home(), null)
+                    if (Objects.getStudentDetailInstance().fee_status.equals("Un-Paid")) {
+                        //if status is not paid, then
+                        //add Fee payment data to firebase, set status from UnPid to Paid
+                        Toast.makeText(context, "Fee Payed Successfully", Toast.LENGTH_SHORT).show()
+
+                        val ref = Objects.getFirebaseInstance().getReference("StudentDetails")
+                            .child(Objects.UserID.Globaluser_ID).child("fee_status")
+
+/*
+                        val map: HashMap<String, Any> = hashMapOf(
+                            "fee_status" to "Paid"
+//                            e.t.c. to UPDATE BULK OF DATA
+
+
+*/
+/*                            "email" to email
+ *//*
+
+                        )
+*/
+
+                        ref.setValue("Paid")
+
+                        var mainActivity: NavDrawer = activity as NavDrawer
+                        mainActivity.replaceFragment(Student_home(), null)
+                    } else {
+                        Toast.makeText(context, "You already Payed", Toast.LENGTH_SHORT).show()
+                    }
 
                 }
             }

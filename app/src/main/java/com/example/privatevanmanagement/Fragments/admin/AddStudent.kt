@@ -1,5 +1,6 @@
 package com.example.privatevanmanagement.Fragments.admin
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -18,14 +19,19 @@ import com.google.firebase.database.*
 import android.widget.ArrayAdapter
 import com.example.privatevanmanagement.activities.NavDrawer
 import com.example.privatevanmanagement.models.StudentDetail_Model
+import kotlinx.android.synthetic.main.activity_registeration.*
+import java.util.HashMap
 
 
 class AddStudent : Fragment() {
     lateinit var dialog: Dialog
-    var password: String = "default123"
+
+    var password: String? = "default123"
+    var selectedGroup: String? = null
     var bundle_student_id: String? = null
     var bundle_student_name: String? = null
     var rootView: View? = null
+    var Email_tv: TextView? = null
     var StudentName: EditText? = null
     var StudentEmail: EditText? = null
     var StudentCnic: EditText? = null
@@ -34,7 +40,7 @@ class AddStudent : Fragment() {
     var group_Spinner: Spinner? = null
     var group_Array: ArrayList<String> = ArrayList()
     var arrayAdapter: ArrayAdapter<String>? = null
-    var group: String = ""
+    var group: String? = null
     var btn_StudentInfo: Button? = null
     lateinit var databaseReference: DatabaseReference
 
@@ -63,6 +69,11 @@ class AddStudent : Fragment() {
         init(rootView)
 
         if (arguments != null) {
+            //visibility gone due to no need of change Email
+            StudentEmail!!.visibility = View.GONE
+            Email_tv!!.visibility = View.GONE
+
+
             if (arguments!!.containsKey("student_id")) {
                 bundle_student_id = arguments!!.getString("student_id")
             }
@@ -73,7 +84,6 @@ class AddStudent : Fragment() {
             btn_StudentInfo!!.text = "Update Detail"
             StudentName!!.isEnabled = false
             StudentName?.setText(bundle_student_name)
-
         }
 
 
@@ -86,6 +96,7 @@ class AddStudent : Fragment() {
         mainActivity = activity as NavDrawer
 
         btn_StudentInfo = rootView?.findViewById(R.id.btn_StudentInfo) as Button
+        Email_tv = rootView?.findViewById(R.id.Email_tv) as TextView
         StudentName = rootView?.findViewById(R.id.StudentName) as EditText
         StudentEmail = rootView?.findViewById(R.id.StudentEmail) as EditText
         StudentCnic = rootView?.findViewById(R.id.StudentCnic) as EditText
@@ -97,21 +108,23 @@ class AddStudent : Fragment() {
 
         btn_StudentInfo?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                if (validateForm()) {
-//                createAccount(StudentEmail!!.text.toString(), "default123")
-                    if (bundle_student_name.isNullOrEmpty()) {
-                        // add new
+                //                createAccount(StudentEmail!!.text.toString(), "default123")
+                if (bundle_student_name.isNullOrEmpty()) {
+                    if (validateForm())
+                    // add new
                         createAccount(StudentEmail!!.text.toString(), "default123")
 
-                    } else {
-                        //update existing
-                        Toast.makeText(activity, "Update Successfully", Toast.LENGTH_SHORT).show();
-                        // at end go to main Home
-                        mainActivity!!.replaceFragment(Admin_home(), null)
-                    }
-
-
                 }
+
+                else {
+                    //update existing
+                    updateAccount(bundle_student_name!!, bundle_student_id!!)
+
+                    // at end go to main Home
+                    mainActivity!!.replaceFragment(Admin_home(), null)
+                }
+
+
             }
         })
 
@@ -209,6 +222,34 @@ class AddStudent : Fragment() {
                     ).show()
                 }
             }
+    }
+
+    private fun updateAccount(name: String, student_id: String) {
+
+
+        val ref = Objects.getFirebaseInstance().reference.child("StudentDetails").child(student_id)
+        val updates = HashMap<String, Any>()
+
+
+        if (!StudentName!!.text.toString().isNullOrEmpty())
+            updates["student_name"] = StudentName!!.text.toString()
+        if (!StudentCnic!!.text.toString().isNullOrEmpty())
+            updates["student_cnic"] = StudentCnic!!.text.toString()
+        if (!StudentContact!!.text.toString().isNullOrEmpty())
+            updates["student_contact"] = StudentContact!!.text.toString()
+        if (!StudentAddress!!.text.toString().isNullOrEmpty())
+            updates["student_address"] = StudentAddress!!.text.toString()
+        if (!group.isNullOrEmpty())
+            updates["group"] = group.toString()
+
+
+        if (updates.size > 0) {
+            ref.updateChildren(updates)
+            Toast.makeText(context, "Data updated", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Nothing to update", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     fun sentEmail(email: String) {

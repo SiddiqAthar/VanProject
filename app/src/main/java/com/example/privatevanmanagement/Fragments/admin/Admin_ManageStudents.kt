@@ -15,7 +15,14 @@ import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.models.ManageFee_Model
 import java.util.ArrayList
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.privatevanmanagement.adapters.Adapter_manageStudent
+import com.example.privatevanmanagement.Adapters.Adapter_manageFeeextends
+import com.example.privatevanmanagement.Adapters.Adapter_manageStudent
+import com.example.privatevanmanagement.models.StudentDetail_Model
+import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.student_modelList
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 
 public class Admin_ManageStudents : Fragment() {
@@ -23,7 +30,9 @@ public class Admin_ManageStudents : Fragment() {
     var rootView: View? = null
     private var rv_manageStudent: RecyclerView? = null
     private var adapter_manageStudent: Adapter_manageStudent? = null
+/*
     var ArrayList_Model: ArrayList<ManageFee_Model>? = null
+*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +47,7 @@ public class Admin_ManageStudents : Fragment() {
     private fun init(rootView: View?) {
         rv_manageStudent = rootView?.findViewById(R.id.rv_manageStudent)
 
+/*
         ArrayList_Model = ArrayList<ManageFee_Model>()
         //add dummy data
         ArrayList_Model!!.add(ManageFee_Model("", "Siddiq", "", ""))
@@ -51,6 +61,7 @@ public class Admin_ManageStudents : Fragment() {
         ArrayList_Model!!.add(ManageFee_Model("", "Nabeeel Shoukat", "", ""))
         ArrayList_Model!!.add(ManageFee_Model("", "Abu Bakar", "", ""))
         ArrayList_Model!!.add(ManageFee_Model("", "Zaheer", "", ""))
+*/
 
 
         rv_manageStudent?.setLayoutManager(LinearLayoutManager(activity))
@@ -63,8 +74,38 @@ public class Admin_ManageStudents : Fragment() {
             )
         )
 
-        adapter_manageStudent = Adapter_manageStudent(ArrayList_Model, activity)
-        rv_manageStudent?.setAdapter(adapter_manageStudent)
+        if (Objects.student_modelList.isNullOrEmpty()) // agr list empty hai to jae
+            getStudentList()
+        else {
+            adapter_manageStudent = Adapter_manageStudent(student_modelList, activity)
+            rv_manageStudent?.setAdapter(adapter_manageStudent)
+        }
+    }
 
+
+
+    fun getStudentList() {
+        val myRef = Objects.getFirebaseInstance().getReference("StudentDetails")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                Objects.student_modelList.clear()
+
+                for (postSnapshot in snapshot.children) {
+                    val listDataRef = postSnapshot.getValue(StudentDetail_Model::class.java)!!
+                    Objects.student_modelList.add(listDataRef)
+
+                    adapter_manageStudent = Adapter_manageStudent(student_modelList, activity)
+                    rv_manageStudent?.setAdapter(adapter_manageStudent)
+
+                    // here you can access to name property like university.name
+
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage())
+            }
+        })
     }
 }

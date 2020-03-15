@@ -6,6 +6,9 @@ public class ManageFee_Model {
     String amount;
     String status;
 
+    public ManageFee_Model() {
+    }
+
     public ManageFee_Model(String id, String name, String amount, String status) {
         this.id = id;
         this.name = name;

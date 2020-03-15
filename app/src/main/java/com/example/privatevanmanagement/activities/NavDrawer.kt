@@ -32,6 +32,7 @@ import com.example.privatevanmanagement.Fragments.admin.Admin_ManageStudents
 import com.example.privatevanmanagement.Fragments.admin.Admin_home
 import com.example.privatevanmanagement.Fragments.driver.Driver_home
 import com.example.privatevanmanagement.Fragments.student.Student_home
+import com.example.privatevanmanagement.models.StudentDetail_Model
 
 
 class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -59,6 +60,7 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         //check user type to show daa
 
+/*
 
         val menu = navigationView.menu
         for (menuItemIndex in 0 until menu.size()) {
@@ -82,30 +84,30 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
                 }
             }
         }
+*/
         navigationView.setNavigationItemSelectedListener(this)
 
         // dummy login
-        if (UserType!!.equals("driver")) {
+        if (UserType!!.equals("Driver")) {
             UserType = "driver"
             replaceFragment(Driver_home(), null)
-        } else if (UserType!!.equals("student")) {
+        } else if (UserType!!.equals("Student")) {
             UserType = "student"
-            replaceFragment(Student_home(), null)
+            student_detail()
         } else {
-            UserType = "admin"
+            UserType = "Admin"
             replaceFragment(Admin_home(), null)
         }
 
         val fm = supportFragmentManager
 
         fm.addOnBackStackChangedListener(FragmentManager.OnBackStackChangedListener {
-            if (supportFragmentManager.backStackEntryCount == 0)
-            {
+            if (supportFragmentManager.backStackEntryCount == 0) {
                 finish()
                 moveTaskToBack(true)
             }
         })
-     }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.nav_drawer, menu)
@@ -161,57 +163,38 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         return true
     }
 
-    fun ChangeFragments(newFragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.mlayout, newFragment).commit()
-    }
 
-    fun ChangeManagementFragment(fragment: Fragment, bundle: Bundle?) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.mlayout, fragment)
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .addToBackStack("std").commit()
-    }
-
-
-    fun replaceFragment(fragment: Fragment, bundle: Bundle?) {
-        var backStateName: String = fragment.javaClass.name
-
-        if (bundle != null)
-            fragment.arguments = bundle
-
-        val fragmentManager = supportFragmentManager
-        var fragmentPopped: Boolean = fragmentManager.popBackStackImmediate(backStateName, 0)
-
-        if (!fragmentPopped) { //fragment not in back stack, create it.
-            var ft = fragmentManager.beginTransaction()
-            ft.replace(R.id.mlayout, fragment)
-            ft.addToBackStack(backStateName)
-            ft.commit()
-        }
-    }
-
-
-   /* fun student_detail() {
+    fun student_detail() {
 
         val rootRef = Objects.getFirebaseInstance().reference
         val ordersRef = rootRef.child("StudentDetails").child(Objects.UserID.Globaluser_ID)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Objects.getStudentDetailInstance().studend_id = Objects.UserID.Globaluser_ID
+                var data = dataSnapshot.getValue(StudentDetail_Model::class.java)!!
+
+                Objects.getStudentDetailInstance().student_id = data.student_id
+                Objects.getStudentDetailInstance().lat = data.lat
+                Objects.getStudentDetailInstance().longi = data.longi
+                Objects.getStudentDetailInstance().student_name = data.student_name
+                Objects.getStudentDetailInstance().student_email = data.student_email
+                Objects.getStudentDetailInstance().student_cnic = data.student_cnic
+                Objects.getStudentDetailInstance().student_contact = data.student_contact
+                Objects.getStudentDetailInstance().student_address = data.student_address
+                Objects.getStudentDetailInstance().fee_status = data.fee_status
+                Objects.getStudentDetailInstance().ammount = data.ammount
+                Objects.getStudentDetailInstance().status = data.status
+                Objects.getStudentDetailInstance().shift_time = data.shift_time
+                Objects.getStudentDetailInstance().drop_time = data.drop_time
+                Objects.getStudentDetailInstance().allocated_van = data.allocated_van
+                Objects.getStudentDetailInstance().driver_id = data.driver_id
+                Objects.getStudentDetailInstance().driver_name = data.driver_name
+
+                replaceFragment(Student_home(), null)
+
+/*
                 Objects.getStudentDetailInstance().studend_name =
                     dataSnapshot.child("StudentName").value.toString()
-                Objects.getStudentDetailInstance().studend_address =
-                    dataSnapshot.child("StudentAddress").value.toString()
-                Objects.getStudentDetailInstance().studend_contact =
-                    dataSnapshot.child("StudentContact").value.toString()
-                Objects.getStudentDetailInstance().studend_cnic =
-                    dataSnapshot.child("StudentCnic").value.toString()
-                Objects.getStudentDetailInstance().studend_email =
-                    dataSnapshot.child("StudentEmail").value.toString()
-                Objects.getStudentDetailInstance().studend_van_id =
-                    dataSnapshot.child("Van_ID").value.toString()
+ */
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -220,7 +203,7 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         }
         ordersRef.addListenerForSingleValueEvent(valueEventListener)
 
-    }*/
+    }
 
     fun driver_detail() {
 
@@ -308,6 +291,38 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
             )
         }
     }
+
+    fun ChangeFragments(newFragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.mlayout, newFragment).commit()
+    }
+
+    fun ChangeManagementFragment(fragment: Fragment, bundle: Bundle?) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.mlayout, fragment)
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .addToBackStack("std").commit()
+    }
+
+
+    fun replaceFragment(fragment: Fragment, bundle: Bundle?) {
+        var backStateName: String = fragment.javaClass.name
+
+        if (bundle != null)
+            fragment.arguments = bundle
+
+        val fragmentManager = supportFragmentManager
+        var fragmentPopped: Boolean = fragmentManager.popBackStackImmediate(backStateName, 0)
+
+        if (!fragmentPopped) { //fragment not in back stack, create it.
+            var ft = fragmentManager.beginTransaction()
+            ft.replace(R.id.mlayout, fragment)
+            ft.addToBackStack(backStateName)
+            ft.commit()
+        }
+    }
+
 
     override fun onBackPressed() {
         super.onBackPressed()

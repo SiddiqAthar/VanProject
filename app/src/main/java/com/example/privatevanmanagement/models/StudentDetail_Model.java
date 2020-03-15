@@ -1,16 +1,16 @@
 package com.example.privatevanmanagement.models;
 
 public class StudentDetail_Model {
-    String studend_id = "";
+    String student_id = "";
 
     String lat = "";
     String longi = "";
 
-    String studend_name = "";
-    String studend_email = "";
-    String studend_cnic = "";
-    String studend_contact = "";
-    String studend_address = "";
+    String student_name = "";
+    String student_email = "";
+    String student_cnic = "";
+    String student_contact = "";
+    String student_address = "";
 
     String group = "";
     String fee_status = "";
@@ -25,15 +25,15 @@ public class StudentDetail_Model {
     public StudentDetail_Model() {
     }
 
-    public StudentDetail_Model(String studend_id,String lat,String longi, String studend_name, String studend_email, String studend_cnic, String studend_contact, String studend_address, String group, String fee_status, String ammount, String status, String shift_time, String drop_time, String allocated_van, String driver_id, String driver_name) {
-        this.studend_id = studend_id;
+    public StudentDetail_Model(String student_id,String lat,String longi, String student_name, String student_email, String student_cnic, String student_contact, String student_address, String group, String fee_status, String ammount, String status, String shift_time, String drop_time, String allocated_van, String driver_id, String driver_name) {
+        this.student_id = student_id;
         this.lat = lat;
         this.longi = longi;
-        this.studend_name = studend_name;
-        this.studend_email = studend_email;
-        this.studend_cnic = studend_cnic;
-        this.studend_contact = studend_contact;
-        this.studend_address = studend_address;
+        this.student_name = student_name;
+        this.student_email = student_email;
+        this.student_cnic = student_cnic;
+        this.student_contact = student_contact;
+        this.student_address = student_address;
         this.group = group;
         this.fee_status = fee_status;
         this.ammount = ammount;
@@ -45,52 +45,68 @@ public class StudentDetail_Model {
         this.driver_name = driver_name;
     }
 
-    public String getStudend_id() {
-        return studend_id;
+    public String getStudent_id() {
+        return student_id;
     }
 
-    public void setStudend_id(String studend_id) {
-        this.studend_id = studend_id;
+    public void setStudent_id(String student_id) {
+        this.student_id = student_id;
     }
 
-    public String getStudend_name() {
-        return studend_name;
+    public String getLat() {
+        return lat;
     }
 
-    public void setStudend_name(String studend_name) {
-        this.studend_name = studend_name;
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
-    public String getStudend_email() {
-        return studend_email;
+    public String getLongi() {
+        return longi;
     }
 
-    public void setStudend_email(String studend_email) {
-        this.studend_email = studend_email;
+    public void setLongi(String longi) {
+        this.longi = longi;
     }
 
-    public String getStudend_cnic() {
-        return studend_cnic;
+    public String getStudent_name() {
+        return student_name;
     }
 
-    public void setStudend_cnic(String studend_cnic) {
-        this.studend_cnic = studend_cnic;
+    public void setStudent_name(String student_name) {
+        this.student_name = student_name;
     }
 
-    public String getStudend_contact() {
-        return studend_contact;
+    public String getStudent_email() {
+        return student_email;
     }
 
-    public void setStudend_contact(String studend_contact) {
-        this.studend_contact = studend_contact;
+    public void setStudent_email(String student_email) {
+        this.student_email = student_email;
     }
 
-    public String getStudend_address() {
-        return studend_address;
+    public String getStudent_cnic() {
+        return student_cnic;
     }
 
-    public void setStudend_address(String studend_address) {
-        this.studend_address = studend_address;
+    public void setStudent_cnic(String student_cnic) {
+        this.student_cnic = student_cnic;
+    }
+
+    public String getStudent_contact() {
+        return student_contact;
+    }
+
+    public void setStudent_contact(String student_contact) {
+        this.student_contact = student_contact;
+    }
+
+    public String getStudent_address() {
+        return student_address;
+    }
+
+    public void setStudent_address(String student_address) {
+        this.student_address = student_address;
     }
 
     public String getGroup() {
@@ -163,20 +179,5 @@ public class StudentDetail_Model {
 
     public void setDriver_name(String driver_name) {
         this.driver_name = driver_name;
-    }
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLongi() {
-        return longi;
-    }
-
-    public void setLongi(String longi) {
-        this.longi = longi;
     }
 }

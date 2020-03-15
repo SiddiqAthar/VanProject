@@ -1,4 +1,4 @@
-package com.example.privatevanmanagement.adapters;
+package com.example.privatevanmanagement.Adapters;
 
 
 import android.annotation.SuppressLint;
@@ -25,20 +25,27 @@ import com.example.privatevanmanagement.R;
 import com.example.privatevanmanagement.activities.BaseActivity;
 import com.example.privatevanmanagement.activities.NavDrawer;
 import com.example.privatevanmanagement.models.ManageFee_Model;
+import com.example.privatevanmanagement.models.StudentDetail_Model;
+import com.example.privatevanmanagement.utils.Objects;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageStudent.manageStudent_viewHolder> {
 
 
-    ArrayList<ManageFee_Model> manageStudent_List;
+    ArrayList<StudentDetail_Model> manageStudent_List;
     Context context;
     Button btn_block_unBLock;
     Button btn_edit;
+    String what = null;
 
 
-    public Adapter_manageStudent(ArrayList<ManageFee_Model> manageStudent_List, Context context) {
-        this.manageStudent_List = manageStudent_List;
+    public Adapter_manageStudent(List<StudentDetail_Model> manageStudent_List, Context context) {
+        this.manageStudent_List = (ArrayList<StudentDetail_Model>) manageStudent_List;
         this.context = context;
     }
 
@@ -53,19 +60,19 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
 
     @Override
     public void onBindViewHolder(@NonNull manageStudent_viewHolder holder, final int position) {
-        holder.userName.setText(manageStudent_List.get(position).getName());
+        holder.userName.setText(manageStudent_List.get(position).getStudent_name());
         holder.btn_block_unBLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                msgBlockuser(manageStudent_List.get(position).getName());
+                msgBlockuser(manageStudent_List.get(position).getStudent_name(), manageStudent_List.get(position).getStatus(), manageStudent_List.get(position).getStudent_id());
             }
         });
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("student_id", manageStudent_List.get(position).getId());
-                bundle.putString("student_name", manageStudent_List.get(position).getName());
+                bundle.putString("student_id", manageStudent_List.get(position).getStudent_id());
+                bundle.putString("student_name", manageStudent_List.get(position).getStudent_name());
                 NavDrawer activity=(NavDrawer) context;
                 activity.replaceFragment(new AddStudent(), bundle);
             }
@@ -91,7 +98,9 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
         }
     }
 
-    public void msgBlockuser(String msg) {
+    public void msgBlockuser(String student_name, final String student_status, final String student_id) {
+
+
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -101,19 +110,24 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
         Button dialogButton = (Button) dialog.findViewById(R.id.okButton);
         Button dialogcancel = (Button) dialog.findViewById(R.id.cancelButton);
 
-        text.setText("Are you Sre you want to Block " + msg + " ?");
+        text.setText("Are you Sure you want to change status of" + student_name + " ?");
+
+        final DatabaseReference ref = Objects.getFirebaseInstance().getReference().child("StudentDetails").child(student_id);
+        final Map<String, Object> updates = new HashMap<String, Object>();
 
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
                 //block selected usere here
-                if (btn_block_unBLock.getText().equals("Block")) {
-                    Toast.makeText(context, "User Blocked Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "User Un-Blocked Successfully", Toast.LENGTH_SHORT).show();
+                if (student_status.equalsIgnoreCase("UnBlocked")) {
+                    what = "Blocked";
+                } else if (student_status.equalsIgnoreCase("Blocked")) {
+                    what = "UnBlocked";
                 }
-
+                updates.put("status", what);
+                ref.updateChildren(updates);
+                Toast.makeText(context, "User " + what + " Successfully", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

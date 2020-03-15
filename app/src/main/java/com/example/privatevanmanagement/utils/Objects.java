@@ -2,17 +2,23 @@ package com.example.privatevanmanagement.utils;
 
 import com.example.privatevanmanagement.models.AdminDetail_Model;
 import com.example.privatevanmanagement.models.DriverDetail_Model;
+import com.example.privatevanmanagement.models.Schedule_Student_Model;
 import com.example.privatevanmanagement.models.StudentDetail_Model;
 import com.example.privatevanmanagement.models.VanDetail_Model;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Objects {
 
     static public FirebaseAuth mAuth = FirebaseAuth.getInstance();
     static public FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     static public String UserType = "";
+    static public List<StudentDetail_Model> student_modelList= new ArrayList<>();
+
 
     public static FirebaseAuth getInstance() {
         if (mAuth == null) {
@@ -74,6 +80,9 @@ public class Objects {
         return vanDetail_model;
     }
 
+
+
+
     static public StudentDetail_Model studentDetail_model;
 
     public static StudentDetail_Model getStudentDetailInstance() {
@@ -82,6 +91,9 @@ public class Objects {
         }
         return studentDetail_model;
     }
+
+
+
 
     static public DriverDetail_Model driverDetail_model;
 
