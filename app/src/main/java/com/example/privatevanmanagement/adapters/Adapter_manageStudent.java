@@ -1,4 +1,4 @@
-package com.example.privatevanmanagement.Adapters;
+package com.example.privatevanmanagement.adapters;
 
 
 import android.annotation.SuppressLint;
@@ -110,7 +110,7 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
         Button dialogButton = (Button) dialog.findViewById(R.id.okButton);
         Button dialogcancel = (Button) dialog.findViewById(R.id.cancelButton);
 
-        text.setText("Are you Sure you want to change status of" + student_name + " ?");
+        text.setText("Are you Sure you want to change status of " + student_name + " ?");
 
         final DatabaseReference ref = Objects.getFirebaseInstance().getReference().child("StudentDetails").child(student_id);
         final Map<String, Object> updates = new HashMap<String, Object>();

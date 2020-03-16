@@ -1,22 +1,15 @@
 package com.example.privatevanmanagement.Fragments.admin
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.models.ManageFee_Model
-import java.util.ArrayList
-import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.privatevanmanagement.Adapters.Adapter_manageFeeextends
-import com.example.privatevanmanagement.Adapters.Adapter_manageStudent
+import com.example.privatevanmanagement.adapters.Adapter_manageStudent
 import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.student_modelList
@@ -81,7 +74,6 @@ public class Admin_ManageStudents : Fragment() {
             rv_manageStudent?.setAdapter(adapter_manageStudent)
         }
     }
-
 
 
     fun getStudentList() {

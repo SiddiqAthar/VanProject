@@ -1,4 +1,4 @@
-package com.example.privatevanmanagement.Adapters;
+package com.example.privatevanmanagement.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

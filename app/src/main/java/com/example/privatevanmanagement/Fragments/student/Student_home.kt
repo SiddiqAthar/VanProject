@@ -1,5 +1,6 @@
 package com.example.privatevanmanagement.Fragments.student
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,7 +14,9 @@ import androidx.cardview.widget.CardView
 
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.utils.Objects
 import java.util.ArrayList
+import java.util.HashMap
 
 
 class Student_home : Fragment(), View.OnClickListener {
@@ -29,6 +32,10 @@ class Student_home : Fragment(), View.OnClickListener {
     var stud_sendComplaint: CardView? = null
     var stud_chatDriver: CardView? = null
 
+    var shift: String? = null
+    var drop: String? = null
+    var ArrayList_pickup_shift: ArrayList<String>? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +46,12 @@ class Student_home : Fragment(), View.OnClickListener {
         }
         val rootView = inflater!!.inflate(R.layout.fragment_student_home, container, false)
         mContext = rootView.context
+
+        //dummy shift data
+        ArrayList_pickup_shift = ArrayList<String>()
+        ArrayList_pickup_shift!!.add("Shift 1")
+        ArrayList_pickup_shift!!.add("Shift 2")
+        ArrayList_pickup_shift!!.add("Shift 3")
 
         init(rootView)
 
@@ -143,21 +156,8 @@ class Student_home : Fragment(), View.OnClickListener {
 
         val btn_setTiming = dialogView.findViewById(R.id.btn_setTiming) as Button
         val btn_closeDialog = dialogView.findViewById(R.id.btn_closeDialog) as ImageButton
-
-        var ArrayList_pickup_shift: ArrayList<String>
-        var ArrayList_dropoff_shift: ArrayList<String>
         var shift_spinner_adapter: Adapter
 
-        // set array list of timing here to Spinner
-        // 1 in Pickup
-        // 2 in drop off
-
-
-        //dumy shift data
-        ArrayList_pickup_shift = ArrayList<String>()
-        ArrayList_pickup_shift!!.add("Shift 1")
-        ArrayList_pickup_shift!!.add("Shift 2")
-        ArrayList_pickup_shift!!.add("Shift 3")
 
         // pickup and dropoff adapter will be same
         shift_spinner_adapter = ArrayAdapter<String>(
@@ -170,11 +170,54 @@ class Student_home : Fragment(), View.OnClickListener {
         pickUp_Spinner?.adapter = shift_spinner_adapter
         dropOff_Spinner?.adapter = shift_spinner_adapter
 
+        pickUp_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                shift = ArrayList_pickup_shift!!.get(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        })
+        dropOff_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                drop = ArrayList_pickup_shift!!.get(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        })
+
+
         btn_setTiming.setOnClickListener(View.OnClickListener
         {
             // add pickup and drop off vale to DB here, then change close dialog
-            Toast.makeText(context, "Set Time Successfully", Toast.LENGTH_SHORT).show()
-            alertDialog.dismiss()
+
+            val ref = Objects.getFirebaseInstance().reference.child("StudentDetails")
+                .child(Objects.UserID.Globaluser_ID)
+            val updates = HashMap<String, Any>()
+            updates["shift_time"] = shift.toString()
+            updates["drop_time"] = drop.toString()
+
+            if (!shift.equals(drop) && updates.size > 0) {
+                ref.updateChildren(updates)
+                Toast.makeText(context, "Set Time Successfully", Toast.LENGTH_SHORT).show()
+                alertDialog.dismiss()
+            } else {
+                Toast.makeText(context, "Pick and Drop time can't be Same", Toast.LENGTH_SHORT)
+                    .show()
+            }
         })
 
         btn_closeDialog.setOnClickListener(
@@ -208,20 +251,8 @@ class Student_home : Fragment(), View.OnClickListener {
         val edit_btn_setTiming = dialogView.findViewById(R.id.btn_edit_setTiming) as Button
         val btn_closeDialog = dialogView.findViewById(R.id.btn_closeDialog) as ImageButton
 
-        var ArrayList_pickup_shift: ArrayList<String>
-        var ArrayList_dropoff_shift: ArrayList<String>
+
         var shift_spinner_adapter: Adapter
-
-        // set array list of timing here to Spinner
-        // 1 in Pickup
-        // 2 in drop off
-
-
-        //dumy shift data
-        ArrayList_pickup_shift = ArrayList<String>()
-        ArrayList_pickup_shift!!.add("Shift 1")
-        ArrayList_pickup_shift!!.add("Shift 2")
-        ArrayList_pickup_shift!!.add("Shift 3")
 
         // pickup and dropoff adapter will be same
         shift_spinner_adapter = ArrayAdapter<String>(
@@ -234,11 +265,52 @@ class Student_home : Fragment(), View.OnClickListener {
         edit_pickUp_Spinner?.adapter = shift_spinner_adapter
         edit_dropOff_Spinner?.adapter = shift_spinner_adapter
 
+        edit_pickUp_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                shift = ArrayList_pickup_shift!!.get(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        })
+        edit_dropOff_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                drop = ArrayList_pickup_shift!!.get(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+        })
+
         edit_btn_setTiming.setOnClickListener(View.OnClickListener
         {
             // edit pickup and drop off vale to DB here, then change close dialog
-            Toast.makeText(context, "Edit Time Successfully", Toast.LENGTH_SHORT).show()
-            alertDialog.dismiss()
+
+            val ref = Objects.getFirebaseInstance().reference.child("StudentDetails")
+                .child(Objects.UserID.Globaluser_ID)
+            val updates = HashMap<String, Any>()
+            updates["shift_time"] = shift.toString()
+            updates["drop_time"] = drop.toString()
+            if (!shift.equals(drop) && updates.size > 0) {
+                ref.updateChildren(updates)
+                Toast.makeText(context, "Edit Time Successfully", Toast.LENGTH_SHORT).show()
+                alertDialog.dismiss()
+            } else {
+                Toast.makeText(context, "Pick and Drop time can't be Same", Toast.LENGTH_SHORT)
+                    .show()
+            }
         })
 
         btn_closeDialog.setOnClickListener(
