@@ -22,6 +22,8 @@ public class Objects {
     static public List<StudentDetail_Model> student_modelList = new ArrayList<>();
     static public List<StudentDetail_Model> sortedList = new ArrayList<>();
     static public List<VanDetail_Model> vanList = new ArrayList<>();
+    static public List<DriverDetail_Model> driver_modelList = new ArrayList<>();
+    static public List<DriverDetail_Model> freeDriverList = new ArrayList<>();
     static public List<String> group_list = new ArrayList<>();
     static public List<Shift_Model> shift_list = new ArrayList<>();
 

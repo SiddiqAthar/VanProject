@@ -36,8 +36,7 @@
         android:background="@drawable/edittext_design"
         android:gravity="center_vertical"
         android:padding="@dimen/edit_text_padding"
-        android:text="You have a ride at 8:30 with following Student. Your Van number is XY-123"
-        android:textColor="@color/textColor"
+         android:textColor="@color/textColor"
         android:textSize="@dimen/text_size_2" />
 
 

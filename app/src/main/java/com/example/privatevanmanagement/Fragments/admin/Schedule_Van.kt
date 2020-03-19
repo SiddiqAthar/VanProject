@@ -125,7 +125,7 @@ class Schedule_Van : Fragment() {
     private fun updateList() {
         sortedList.clear()
         for (i in 0 until student_modelList.size) {
-            if (student_modelList.get(i).group.equals(selected_group) && student_modelList.get(i).shift_time.equals(selected_shift)) {
+            if (student_modelList.get(i).group.equals(selected_group) && student_modelList.get(i).shift_time.equals(selected_shift)&& student_modelList.get(i).allocated_van.equals("")) {
                 sortedList!!.add(student_modelList.get(i))
             }
         }

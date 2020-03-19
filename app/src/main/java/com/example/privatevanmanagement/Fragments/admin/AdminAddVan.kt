@@ -82,6 +82,7 @@ class AdminAddVan : Fragment() {
         databaseReference = FirebaseDatabase.getInstance().reference.child("AddVan").push()
         databaseReference.setValue(
             VanDetail_Model(
+                databaseReference.key,
                 van_Registeration!!.text.toString(),
                 van_Model!!.text.toString(),
                 van_Make!!.text.toString(),

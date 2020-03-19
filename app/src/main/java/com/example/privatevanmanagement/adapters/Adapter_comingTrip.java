@@ -21,19 +21,20 @@ import com.example.privatevanmanagement.Fragments.admin.AddStudent;
 import com.example.privatevanmanagement.R;
 import com.example.privatevanmanagement.activities.NavDrawer;
 import com.example.privatevanmanagement.models.ManageFee_Model;
+import com.example.privatevanmanagement.models.StudentDetail_Model;
 
 import java.util.ArrayList;
 
 public class Adapter_comingTrip extends RecyclerView.Adapter<Adapter_comingTrip.tripStudent_viewHolder> {
 
 
-    ArrayList<ManageFee_Model> manageStudent_List;
+    ArrayList<StudentDetail_Model> manageStudent_List;
     Context context;
     Button btn_block_unBLock;
     Button btn_edit;
 
 
-    public Adapter_comingTrip(ArrayList<ManageFee_Model> manageStudent_List, Context context) {
+    public Adapter_comingTrip(ArrayList<StudentDetail_Model> manageStudent_List, Context context) {
         this.manageStudent_List = manageStudent_List;
         this.context = context;
     }
@@ -49,8 +50,8 @@ public class Adapter_comingTrip extends RecyclerView.Adapter<Adapter_comingTrip.
 
     @Override
     public void onBindViewHolder(@NonNull tripStudent_viewHolder holder, final int position) {
-        holder.studentName.setText(manageStudent_List.get(position).getName());
-        holder.studentAddress.setText(manageStudent_List.get(position).getId());
+        holder.studentName.setText(manageStudent_List.get(position).getStudent_name());
+        holder.studentAddress.setText(manageStudent_List.get(position).getStudent_address());
      }
 
     @Override

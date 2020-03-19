@@ -2,6 +2,7 @@ package com.example.privatevanmanagement.models;
 
 public class VanDetail_Model {
 
+    String vanId = "";
     String vanRegisteration = "";
     String vanModel = "";
     String vanMake = "";
@@ -16,7 +17,8 @@ public class VanDetail_Model {
     public VanDetail_Model() {
     }
 
-    public VanDetail_Model(String vanRegisteration, String vanModel, String vanMake, String vanColor, String vanType, String vanCapacity, String assign_Status, String assign_DriverId, String assign_DriverName) {
+    public VanDetail_Model(String vanId,String vanRegisteration, String vanModel, String vanMake, String vanColor, String vanType, String vanCapacity, String assign_Status, String assign_DriverId, String assign_DriverName) {
+        this.vanId = vanId;
         this.vanRegisteration = vanRegisteration;
         this.vanModel = vanModel;
         this.vanMake = vanMake;
@@ -26,6 +28,14 @@ public class VanDetail_Model {
         Assign_Status = assign_Status;
         Assign_DriverId = assign_DriverId;
         Assign_DriverName = assign_DriverName;
+    }
+
+    public String getVanId() {
+        return vanId;
+    }
+
+    public void setVanId(String vanId) {
+        this.vanId = vanId;
     }
 
     public String getVanRegisteration() {

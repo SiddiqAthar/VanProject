@@ -13,7 +13,10 @@ import androidx.cardview.widget.CardView
 
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.models.DriverDetail_Model
+import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.driver_modelList
 import com.example.privatevanmanagement.utils.SendNotification
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -40,6 +43,9 @@ class Driver_home : Fragment(), View.OnClickListener {
         }
         val rootView = inflater!!.inflate(R.layout.fragment_driver_home, container, false)
         mContext = rootView.context
+
+        if(driver_modelList.isEmpty())
+            getDriverList()
 
         init(rootView)
 
@@ -124,6 +130,29 @@ class Driver_home : Fragment(), View.OnClickListener {
     }
 
 
+    fun getDriverList() {
+        val myRef = Objects.getFirebaseInstance().getReference("DriverDetails")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                driver_modelList.clear()
+
+                for (postSnapshot in snapshot.children) {
+                    val listDataRef = postSnapshot.getValue(DriverDetail_Model::class.java)!!
+                    driver_modelList.add(listDataRef)
+                 }
+              }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage())
+                Toast.makeText(context, "Unable to fetch data from Server", Toast.LENGTH_LONG)
+                    .show()
+             }
+        })
+    }
+
+
+
     private fun sendMessage(toString: String) {
 //        val myRef = Objects.getFirebaseInstance().getReference("Token").child(Globaluser_ID)
         val myRef = Objects.getFirebaseInstance().getReference("Token")
@@ -146,6 +175,9 @@ class Driver_home : Fragment(), View.OnClickListener {
         var sendNoteaa = SendNotification()
         sendNoteaa.execute(to, body);
     }
+
+
+
 
 
 }
