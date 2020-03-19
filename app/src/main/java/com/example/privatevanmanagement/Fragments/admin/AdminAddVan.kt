@@ -66,7 +66,6 @@ class AdminAddVan : Fragment() {
         van_Capacity = rootView?.findViewById(R.id.van_Capacity) as EditText
 
 
-        databaseReference = FirebaseDatabase.getInstance().reference.child("AddVan")
 
         btn_AddVan?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -80,15 +79,13 @@ class AdminAddVan : Fragment() {
     }
 
     private fun addVandetails() {
-        val newPost = databaseReference.child(Objects.getInstance().currentUser?.uid.toString())
-
-        newPost.setValue(
+        databaseReference = FirebaseDatabase.getInstance().reference.child("AddVan").push()
+        databaseReference.setValue(
             VanDetail_Model(
                 van_Registeration!!.text.toString(),
                 van_Model!!.text.toString(),
                 van_Make!!.text.toString(),
-                van_Color!!.text.toString()
-                ,
+                van_Color!!.text.toString(),
                 van_Type!!.text.toString(),
                 van_Capacity!!.text.toString(),
                 "",

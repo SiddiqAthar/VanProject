@@ -1,38 +1,33 @@
 package com.example.privatevanmanagement.activities
 
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.privatevanmanagement.ChatModule.ShowActivities.Users
+import com.example.privatevanmanagement.Fragments.admin.*
+import com.example.privatevanmanagement.Fragments.driver.Driver_home
+import com.example.privatevanmanagement.Fragments.student.Student_home
 import com.example.privatevanmanagement.R
+import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.UserType
+import com.example.privatevanmanagement.utils.SendNotification
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.FragmentManager
-import com.example.privatevanmanagement.Fragments.admin.Admin_ManageFee
-import com.example.privatevanmanagement.Fragments.admin.Admin_ManageSalary
-import com.example.privatevanmanagement.Fragments.admin.Admin_ManageStudents
-import com.example.privatevanmanagement.Fragments.admin.Admin_home
-import com.example.privatevanmanagement.Fragments.driver.Driver_home
-import com.example.privatevanmanagement.Fragments.student.Student_home
-import com.example.privatevanmanagement.models.StudentDetail_Model
 
 
 class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -60,31 +55,6 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         //check user type to show daa
 
-/*
-
-        val menu = navigationView.menu
-        for (menuItemIndex in 0 until menu.size()) {
-            val menu = navigationView.menu
-            for (menuItemIndex in 0 until menu.size()) {
-                val menuItem = menu.getItem(menuItemIndex)
-                if (UserType.equals("Student")) {
-//                    if (menuItem.itemId == R.id.nav_addStudent) {
-//                        //fill model of signed in UserType
-//                        student_detail()
-//                        menuItem.isVisible = false
-//                    }
-                } else if (UserType.equals("Driver")) {
-//                    if (menuItem.itemId == R.id.nav_addDrivers) {
-//                        //fill model of signed in UserType
-//                        driver_detail()
-//                        menuItem.isVisible = false
-//                    }
-                } else {
-                    admin_detail()
-                }
-            }
-        }
-*/
         navigationView.setNavigationItemSelectedListener(this)
 
         // dummy login
@@ -139,25 +109,16 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
             val home = Admin_ManageSalary()
             replaceFragment(home, null)
         } else if (id == R.id.nav_complaintBox) {
-            showDialogMakeComplaint()
+            val home = Admin_ViewComplaints()
+            replaceFragment(home, null)
         } else if (id == R.id.nav_manageStudents) {
             val home = Admin_ManageStudents()
             replaceFragment(home, null)
+        } else if (id == R.id.nav_add_group) {
+            showDialogAddGroup()
+        } else if (id == R.id.nav_add_shift) {
+            showDialogAddShit()
         }
-
-//        if (id == R.id.nav_home) {
-//            val home = Admin_home()
-//            ChangeFragments(home)
-//        } else if (id == R.id.nav_addStudent) {
-//            val home = AddStudent()
-//            ChangeFragments(home)
-//        } else if (id == R.id.nav_addDrivers) {
-//            val home = AddDriver()
-//            ChangeFragments(home)
-//        } else if (id == R.id.nav_addVan) {
-//            val home = AdminAddVan()
-//            ChangeFragments(home)
-//        }
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         drawer.closeDrawer(GravityCompat.START)
         return true
@@ -261,24 +222,36 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
 
     }
 
-
-    fun showDialogMakeComplaint() {
-        val dialogBuilder = AlertDialog.Builder(this)
+    fun showDialogAddGroup() {
+        val dialogBuilder = AlertDialog.Builder(this!!)
         val inflater = this!!.layoutInflater
         dialogBuilder.setCancelable(false)
-        val dialogView = inflater.inflate(R.layout.dialog_register_complaint, null)
+        val dialogView = inflater.inflate(R.layout.dialog_add_group, null)
         dialogBuilder.setView(dialogView)
         val alertDialog = dialogBuilder.create()
-        val btn_sendNotficaion = dialogView.findViewById(R.id.btn_submitComplaint) as Button
+        val et_add_Group = dialogView.findViewById(R.id.et_add_Group) as EditText
+        val btn_addGroup = dialogView.findViewById(R.id.btn_addGroup) as Button
         val btn_closeDialog = dialogView.findViewById(R.id.btn_closeDialog) as ImageButton
 
-        btn_sendNotficaion.setOnClickListener(View.OnClickListener { })
 
-        btn_closeDialog.setOnClickListener(
-            View.OnClickListener
-            {
+
+        btn_addGroup.setOnClickListener(View.OnClickListener {
+            if (!et_add_Group.text.isNullOrEmpty()) {
+                //add data here on firebase and send notification
+                val newPost2 =
+                    Objects.getFirebaseInstance().reference.child("Groups")
+//                newPost2.child("Group_name").setValue(et_add_Group.text.toString())
+                newPost2.child(et_add_Group.text.toString()).setValue(et_add_Group.text.toString())
                 alertDialog.dismiss()
-            })
+            } else {
+                Toast.makeText(this, "Group field is empty", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        btn_closeDialog.setOnClickListener(View.OnClickListener
+        {
+            alertDialog.dismiss()
+        })
 
         // alertDialog.show()
         if (alertDialog.isShowing) {
@@ -292,9 +265,71 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
-    fun ChangeFragments(newFragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.mlayout, newFragment).commit()
+
+    fun showDialogAddShit() {
+        val dialogBuilder = AlertDialog.Builder(this!!)
+        val inflater = this!!.layoutInflater
+        dialogBuilder.setCancelable(false)
+        val dialogView = inflater.inflate(R.layout.dialog_add_shift, null)
+        dialogBuilder.setView(dialogView)
+        val alertDialog = dialogBuilder.create()
+        val et_add_Shift = dialogView.findViewById(R.id.et_add_Shift) as EditText
+        val shift_timePicker = dialogView.findViewById(R.id.shift_timePicker) as TimePicker
+        val btn_addShift = dialogView.findViewById(R.id.btn_addShift) as Button
+        val btn_closeDialog = dialogView.findViewById(R.id.btn_closeDialog) as ImageButton
+        shift_timePicker.setIs24HourView(false)
+
+        btn_addShift.setOnClickListener(View.OnClickListener {
+            var time: String = getTime(shift_timePicker)
+            if (!et_add_Shift.text.isNullOrEmpty() && !time.toString().isNullOrEmpty()) {
+                //add data here on firebase and send notification
+                val newPost2 =
+                    Objects.getFirebaseInstance().reference.child("Shifts")
+                newPost2.child(et_add_Shift.text.toString())
+                    .setValue(time)
+                alertDialog.dismiss()
+            } else {
+                Toast.makeText(this, "Shift field is empty", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        btn_closeDialog.setOnClickListener(View.OnClickListener
+        {
+            alertDialog.dismiss()
+        })
+
+        // alertDialog.show()
+        if (alertDialog.isShowing) {
+            alertDialog.dismiss()
+        } else {
+            alertDialog.show()
+            alertDialog.getWindow()!!.setLayout(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+    }
+
+
+    fun getTime(picker: TimePicker): String {
+        var hour = 0
+        var minute = 0;
+        var am_pm: String? = null
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            hour = picker.getHour();
+            minute = picker.getMinute();
+        } else {
+            hour = picker.getCurrentHour();
+            minute = picker.getCurrentMinute();
+        }
+        if (hour > 12) {
+            am_pm = "PM";
+            hour = hour - 12;
+        } else {
+            am_pm = "AM";
+        }
+        return "" + hour + ":" + minute + " " + am_pm
     }
 
     fun ChangeManagementFragment(fragment: Fragment, bundle: Bundle?) {
@@ -304,7 +339,6 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .addToBackStack("std").commit()
     }
-
 
     fun replaceFragment(fragment: Fragment, bundle: Bundle?) {
         var backStateName: String = fragment.javaClass.name
@@ -323,9 +357,9 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
-
     override fun onBackPressed() {
         super.onBackPressed()
     }
+
 
 }

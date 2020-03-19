@@ -7,9 +7,7 @@
     android:layout_marginLeft="@dimen/frame_layout_left_right_top"
     android:layout_marginRight="@dimen/frame_layout_left_right_top"
     android:background="@drawable/dialog_design"
-
-    >
-
+>
 
     <ImageButton
         android:id="@+id/btn_closeDialog"
@@ -22,10 +20,6 @@
         android:background="@drawable/round_design"
         android:src="@drawable/ic_close_dialog" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/headerText" />
 
     <LinearLayout
         android:id="@+id/headerText"
@@ -41,7 +35,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingTop="@dimen/margin10dp"
-            android:text="Set Timings"
+            android:text=" ADD Shift "
             android:textAllCaps="true"
             android:textColor="@color/textColor"
             android:textSize="@dimen/text_size_4"
@@ -77,104 +71,84 @@
             android:paddingRight="@dimen/step1_lso_reg_padding_left_right">
 
             <TextView
-                android:id="@+id/text1"
+                android:id="@+id/tv_complaint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
-                android:text="Pick up"
+                android:text="Shift Name:"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/text_size_2"
                 android:textStyle="bold" />
 
+
             <RelativeLayout
-                android:id="@+id/rl_1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text1"
-                android:layout_marginTop="5dp"
+                android:layout_height="80dp"
                 android:background="@drawable/edittext_design">
 
 
-                <Spinner
-                    android:id="@+id/pickUp_Spinner"
+
+                <EditText
+                    android:id="@+id/et_add_Shift"
+                    android:drawablePadding="@dimen/margin10dp"
+                    android:drawableEnd="@mipmap/edit"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/edit_text_padding"
+                    android:layout_toLeftOf="@+id/crm_number_ImageView"
                     android:background="@null"
-                     android:textColor="@color/textColor"
-                    android:textSize="@dimen/text_size_2"
-                    android:layout_toLeftOf="@+id/spinner_iv"
-                    android:layout_marginRight="5dp"/>
-
-                <ImageView
-                    android:id="@+id/spinner_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/user_password_image_margin_right"
-                    android:src="@mipmap/drop_down" />
-
+                    android:enabled="true"
+                    android:hint="Enter Shift Name "
+                    android:inputType="text"
+                    android:maxLines="35"
+                    android:singleLine="false"
+                    android:textColor="@color/textColor"
+                    android:textColorHint="@color/hint"
+                    android:textSize="@dimen/text_size_2" />
             </RelativeLayout>
 
-
             <TextView
-                android:id="@+id/text2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin10dp"
-                android:text="Drop off"
+                android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+                android:text="Shift Time:"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/text_size_2"
                 android:textStyle="bold" />
 
+
             <RelativeLayout
-                android:id="@+id/rl_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/text1"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/edittext_design">
+                 android:background="@drawable/edittext_design">
 
-
-                <Spinner
-                    android:id="@+id/dropOff_Spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:background="@null"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/text_size_2"
-                    android:layout_toLeftOf="@+id/spinner_iv2"
-                    android:layout_marginRight="5dp" />
-
-                <ImageView
-                    android:id="@+id/spinner_iv2"
+                <TimePicker
+                    style="@style/myTimePickerStyle"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/shift_timePicker"
+                    android:timePickerMode="spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/user_password_image_margin_right"
-                    android:src="@mipmap/drop_down" />
+                    android:layout_height="140dp" />
 
             </RelativeLayout>
 
+            <Button
+                android:id="@+id/btn_addShift"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/scrollView"
+                android:layout_marginTop="@dimen/margin20dp"
+                android:layout_marginBottom="@dimen/margin10dp"
+                android:background="@drawable/button_design"
+                android:text="Add "
+                android:textColor="@color/white" />
         </LinearLayout>
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/btn_setTiming"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scrollView"
-        android:layout_marginLeft="@dimen/step1_lso_reg_padding_left_right"
-        android:layout_marginTop="@dimen/margin10dp"
-        android:layout_marginRight="@dimen/step1_lso_reg_padding_left_right"
-        android:layout_marginBottom="@dimen/margin10dp"
-        android:background="@drawable/button_design"
-        android:text="Set Timing"
-        android:textColor="@color/white" />
+
 
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.example.privatevanmanagement.utils;
 import com.example.privatevanmanagement.models.AdminDetail_Model;
 import com.example.privatevanmanagement.models.DriverDetail_Model;
 import com.example.privatevanmanagement.models.Schedule_Student_Model;
+import com.example.privatevanmanagement.models.Shift_Model;
 import com.example.privatevanmanagement.models.StudentDetail_Model;
 import com.example.privatevanmanagement.models.VanDetail_Model;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,8 +17,13 @@ public class Objects {
 
     static public FirebaseAuth mAuth = FirebaseAuth.getInstance();
     static public FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    static public String Token = "";
     static public String UserType = "";
-    static public List<StudentDetail_Model> student_modelList= new ArrayList<>();
+    static public List<StudentDetail_Model> student_modelList = new ArrayList<>();
+    static public List<StudentDetail_Model> sortedList = new ArrayList<>();
+    static public List<VanDetail_Model> vanList = new ArrayList<>();
+    static public List<String> group_list = new ArrayList<>();
+    static public List<Shift_Model> shift_list = new ArrayList<>();
 
 
     public static FirebaseAuth getInstance() {
@@ -81,8 +87,6 @@ public class Objects {
     }
 
 
-
-
     static public StudentDetail_Model studentDetail_model;
 
     public static StudentDetail_Model getStudentDetailInstance() {
@@ -91,8 +95,6 @@ public class Objects {
         }
         return studentDetail_model;
     }
-
-
 
 
     static public DriverDetail_Model driverDetail_model;

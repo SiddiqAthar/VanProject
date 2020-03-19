@@ -13,6 +13,11 @@ import androidx.cardview.widget.CardView
 
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.SendNotification
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 
 class Driver_home : Fragment(), View.OnClickListener {
@@ -58,11 +63,12 @@ class Driver_home : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.driver_comingTrip) {
-             mainActivity!!.replaceFragment(Driver_Coming_Trip(), null)
+            mainActivity!!.replaceFragment(Driver_Coming_Trip(), null)
         } else if (v?.id == R.id.driver_chat) {
 //            mainActivity!!.ChangeManagementFragment(AddDriver(), null)
         } else if (v?.id == R.id.driver_announcment) {
-            showDialogMakeAnnouncment()        }
+            showDialogMakeAnnouncment()
+        }
     }
 
 
@@ -89,12 +95,13 @@ class Driver_home : Fragment(), View.OnClickListener {
         val btn_closeDialog = dialogView.findViewById(R.id.btn_closeDialog) as ImageButton
 
         btn_sendNotficaion.setOnClickListener(View.OnClickListener {
-
-            //add data here on firebase and send notification
-            Toast.makeText(activity, "Notification Sending", Toast.LENGTH_SHORT).show()
-            if (!make_Annoncment.text.isNullOrEmpty())
+            var msg = make_Annoncment.text.toString()
+            if (!msg.isNullOrEmpty()) {
+                sendMessage(msg)
+                //add data here on firebase and send notification
+                Toast.makeText(activity, "Notification Sending", Toast.LENGTH_SHORT).show()
                 alertDialog.dismiss()
-            else {
+            } else {
                 Toast.makeText(activity, "Announcment field is empty", Toast.LENGTH_SHORT).show()
             }
         })
@@ -114,6 +121,30 @@ class Driver_home : Fragment(), View.OnClickListener {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
+    }
+
+
+    private fun sendMessage(toString: String) {
+//        val myRef = Objects.getFirebaseInstance().getReference("Token").child(Globaluser_ID)
+        val myRef = Objects.getFirebaseInstance().getReference("Token")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var userList = ArrayList<String>()
+                for (postSnapshot in snapshot.children) {
+                    userList.add(postSnapshot.value.toString())
+                }
+                msgsend(userList, toString)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage())
+            }
+        })
+    }
+
+    fun msgsend(to: ArrayList<String>, body: String) {
+        var sendNoteaa = SendNotification()
+        sendNoteaa.execute(to, body);
     }
 
 

@@ -5,4 +5,13 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
+    <style name="myTimePickerStyle" parent="@android:style/Widget.Material.Light.TimePicker">
+         <item name="android:numbersBackgroundColor">@color/button_new_pressed</item>
+        <item name="android:numbersTextColor">@color/white</item>
+        <item name="android:numbersSelectorColor">@color/button_pressed</item>
+        <item name="android:headerBackground">@color/colorPrimary</item>
+    </style>
+    <style name="spinnerTheme">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
 </resources>

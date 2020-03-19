@@ -14,10 +14,15 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import com.example.privatevanmanagement.models.Shift_Model;
+import com.example.privatevanmanagement.models.StudentDetail_Model;
 import com.example.privatevanmanagement.utils.Objects;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -36,14 +41,25 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.privatevanmanagement.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.location.LocationManager.NETWORK_PROVIDER;
+import static com.example.privatevanmanagement.utils.Objects.Token;
+import static com.example.privatevanmanagement.utils.Objects.group_list;
+import static com.example.privatevanmanagement.utils.Objects.shift_list;
 
 public class BaseActivity extends AppCompatActivity implements LocationListener {
 
@@ -54,8 +70,7 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
     public static final long DISCONNECT_TIMEOUT = 600000; // 5 min = 5 * 60 * 1000 ms
     private static final int LOCATION_INTERVAL = 100;
     private static final float LOCATION_DISTANCE = 1f;
-    DialogInterface.OnKeyListener keyListner = new DialogInterface.OnKeyListener()
-    {
+    DialogInterface.OnKeyListener keyListner = new DialogInterface.OnKeyListener() {
         @Override
         public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
             if (keyCode == KeyEvent.KEYCODE_MENU) {
@@ -70,8 +85,13 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        getSupportActionBar().hide();
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        getToken();
+        group_list();
+        shift_list();
 
     }
+
     public void changeFragment(Fragment fragment, Bundle bundle) {
 
         FrameLayout fl = (FrameLayout) findViewById(R.id.mlayout);
@@ -96,6 +116,7 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
         transaction1.replace(R.id.mlayout, fragment);
         transaction1.commitAllowingStateLoss();
     }
+
     public boolean checkInternetConnection() {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
@@ -157,6 +178,7 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
             e.printStackTrace();
         }
     }
+
     public boolean islocationServiceEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         boolean gps_enabled = false;
@@ -217,9 +239,6 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
     }
 
 
-
-
-
     @Override
     public void onLocationChanged(Location location) {
         Objects.location.Lat = location.getLatitude() + "";
@@ -242,5 +261,64 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
     public void onProviderDisabled(String s) {
 
     }
+
+    public void getToken()
+    {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("Error", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        Token = task.getResult().getToken();
+
+                        Toast.makeText(BaseActivity.this, Token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void group_list() {
+        DatabaseReference ref = Objects.getFirebaseInstance().getReference().child("Groups");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                group_list.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    group_list.add(postSnapshot.getKey().toString());
+                    // here you can access to name property like university.name
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(BaseActivity.this, "Some Error in fetching Group Data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void shift_list() {
+        shift_list.clear();
+        DatabaseReference ref = Objects.getFirebaseInstance().getReference().child("Shifts");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    Shift_Model tempModel = new Shift_Model(postSnapshot.getKey(), postSnapshot.getValue().toString());
+                    shift_list.add(tempModel);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(BaseActivity.this, "Some Error in fetching Group Data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 }

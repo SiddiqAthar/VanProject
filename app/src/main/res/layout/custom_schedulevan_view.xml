@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
-         android:fontFamily="sans-serif-medium"
+         android:fontFamily="sans-serif-light"
         android:text="User Name"
         android:textColor="@color/aqua"
         android:textSize="@dimen/text_size_1"
@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
         android:text="User Name"
-        android:textColor="@color/hint"
-        android:textSize="@dimen/text_size_2"
-        android:textStyle="bold" />
+        android:textColor="@color/hint2"
+        android:textSize="@dimen/text_size_2"  />
 </RelativeLayout>

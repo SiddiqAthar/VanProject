@@ -19,6 +19,7 @@ import com.google.firebase.database.*
 import android.widget.ArrayAdapter
 import com.example.privatevanmanagement.activities.NavDrawer
 import com.example.privatevanmanagement.models.StudentDetail_Model
+import com.example.privatevanmanagement.utils.Objects.group_list
 import kotlinx.android.synthetic.main.activity_registeration.*
 import java.util.HashMap
 
@@ -38,8 +39,7 @@ class AddStudent : Fragment() {
     var StudentContact: EditText? = null
     var StudentAddress: EditText? = null
     var group_Spinner: Spinner? = null
-    var group_Array: ArrayList<String> = ArrayList()
-    var arrayAdapter: ArrayAdapter<String>? = null
+     var arrayAdapter: ArrayAdapter<String>? = null
     var group: String? = null
     var btn_StudentInfo: Button? = null
     lateinit var databaseReference: DatabaseReference
@@ -128,18 +128,10 @@ class AddStudent : Fragment() {
             }
         })
 
-        //dummy data
-        group_Array.add("UF 122")
-        group_Array.add("XYZ  111")
-        group_Array.add("ABC 9273")
-        group_Array.add("RLF 0001")
-        group_Array.add("RIG 3234")
-        group_Array.add("UF 8782")
-
         arrayAdapter = ArrayAdapter<String>(
             activity!!.applicationContext,
             android.R.layout.simple_list_item_1,
-            group_Array
+            group_list
         )
 
         group_Spinner?.adapter = arrayAdapter

@@ -1,9 +1,11 @@
 package com.example.privatevanmanagement.activities
 
 import android.content.Intent
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -13,16 +15,31 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.example.privatevanmanagement.ChatModule.ShowActivities.Users
 import com.example.privatevanmanagement.R
+import com.example.privatevanmanagement.adapters.Adapter_manageStudent
+import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
 import com.example.privatevanmanagement.utils.Objects.UserType
+import com.example.privatevanmanagement.utils.SendNotification
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
+import com.google.firebase.messaging.FirebaseMessaging
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.lang.Exception
+import java.net.HttpURLConnection
+import java.net.URL
 
 class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
@@ -75,15 +92,16 @@ class LoginActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 Globaluser_ID =
                                     FirebaseAuth.getInstance().currentUser?.uid.toString()
+
 //                                Globaluser_ID = user_id
                                 checkUserType()
-                            }
-                            else if (email!!.text.toString().equals("admin@gmail.com"))
-                            {
+
+                            } else if (email!!.text.toString().equals("admin@gmail.com")) {
                                 UserType = "admin"
                                 startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
                             } else {
-                                Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG)
+                                    .show()
                             }
                         })
                 }
@@ -101,13 +119,31 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
+    private fun createToken() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("Error", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                } else {
+                    var databaseReference =
+                        Objects.getFirebaseInstance().reference.child("Token").child(
+                            Globaluser_ID
+                        )
+                    databaseReference.setValue(task.result!!.token)
+
+                }
+            })
+    }
+
     fun checkUserType() {
         val rootRef = FirebaseDatabase.getInstance().reference
         val ordersRef = rootRef.child("UserType").child(Objects.UserID.Globaluser_ID)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 UserType = dataSnapshot.child("User Type").value.toString()
-
+                if (UserType.equals("Student"))
+                    createToken()
                 startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
             }
 
@@ -117,10 +153,4 @@ class LoginActivity : AppCompatActivity() {
         }
         ordersRef.addListenerForSingleValueEvent(valueEventListener)
     }
-
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        finish()
-//    }
-
 }

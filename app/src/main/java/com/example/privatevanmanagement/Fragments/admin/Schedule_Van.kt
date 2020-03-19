@@ -13,28 +13,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.NavDrawer
 import com.example.privatevanmanagement.adapters.Adapter_scheduleVan
+import com.example.privatevanmanagement.adapters.Spinner_Adapter
 import com.example.privatevanmanagement.models.Schedule_Student_Model
+import com.example.privatevanmanagement.models.Shift_Model
+import com.example.privatevanmanagement.models.StudentDetail_Model
+import com.example.privatevanmanagement.utils.Objects
 import java.util.ArrayList
+import android.os.Parcelable
+import com.example.privatevanmanagement.utils.Objects.*
+
 
 class Schedule_Van : Fragment() {
 
     private var rootView: View? = null
-
     private var group_Spinner: Spinner? = null
     private var group_spinner_adapter: ArrayAdapter<String>? = null
-    var ArrayList_group: ArrayList<String>? = null
-
     private var shift_Spinner: Spinner? = null
-    private var shift_spinner_adapter: ArrayAdapter<String>? = null
-    var ArrayList_shift: ArrayList<String>? = null
-
-
+    private lateinit var shift_spinner_adapter: Adapter
     private var schedule_rv: RecyclerView? = null
-
     private var adapter: Adapter_scheduleVan? = null
-    var ArrayList_schedule: ArrayList<Schedule_Student_Model>? = null
-
     var btn_schedule: Button? = null
+    var selected_group = ""
+    var selected_shift = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,46 +59,45 @@ class Schedule_Van : Fragment() {
         group_Spinner = view!!.findViewById(R.id.group_Spinner) as Spinner
         btn_schedule = view!!.findViewById(R.id.btn_schedule) as Button
 
-        ArrayList_schedule = ArrayList<Schedule_Student_Model>()
-
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Hamza", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Siddiq", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Raza", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Zohaib", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Sheryar", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Hamza", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Siddiq", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Raza", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Zohaib", "1st Shift"))
-        ArrayList_schedule!!.add(Schedule_Student_Model("", "Sheryar", "1st Shift"))
-
-
-        ArrayList_group = ArrayList<String>()
-        ArrayList_group!!.add("Group 1")
-        ArrayList_group!!.add("Group 2")
-        ArrayList_group!!.add("Group 3")
-
         group_spinner_adapter = ArrayAdapter<String>(
             this!!.context!!, android.R.layout.simple_spinner_item,
-            ArrayList_group!!
+            group_list!!
         )
         group_spinner_adapter?.setDropDownViewResource(R.layout.spinner_item)
         group_Spinner?.adapter = group_spinner_adapter
 
-        ArrayList_shift = ArrayList<String>()
-        ArrayList_shift!!.add("Shift 1")
-        ArrayList_shift!!.add("Shift 2")
-        ArrayList_shift!!.add("Shift 3")
 
-        shift_spinner_adapter = ArrayAdapter<String>(
-            this!!.context!!, android.R.layout.simple_spinner_item,
-            ArrayList_shift!!
+        shift_spinner_adapter = Spinner_Adapter(
+            this!!.context!!, R.id.spinner_item_tv, R.id.spinner_item_tv,
+            Objects.shift_list as ArrayList<Shift_Model>?
         )
-        shift_spinner_adapter?.setDropDownViewResource(R.layout.spinner_item)
-        shift_Spinner?.adapter = shift_spinner_adapter
+        shift_Spinner?.adapter = shift_spinner_adapter as Spinner_Adapter
 
 
+        shift_Spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                println(" Nothing Selected")
+            }
 
+            override fun onItemSelected(
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
+                selected_shift =  (parent?.getItemAtPosition(position) as Shift_Model).shift_name
+                updateList()
+            }
+        }
+        group_Spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                println(" Nothing Selected")
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
+                selected_group = parent?.getItemAtPosition(position).toString()
+                updateList()
+            }
+        }
         schedule_rv?.setLayoutManager(LinearLayoutManager(activity))
         schedule_rv?.setNestedScrollingEnabled(false)
         schedule_rv?.setHasFixedSize(true)
@@ -108,19 +107,31 @@ class Schedule_Van : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-
-        adapter = Adapter_scheduleVan(ArrayList_schedule, activity)
-        schedule_rv?.setAdapter(adapter)
-
-
-
         btn_schedule!!.setOnClickListener(View.OnClickListener {
-            var activity: NavDrawer =activity as NavDrawer
 
-            activity.replaceFragment(Allocate_toStudent(),null)
+            if (sortedList!!.size>0) {
+                var activity: NavDrawer = activity as NavDrawer
+                activity.replaceFragment(Allocate_toStudent(), null)
+            }
+            else
+            {
+                Toast.makeText(context,"No Student to Allocate Van",Toast.LENGTH_SHORT).show()
+            }
         })
 
 
+    }
+
+    private fun updateList() {
+        sortedList.clear()
+        for (i in 0 until student_modelList.size) {
+            if (student_modelList.get(i).group.equals(selected_group) && student_modelList.get(i).shift_time.equals(selected_shift)) {
+                sortedList!!.add(student_modelList.get(i))
+            }
+        }
+        adapter = Adapter_scheduleVan(sortedList, activity)
+        adapter!!.notifyDataSetChanged()
+        schedule_rv?.setAdapter(adapter)
     }
 
 }

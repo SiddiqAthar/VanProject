@@ -55,7 +55,9 @@
             android:background="@null"
             android:popupBackground="@color/input_bg"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/text_size_2" />
+            android:textSize="@dimen/text_size_2"
+            android:layout_toLeftOf="@+id/spinner_iv"
+            android:layout_marginRight="5dp"/>
 
         <ImageView
             android:id="@+id/spinner_iv"
@@ -92,9 +94,10 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="@null"
-            android:popupBackground="@color/input_bg"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/text_size_2" />
+            android:textSize="@dimen/text_size_2"
+            android:layout_toLeftOf="@+id/spinner_iv2"
+            android:layout_marginRight="5dp"/>
 
         <ImageView
             android:id="@+id/spinner_iv2"

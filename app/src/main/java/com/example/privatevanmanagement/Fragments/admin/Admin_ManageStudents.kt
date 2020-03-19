@@ -67,37 +67,18 @@ public class Admin_ManageStudents : Fragment() {
             )
         )
 
-        if (Objects.student_modelList.isNullOrEmpty()) // agr list empty hai to jae
-            getStudentList()
-        else {
+        if (student_modelList.isNullOrEmpty()) // agr list empty hai to jae
+            {
+                val adminHome = Admin_home()
+                adminHome.getStudentList()
+                adapter_manageStudent = Adapter_manageStudent(student_modelList, activity)
+                adapter_manageStudent!!.notifyDataSetChanged()
+                rv_manageStudent?.setAdapter(adapter_manageStudent)
+            }
+            else {
             adapter_manageStudent = Adapter_manageStudent(student_modelList, activity)
             rv_manageStudent?.setAdapter(adapter_manageStudent)
         }
     }
 
-
-    fun getStudentList() {
-        val myRef = Objects.getFirebaseInstance().getReference("StudentDetails")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                Objects.student_modelList.clear()
-
-                for (postSnapshot in snapshot.children) {
-                    val listDataRef = postSnapshot.getValue(StudentDetail_Model::class.java)!!
-                    Objects.student_modelList.add(listDataRef)
-
-                    adapter_manageStudent = Adapter_manageStudent(student_modelList, activity)
-                    rv_manageStudent?.setAdapter(adapter_manageStudent)
-
-                    // here you can access to name property like university.name
-
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage())
-            }
-        })
-    }
 }

@@ -5,20 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.privatevanmanagement.R;
 import com.example.privatevanmanagement.models.Schedule_Student_Model;
+import com.example.privatevanmanagement.models.StudentDetail_Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Adapter_scheduleVan extends RecyclerView.Adapter<Adapter_scheduleVan.Adapter_scheduleVan_viewHolder> {
 
 
-    ArrayList<Schedule_Student_Model> schedule_student_modelArrayList;
+    List<StudentDetail_Model> schedule_student_modelArrayList;
     Context context;
 
-    public Adapter_scheduleVan(ArrayList<Schedule_Student_Model> schedule_student_modelArrayList, Context context) {
+    public Adapter_scheduleVan(List<StudentDetail_Model> schedule_student_modelArrayList, Context context) {
         this.schedule_student_modelArrayList = schedule_student_modelArrayList;
         this.context = context;
     }
@@ -34,7 +38,7 @@ public class Adapter_scheduleVan extends RecyclerView.Adapter<Adapter_scheduleVa
 
     @Override
     public void onBindViewHolder(@NonNull Adapter_scheduleVan.Adapter_scheduleVan_viewHolder holder, int position) {
-        holder.userName.setText(schedule_student_modelArrayList.get(position).getStudend_name());
+        holder.userName.setText(schedule_student_modelArrayList.get(position).getStudent_name());
         holder.userShift.setText(schedule_student_modelArrayList.get(position).getShift_time());
     }
 
@@ -44,7 +48,6 @@ public class Adapter_scheduleVan extends RecyclerView.Adapter<Adapter_scheduleVa
     }
 
     public static class Adapter_scheduleVan_viewHolder extends RecyclerView.ViewHolder {
-
         TextView userName;
         TextView userShift;
 
