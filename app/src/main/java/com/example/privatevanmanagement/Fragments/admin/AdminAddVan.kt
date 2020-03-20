@@ -1,5 +1,6 @@
 package com.example.privatevanmanagement.Fragments.admin
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
@@ -33,6 +34,8 @@ class AdminAddVan : Fragment() {
 
     var btn_AddVan: Button? = null
     lateinit var databaseReference: DatabaseReference
+
+    var pd: ProgressDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +73,10 @@ class AdminAddVan : Fragment() {
         btn_AddVan?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if (validateForm()) {
+                    pd = ProgressDialog(context)
+                    pd!!.setMessage("Adding Van Info")
+                    pd!!.setCancelable(false)
+                    pd!!.show()
                     addVandetails()
                     Toast.makeText(activity, "Add Successfully", Toast.LENGTH_SHORT).show();
                     mainActivity!!.replaceFragment(Admin_home(), null)
@@ -94,8 +101,7 @@ class AdminAddVan : Fragment() {
                 ""
             )
         )
-
-
+        pd!!.dismiss()
     }
 
     private fun validateForm(): Boolean {

@@ -57,13 +57,13 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
 
         navigationView.setNavigationItemSelectedListener(this)
 
-        // dummy login
+
         if (UserType!!.equals("Driver")) {
             UserType = "driver"
             replaceFragment(Driver_home(), null)
         } else if (UserType!!.equals("Student")) {
             UserType = "student"
-            student_detail()
+//            student_detail()
         } else {
             UserType = "Admin"
             replaceFragment(Admin_home(), null)

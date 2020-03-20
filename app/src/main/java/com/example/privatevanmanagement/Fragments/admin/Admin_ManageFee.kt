@@ -49,6 +49,7 @@ public class Admin_ManageFee : Fragment() {
 
         } else {
             adapter_manageFee = Adapter_manageFeeextends(student_modelList, activity)
+            adapter_manageFee!!.notifyDataSetChanged()
             rv_manageFee?.setAdapter(adapter_manageFee)
         }
 
@@ -62,28 +63,4 @@ public class Admin_ManageFee : Fragment() {
             )
         )
     }
-
-/*
-    fun getStudentList() {
-        val myRef = Objects.getFirebaseInstance().getReference("StudentDetails")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                student_modelList.clear()
-
-                for (postSnapshot in snapshot.children) {
-                    val listDataRef = postSnapshot.getValue(StudentDetail_Model::class.java)!!
-                    student_modelList.add(listDataRef)
-                    // here you can access to name property like university.name
-                }
-                adapter_manageFee = Adapter_manageFeeextends(student_modelList, activity)
-                rv_manageFee?.setAdapter(adapter_manageFee)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage())
-            }
-        })
-    }
-*/
 }

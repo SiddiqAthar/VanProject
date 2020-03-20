@@ -1,6 +1,7 @@
 package com.example.privatevanmanagement.Fragments.admin
 
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -38,6 +39,7 @@ class AddDriver : Fragment() {
     lateinit var databaseReference: DatabaseReference
     var mAuth: FirebaseAuth? = null
     lateinit var dialog: Dialog
+    var pd: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +94,10 @@ class AddDriver : Fragment() {
                 if (validateForm()) {
                     if (bundle_driver_name.isNullOrEmpty()) {
                         // add new
+                        pd = ProgressDialog(context)
+                        pd!!.setMessage("Adding Driver Info")
+                        pd!!.setCancelable(false)
+                        pd!!.show()
                         createAccount(DriverEmail!!.text.toString(), "default123")
 
                     } else {
@@ -198,6 +204,7 @@ class AddDriver : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                pd!!.dismiss()
             }
 
     }

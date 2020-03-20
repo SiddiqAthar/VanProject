@@ -2,6 +2,7 @@ package com.example.privatevanmanagement.Fragments.admin
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -39,11 +40,11 @@ class AddStudent : Fragment() {
     var StudentContact: EditText? = null
     var StudentAddress: EditText? = null
     var group_Spinner: Spinner? = null
-     var arrayAdapter: ArrayAdapter<String>? = null
+    var arrayAdapter: ArrayAdapter<String>? = null
     var group: String? = null
     var btn_StudentInfo: Button? = null
     lateinit var databaseReference: DatabaseReference
-
+    var pd: ProgressDialog? = null
 
     var mainActivity: NavDrawer? = null
 
@@ -110,13 +111,15 @@ class AddStudent : Fragment() {
             override fun onClick(v: View?) {
                 //                createAccount(StudentEmail!!.text.toString(), "default123")
                 if (bundle_student_name.isNullOrEmpty()) {
-                    if (validateForm())
-                    // add new
+                    if (validateForm()) {
+                        // add new
+                        pd = ProgressDialog(context)
+                        pd!!.setMessage("Adding Student Info")
+                        pd!!.setCancelable(false)
+                        pd!!.show()
                         createAccount(StudentEmail!!.text.toString(), "default123")
-
-                }
-
-                else {
+                    }
+                } else {
                     //update existing
                     updateAccount(bundle_student_name!!, bundle_student_id!!)
 
@@ -207,12 +210,14 @@ class AddStudent : Fragment() {
                         "Send Credentials to User",
                         StudentEmail?.text.toString()
                     )
-                } else {
+                }
+                else {
                     Toast.makeText(
                         activity, "Authentication failed.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                pd?.dismiss()
             }
     }
 

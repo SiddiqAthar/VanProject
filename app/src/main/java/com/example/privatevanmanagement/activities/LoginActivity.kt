@@ -1,6 +1,10 @@
 package com.example.privatevanmanagement.activities
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -27,7 +31,6 @@ import com.google.firebase.iid.FirebaseInstanceId
 
 class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
-    lateinit var user_id: String
     var animZoomIn: Animation? = null
     var animslideUp: Animation? = null
     var image: ImageView? = null
@@ -37,10 +40,26 @@ class LoginActivity : AppCompatActivity() {
     var email: EditText? = null
     var password: EditText? = null
     val user: Objects.UserID = Objects.UserID()
+
+    lateinit var editor: SharedPreferences.Editor
+    lateinit var pref: SharedPreferences
+
+    override fun onStart() {
+        super.onStart()
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            Globaluser_ID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+            pref =  getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            UserType = pref.getString("usertype", "");
+            startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
+            finish()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        pref =  getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         animZoomIn = AnimationUtils.loadAnimation(
             applicationContext,
             R.anim.zoomin
@@ -60,10 +79,12 @@ class LoginActivity : AppCompatActivity() {
         password = findViewById(R.id.Password) as EditText
         password!!.startAnimation(animslideUp)
 
+
+
+
+        editor = pref.edit();
+
         mAuth = FirebaseAuth.getInstance()
-
-
-
 
         btnSignIn?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -76,8 +97,6 @@ class LoginActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 Globaluser_ID =
                                     FirebaseAuth.getInstance().currentUser?.uid.toString()
-
-//                                Globaluser_ID = user_id
                                 checkUserType()
 
                             } else if (email!!.text.toString().equals("admin@gmail.com")) {
@@ -120,15 +139,19 @@ class LoginActivity : AppCompatActivity() {
             })
     }
 
-    fun checkUserType() {
+    public fun checkUserType() {
         val rootRef = FirebaseDatabase.getInstance().reference
         val ordersRef = rootRef.child("UserType").child(Objects.UserID.Globaluser_ID)
         val valueEventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 UserType = dataSnapshot.child("User Type").value.toString()
+
+                editor.putString("usertype", UserType);
+                editor.commit()
                 if (UserType.equals("Student"))
                     createToken()
                 startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
+                finish()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -138,3 +161,4 @@ class LoginActivity : AppCompatActivity() {
         ordersRef.addListenerForSingleValueEvent(valueEventListener)
     }
 }
+

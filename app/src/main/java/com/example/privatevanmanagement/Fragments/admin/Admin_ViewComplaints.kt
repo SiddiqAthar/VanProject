@@ -1,14 +1,16 @@
 package com.example.privatevanmanagement.Fragments.admin
 
+import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
- import com.example.privatevanmanagement.R
+import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.adapters.Adapter_ViewComplaints
 import com.example.privatevanmanagement.adapters.Adapter_manageFeeextends
 import com.example.privatevanmanagement.models.Complaint_Model
@@ -44,8 +46,7 @@ public class Admin_ViewComplaints : Fragment() {
 
         if (complaint_list.isNullOrEmpty()) // agr list empty hai to jae
             getComplaintList()
-        else
-        {
+        else {
             adapter_ViewComplaints = Adapter_ViewComplaints(complaint_list, activity)
             rv_ViewComplaints?.setAdapter(adapter_ViewComplaints)
         }
