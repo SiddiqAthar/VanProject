@@ -12,9 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.activities.UserActivity
 import com.example.privatevanmanagement.models.DriverDetail_Model
-import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.driver_modelList
 import com.example.privatevanmanagement.utils.SendNotification
@@ -27,7 +26,7 @@ class Driver_home : Fragment(), View.OnClickListener {
 
 
     var mContext: Context? = null
-    var mainActivity: NavDrawer? = null
+    var mainActivity: UserActivity? = null
 
     var driver_comingTrip: CardView? = null
     var driver_chat: CardView? = null
@@ -55,7 +54,7 @@ class Driver_home : Fragment(), View.OnClickListener {
     }
 
     private fun init(rootView: View?) {
-        mainActivity = activity as NavDrawer
+        mainActivity = activity as UserActivity
 
         driver_comingTrip = rootView?.findViewById(R.id.driver_comingTrip) as CardView
         driver_chat = rootView?.findViewById(R.id.driver_chat) as CardView
@@ -69,9 +68,9 @@ class Driver_home : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.driver_comingTrip) {
-            mainActivity!!.replaceFragment(Driver_Coming_Trip(), null)
+            mainActivity!!.replaceFragmentUserActivity(Driver_Coming_Trip(), null)
         } else if (v?.id == R.id.driver_chat) {
-//            mainActivity!!.ChangeManagementFragment(AddDriver(), null)
+//            mainActivity!!.replaceFragmentUserActivity(AddDriver(), null)
         } else if (v?.id == R.id.driver_announcment) {
             showDialogMakeAnnouncment()
         }

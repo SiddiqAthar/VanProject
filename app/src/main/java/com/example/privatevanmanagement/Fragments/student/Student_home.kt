@@ -1,19 +1,23 @@
 package com.example.privatevanmanagement.Fragments.student
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.activities.AdminNav_Activity
+import com.example.privatevanmanagement.activities.UserActivity
 import com.example.privatevanmanagement.adapters.Spinner_Adapter
 import com.example.privatevanmanagement.models.Shift_Model
+import com.example.privatevanmanagement.utils.MyInterface
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.shift_list
 import java.util.*
@@ -23,7 +27,7 @@ class Student_home : Fragment(), View.OnClickListener {
 
 
     var mContext: Context? = null
-    var mainActivity: NavDrawer? = null
+    var mainActivity: UserActivity? = null
 
     var stud_setTime: CardView? = null
     var stud_editTime: CardView? = null
@@ -45,17 +49,15 @@ class Student_home : Fragment(), View.OnClickListener {
         }
         val rootView = inflater!!.inflate(R.layout.fragment_student_home, container, false)
         mContext = rootView.context
-
+        (activity as AppCompatActivity).supportActionBar!!.setTitle("Van Management")
 
         init(rootView)
 
         return rootView
-
-
     }
 
     private fun init(rootView: View?) {
-        mainActivity = activity as NavDrawer
+        mainActivity = activity as UserActivity
 
         stud_setTime = rootView?.findViewById(R.id.stud_setTime) as CardView
         stud_editTime = rootView?.findViewById(R.id.stud_editTime) as CardView
@@ -80,25 +82,14 @@ class Student_home : Fragment(), View.OnClickListener {
         } else if (v?.id == R.id.stud_editTime) {
             showDialogSetTime("Update")
         } else if (v?.id == R.id.stud_payFee) {
-            mainActivity!!.replaceFragment(Student_payFee(), null)
+            mainActivity!!.replaceFragmentUserActivity(Student_payFee(), null)
         } else if (v?.id == R.id.stud_trackVan) {
-            mainActivity!!.replaceFragment(Student_TrackVans(), null)
+            mainActivity!!.replaceFragmentUserActivity(Student_TrackVans(), null)
         } else if (v?.id == R.id.stud_sendComplaint) {
             showDialogMakeComplaint()
         } else if (v?.id == R.id.stud_chatDriver) {
-//            mainActivity!!.replaceFragment(Student_Chat(), null)
+//            mainActivity!!.replaceFragmentUserActivity(Student_Chat(), null)
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity).supportActionBar!!.hide()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as AppCompatActivity).supportActionBar!!.show()
     }
 
     fun showDialogMakeComplaint() {

@@ -1,10 +1,7 @@
 package com.example.privatevanmanagement.activities
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.AsyncTask
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -46,20 +43,28 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+/*
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             Globaluser_ID = FirebaseAuth.getInstance().currentUser?.uid.toString()
-            pref =  getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+            pref =
+                getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
             UserType = pref.getString("usertype", "");
-            startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
-            finish()
+            if (UserType.equals("Student") || UserType.equals("Driver")) {
+                startActivity(Intent(this@LoginActivity, UserActivity::class.java))
+                finish()
+            } else if (UserType.equals("Admin")) {
+                startActivity(Intent(this@LoginActivity, AdminNav_Activity::class.java))
+                finish()
+            }
         }
+*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        pref =  getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
         animZoomIn = AnimationUtils.loadAnimation(
             applicationContext,
             R.anim.zoomin
@@ -101,7 +106,12 @@ class LoginActivity : AppCompatActivity() {
 
                             } else if (email!!.text.toString().equals("admin@gmail.com")) {
                                 UserType = "admin"
-                                startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
+                                startActivity(
+                                    Intent(
+                                        this@LoginActivity,
+                                        AdminNav_Activity::class.java
+                                    )
+                                )
                             } else {
                                 Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG)
                                     .show()
@@ -148,10 +158,15 @@ class LoginActivity : AppCompatActivity() {
 
                 editor.putString("usertype", UserType);
                 editor.commit()
-                if (UserType.equals("Student"))
+                if (UserType.equals("Student")) {
                     createToken()
-                startActivity(Intent(this@LoginActivity, NavDrawer::class.java))
-                finish()
+                    startActivity(Intent(this@LoginActivity, UserActivity::class.java))
+                } else if (UserType.equals("Driver")) {
+                    startActivity(Intent(this@LoginActivity, UserActivity::class.java))
+                } else if (UserType.equals("Admin")) {
+                    startActivity(Intent(this@LoginActivity, AdminNav_Activity::class.java))
+                }
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

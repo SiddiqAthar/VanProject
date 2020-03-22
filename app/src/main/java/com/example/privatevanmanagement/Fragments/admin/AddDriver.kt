@@ -15,7 +15,7 @@ import android.content.Intent
 import android.text.TextUtils
 import android.widget.*
 import android.widget.TextView
-import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.models.DriverDetail_Model
 import com.google.firebase.database.*
 
@@ -25,7 +25,7 @@ class AddDriver : Fragment() {
     var bundle_driver_name: String? = null
     var password: String = "default123"
     var rootView: View? = null
-    var mainActivity: NavDrawer? = null
+    var mainActivity: AdminNav_Activity? = null
     var DriverName: EditText? = null
     var DriverEmail: EditText? = null
     var DriverCnic: EditText? = null
@@ -78,7 +78,7 @@ class AddDriver : Fragment() {
     private fun init(rootView: View?) {
         mAuth = FirebaseAuth.getInstance()
 
-        mainActivity = activity as NavDrawer
+        mainActivity = activity as AdminNav_Activity
 
         btn_DriverInfo = rootView?.findViewById(R.id.btn_DriverInfo) as Button
         DriverName = rootView?.findViewById(R.id.DriverName) as EditText

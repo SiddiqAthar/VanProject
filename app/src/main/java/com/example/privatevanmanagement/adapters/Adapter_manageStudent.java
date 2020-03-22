@@ -4,10 +4,7 @@ package com.example.privatevanmanagement.adapters;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.privatevanmanagement.Fragments.admin.AddStudent;
 import com.example.privatevanmanagement.R;
-import com.example.privatevanmanagement.activities.BaseActivity;
-import com.example.privatevanmanagement.activities.NavDrawer;
-import com.example.privatevanmanagement.models.ManageFee_Model;
+import com.example.privatevanmanagement.activities.AdminNav_Activity;
 import com.example.privatevanmanagement.models.StudentDetail_Model;
 import com.example.privatevanmanagement.utils.Objects;
 import com.google.firebase.database.DatabaseReference;
@@ -73,7 +68,7 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
                 Bundle bundle = new Bundle();
                 bundle.putString("student_id", manageStudent_List.get(position).getStudent_id());
                 bundle.putString("student_name", manageStudent_List.get(position).getStudent_name());
-                NavDrawer activity=(NavDrawer) context;
+                AdminNav_Activity activity=(AdminNav_Activity) context;
                 activity.replaceFragment(new AddStudent(), bundle);
             }
         });

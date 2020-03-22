@@ -12,16 +12,14 @@ import android.widget.EditText
 import android.widget.Toast
 
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.NavDrawer
-import com.example.privatevanmanagement.models.StudentDetail_Model
+import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.models.VanDetail_Model
-import com.example.privatevanmanagement.utils.Objects
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
 class AdminAddVan : Fragment() {
-    var mainActivity: NavDrawer? = null
+    var mainActivity: AdminNav_Activity? = null
 
     var rootView: View? = null
 
@@ -58,7 +56,7 @@ class AdminAddVan : Fragment() {
 
     private fun init(rootView: View?) {
 
-        mainActivity = activity as NavDrawer
+        mainActivity = activity as AdminNav_Activity
 
         btn_AddVan = rootView?.findViewById(R.id.btn_AddVan) as Button
         van_Registeration = rootView?.findViewById(R.id.van_Registeration) as EditText

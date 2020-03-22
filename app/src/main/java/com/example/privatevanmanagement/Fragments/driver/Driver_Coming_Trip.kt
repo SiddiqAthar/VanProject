@@ -1,7 +1,5 @@
 package com.example.privatevanmanagement.Fragments.driver
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,12 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.activities.UserActivity
 import com.example.privatevanmanagement.adapters.Adapter_comingTrip
-import com.example.privatevanmanagement.models.DriverDetail_Model
 import com.example.privatevanmanagement.models.ManageFee_Model
 import com.example.privatevanmanagement.models.StudentDetail_Model
-import com.example.privatevanmanagement.models.VanDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.driver_modelList
 import com.example.privatevanmanagement.utils.Objects.student_modelList
@@ -36,7 +32,7 @@ class Driver_Coming_Trip : Fragment() {
     private var btn_start_ride: Button? = null
     private var adapter_comingTrip: Adapter_comingTrip? = null
     var ArrayList_Model: ArrayList<ManageFee_Model>? = null
-    var mainActivity: NavDrawer? = null
+    var mainActivity: UserActivity? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +50,7 @@ class Driver_Coming_Trip : Fragment() {
     }
 
     private fun init(rootView: View?) {
-        mainActivity = activity as NavDrawer
+        mainActivity = activity as UserActivity
         rv_tripStudents = rootView?.findViewById(R.id.rv_tripStudents)
         tv_tripDetail = rootView?.findViewById(R.id.tv_tripDetail)
         btn_start_ride = rootView?.findViewById(R.id.btn_start_ride)
@@ -81,7 +77,7 @@ class Driver_Coming_Trip : Fragment() {
 
 
             btn_start_ride!!.setOnClickListener(View.OnClickListener {
-                mainActivity!!.replaceFragment(Driver_Track(), null)
+                mainActivity!!.replaceFragmentUserActivity(Driver_Track(), null)
             })
 
         }

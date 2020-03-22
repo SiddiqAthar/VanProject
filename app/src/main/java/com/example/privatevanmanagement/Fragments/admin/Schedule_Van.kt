@@ -11,15 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.adapters.Adapter_scheduleVan
 import com.example.privatevanmanagement.adapters.Spinner_Adapter
-import com.example.privatevanmanagement.models.Schedule_Student_Model
 import com.example.privatevanmanagement.models.Shift_Model
-import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import java.util.ArrayList
-import android.os.Parcelable
 import com.example.privatevanmanagement.utils.Objects.*
 
 
@@ -110,7 +107,7 @@ class Schedule_Van : Fragment() {
         btn_schedule!!.setOnClickListener(View.OnClickListener {
 
             if (sortedList!!.size>0) {
-                var activity: NavDrawer = activity as NavDrawer
+                var activity: AdminNav_Activity = activity as AdminNav_Activity
                 activity.replaceFragment(Allocate_toStudent(), null)
             }
             else

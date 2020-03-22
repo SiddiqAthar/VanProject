@@ -21,16 +21,21 @@ import com.example.privatevanmanagement.Fragments.driver.Driver_home
 import com.example.privatevanmanagement.Fragments.student.Student_home
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.models.StudentDetail_Model
+import com.example.privatevanmanagement.utils.MyInterface
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.UserType
 import com.example.privatevanmanagement.utils.SendNotification
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 
-class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener{
+
+
+    lateinit var mDrawerLayout: DrawerLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,15 +45,15 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         setSupportActionBar(toolbar)
 
 
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        mDrawerLayout = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle = ActionBarDrawerToggle(
             this,
-            drawer,
+            mDrawerLayout,
             null,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        drawer.addDrawerListener(toggle)
+        mDrawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
 
@@ -57,17 +62,8 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
 
         navigationView.setNavigationItemSelectedListener(this)
 
+         replaceFragment(Admin_home(), null)
 
-        if (UserType!!.equals("Driver")) {
-            UserType = "driver"
-            replaceFragment(Driver_home(), null)
-        } else if (UserType!!.equals("Student")) {
-            UserType = "student"
-//            student_detail()
-        } else {
-            UserType = "Admin"
-            replaceFragment(Admin_home(), null)
-        }
 
         val fm = supportFragmentManager
 
@@ -85,12 +81,12 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
+         val id = item.itemId
         if (id == R.id.action_settings) {
             startActivity(Intent(applicationContext, LoginActivity::class.java))
+            FirebaseAuth.getInstance().signOut();
+            finish()
+
         }
         if (id == R.id.action_chat) {
             startActivity(Intent(applicationContext, Users::class.java))
@@ -125,75 +121,7 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
     }
 
 
-    fun student_detail() {
 
-        val rootRef = Objects.getFirebaseInstance().reference
-        val ordersRef = rootRef.child("StudentDetails").child(Objects.UserID.Globaluser_ID)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var data = dataSnapshot.getValue(StudentDetail_Model::class.java)!!
-
-                Objects.getStudentDetailInstance().student_id = data.student_id
-                Objects.getStudentDetailInstance().lat = data.lat
-                Objects.getStudentDetailInstance().longi = data.longi
-                Objects.getStudentDetailInstance().student_name = data.student_name
-                Objects.getStudentDetailInstance().student_email = data.student_email
-                Objects.getStudentDetailInstance().student_cnic = data.student_cnic
-                Objects.getStudentDetailInstance().student_contact = data.student_contact
-                Objects.getStudentDetailInstance().student_address = data.student_address
-                Objects.getStudentDetailInstance().fee_status = data.fee_status
-                Objects.getStudentDetailInstance().ammount = data.ammount
-                Objects.getStudentDetailInstance().status = data.status
-                Objects.getStudentDetailInstance().shift_time = data.shift_time
-                Objects.getStudentDetailInstance().drop_time = data.drop_time
-                Objects.getStudentDetailInstance().allocated_van = data.allocated_van
-                Objects.getStudentDetailInstance().driver_id = data.driver_id
-                Objects.getStudentDetailInstance().driver_name = data.driver_name
-
-                replaceFragment(Student_home(), null)
-
-/*
-                Objects.getStudentDetailInstance().studend_name =
-                    dataSnapshot.child("StudentName").value.toString()
- */
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-
-            }
-        }
-        ordersRef.addListenerForSingleValueEvent(valueEventListener)
-
-    }
-
-    fun driver_detail() {
-
-        val rootRef = Objects.getFirebaseInstance().reference
-        val ordersRef = rootRef.child("DriverDetails").child(Objects.UserID.Globaluser_ID)
-        val valueEventListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Objects.getDriverDetailInstance().driver_id = Objects.UserID.Globaluser_ID
-                Objects.getDriverDetailInstance().driver_name =
-                    dataSnapshot.child("DriverName").value.toString()
-                Objects.getDriverDetailInstance().driver_address =
-                    dataSnapshot.child("DriverAddress").value.toString()
-                Objects.getDriverDetailInstance().driver_contact =
-                    dataSnapshot.child("DriverContact").value.toString()
-                Objects.getDriverDetailInstance().driver_cnic =
-                    dataSnapshot.child("DriverCnic").value.toString()
-                Objects.getDriverDetailInstance().driver_email =
-                    dataSnapshot.child("DriverEmail").value.toString()
-                Objects.getDriverDetailInstance().driver_van_id =
-                    dataSnapshot.child("Van_ID").value.toString()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-
-            }
-        }
-        ordersRef.addListenerForSingleValueEvent(valueEventListener)
-
-    }
 
     fun admin_detail() {
 
@@ -331,35 +259,5 @@ class NavDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListene
         }
         return "" + hour + ":" + minute + " " + am_pm
     }
-
-    fun ChangeManagementFragment(fragment: Fragment, bundle: Bundle?) {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.mlayout, fragment)
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .addToBackStack("std").commit()
-    }
-
-    fun replaceFragment(fragment: Fragment, bundle: Bundle?) {
-        var backStateName: String = fragment.javaClass.name
-
-        if (bundle != null)
-            fragment.arguments = bundle
-
-        val fragmentManager = supportFragmentManager
-        var fragmentPopped: Boolean = fragmentManager.popBackStackImmediate(backStateName, 0)
-
-        if (!fragmentPopped) { //fragment not in back stack, create it.
-            var ft = fragmentManager.beginTransaction()
-            ft.replace(R.id.mlayout, fragment)
-            ft.addToBackStack(backStateName)
-            ft.commit()
-        }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
 
 }

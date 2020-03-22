@@ -1,7 +1,6 @@
 package com.example.privatevanmanagement.Fragments.student
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.example.privatevanmanagement.Fragments.admin.Admin_home
+import androidx.appcompat.app.AppCompatActivity
 
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.activities.UserActivity
 import com.example.privatevanmanagement.utils.Objects
 
 
@@ -40,7 +39,8 @@ class Student_payFee : Fragment() {
         val rootView = inflater!!.inflate(R.layout.fragment_student_pay_fee, container, false)
         mContext = rootView.context
 
-        activity?.setTitle("Pay Fee")
+        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true);
+        (activity as AppCompatActivity).supportActionBar!!.setTitle("Pay Fee");
 
         init(rootView)
 
@@ -80,8 +80,8 @@ class Student_payFee : Fragment() {
 
                         ref.setValue("Paid")
 
-                        var mainActivity: NavDrawer = activity as NavDrawer
-                        mainActivity.replaceFragment(Student_home(), null)
+                        var mainActivity: UserActivity = activity as UserActivity
+                        mainActivity.replaceFragmentUserActivity(Student_home(), null)
                     } else {
                         Toast.makeText(context, "You already Payed", Toast.LENGTH_SHORT).show()
                     }

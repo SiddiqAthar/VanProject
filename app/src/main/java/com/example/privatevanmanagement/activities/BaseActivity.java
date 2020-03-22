@@ -28,6 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.Settings;
@@ -96,9 +97,7 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
 
         FrameLayout fl = (FrameLayout) findViewById(R.id.mlayout);
         fl.removeAllViews();
-//        FrameLayout fl = (FrameLayout) findViewById(R.id.frameLayout);
-//        fl.removeAllViews();
-        if (bundle != null)
+         if (bundle != null)
             fragment.setArguments(bundle);
         Field field = null;
         try {
@@ -318,6 +317,39 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
                 Toast.makeText(BaseActivity.this, "Some Error in fetching Group Data", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    public void replaceFragment(Fragment fragment, Bundle bundle) {
+        String backStateName = fragment.getClass().getName();
+
+        if (bundle != null)
+            fragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Boolean fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
+
+        if (!fragmentPopped) { //fragment not in back stack, create it.
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.mlayout, fragment);
+            ft.addToBackStack(backStateName);
+            ft.commit();
+        }
+    }
+
+    public void replaceFragmentUserActivity(Fragment fragment, Bundle bundle) {
+        String backStateName = fragment.getClass().getName();
+
+        if (bundle != null)
+            fragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Boolean fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
+
+        if (!fragmentPopped) { //fragment not in back stack, create it.
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.frameLayout, fragment);
+            ft.addToBackStack(backStateName);
+            ft.commit();
+        }
     }
 
 

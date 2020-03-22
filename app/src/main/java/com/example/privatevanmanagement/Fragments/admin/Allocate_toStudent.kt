@@ -1,7 +1,5 @@
 package com.example.privatevanmanagement.Fragments.admin
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,27 +8,19 @@ import android.view.ViewGroup
 import android.widget.*
 
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.NavDrawer
-import com.example.privatevanmanagement.adapters.Adapter_manageStudent
-import com.example.privatevanmanagement.adapters.Spinner_Adapter
+import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.adapters.Spinner_FreeDriver_Adapter
 import com.example.privatevanmanagement.adapters.Spinner_Van_Adapter
 import com.example.privatevanmanagement.models.DriverDetail_Model
-import com.example.privatevanmanagement.models.Shift_Model
-import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.models.VanDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.sortedList
-import com.example.privatevanmanagement.utils.Objects.vanList
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import java.util.HashMap
 
 class Allocate_toStudent : Fragment() {
 
     private var rootView: View? = null
-    var mainActivity: NavDrawer? = null
+    var mainActivity: AdminNav_Activity? = null
     private var vanNumber_Spinner: Spinner? = null
     private var driverName_Spinner: Spinner? = null
     private lateinit var vanNumber_adapter: Adapter
@@ -64,7 +54,7 @@ class Allocate_toStudent : Fragment() {
 
 
     private fun init(rootView: View?) {
-        mainActivity = activity as NavDrawer
+        mainActivity = activity as AdminNav_Activity
 
         vanNumber_Spinner = rootView!!.findViewById(R.id.vanNumber_Spinner) as Spinner
         driverName_Spinner = rootView!!.findViewById(R.id.driverName_Spinner) as Spinner

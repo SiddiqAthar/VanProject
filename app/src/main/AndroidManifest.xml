@@ -62,14 +62,14 @@
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.UserActivity" />
         <activity android:name=".activities.AddDetails" />
         <activity android:name=".activities.RegisterationActivity" />
         <activity android:name=".ChatModule.ShowActivities.Register" />
         <activity android:name=".ChatModule.ShowActivities.Chat" />
         <activity android:name=".ChatModule.ShowActivities.Users" />
         <activity
-            android:name=".activities.NavDrawer"
+            android:name=".activities.AdminNav_Activity"
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme.NoActionBar" />
 

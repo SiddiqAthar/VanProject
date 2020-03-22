@@ -8,11 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.models.DriverDetail_Model
 import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.models.VanDetail_Model
@@ -28,7 +27,7 @@ class Admin_home : Fragment(), View.OnClickListener {
 
 
     var mContext: Context? = null
-    var mainActivity: NavDrawer? = null
+    var mainActivity: AdminNav_Activity? = null
 
     var add_newStudent: CardView? = null
     var add_newDriver: CardView? = null
@@ -66,7 +65,7 @@ class Admin_home : Fragment(), View.OnClickListener {
     }
 
     private fun init(rootView: View?) {
-        mainActivity = activity as NavDrawer
+        mainActivity = activity as AdminNav_Activity
 
         add_newStudent = rootView?.findViewById(R.id.add_newStudent) as CardView
         add_newDriver = rootView?.findViewById(R.id.add_newDriver) as CardView
@@ -93,23 +92,12 @@ class Admin_home : Fragment(), View.OnClickListener {
         } else if (v?.id == R.id.add_newVan) {
             mainActivity!!.replaceFragment(AdminAddVan(), null)
         } else if (v?.id == R.id.add_scheduleVan) {
-            mainActivity!!.ChangeManagementFragment(Schedule_Van(), null)
+            mainActivity!!.replaceFragment(Schedule_Van(), null)
         } else if (v?.id == R.id.add_TrackVan) {
-            mainActivity!!.ChangeManagementFragment(Admin_TrackVans(), null)
+            mainActivity!!.replaceFragment(Admin_TrackVans(), null)
         } else if (v?.id == R.id.add_announcmnet) {
             showDialogMakeAnnouncment()
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity).supportActionBar!!.hide()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as AppCompatActivity).supportActionBar!!.show()
     }
 
     fun showDialogMakeAnnouncment() {
@@ -238,5 +226,6 @@ class Admin_home : Fragment(), View.OnClickListener {
             }
         })
     }
+
 
 }

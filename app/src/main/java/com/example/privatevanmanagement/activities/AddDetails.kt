@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -41,7 +40,7 @@ class AddDetails : AppCompatActivity() {
                 newPost.child("AdminCnic").setValue(AdminCnic!!.text.toString())
                 newPost.child("AdminContact").setValue(AdminContact!!.text.toString())
                 newPost.child("AdminAddress").setValue(AdminAddress!!.text.toString())
-                startActivity(Intent(this@AddDetails, NavDrawer::class.java))
+                startActivity(Intent(this@AddDetails, AdminNav_Activity::class.java))
             }})
 
     }

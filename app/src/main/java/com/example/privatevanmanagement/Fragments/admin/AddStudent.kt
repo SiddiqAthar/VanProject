@@ -1,6 +1,5 @@
 package com.example.privatevanmanagement.Fragments.admin
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
@@ -18,10 +17,9 @@ import android.widget.AdapterView
 import android.widget.Toast
 import com.google.firebase.database.*
 import android.widget.ArrayAdapter
-import com.example.privatevanmanagement.activities.NavDrawer
+import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects.group_list
-import kotlinx.android.synthetic.main.activity_registeration.*
 import java.util.HashMap
 
 
@@ -46,7 +44,7 @@ class AddStudent : Fragment() {
     lateinit var databaseReference: DatabaseReference
     var pd: ProgressDialog? = null
 
-    var mainActivity: NavDrawer? = null
+    var mainActivity: AdminNav_Activity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +92,7 @@ class AddStudent : Fragment() {
     private fun init(rootView: View?) {
 //        mAuth = FirebaseAuth.getInstance()
 
-        mainActivity = activity as NavDrawer
+        mainActivity = activity as AdminNav_Activity
 
         btn_StudentInfo = rootView?.findViewById(R.id.btn_StudentInfo) as Button
         Email_tv = rootView?.findViewById(R.id.Email_tv) as TextView
