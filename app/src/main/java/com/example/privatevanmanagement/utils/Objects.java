@@ -1,5 +1,7 @@
 package com.example.privatevanmanagement.utils;
 
+import android.location.Location;
+
 import com.example.privatevanmanagement.models.AdminDetail_Model;
 import com.example.privatevanmanagement.models.DriverDetail_Model;
 import com.example.privatevanmanagement.models.Schedule_Student_Model;
@@ -26,8 +28,10 @@ public class Objects {
     static public List<DriverDetail_Model> freeDriverList = new ArrayList<>();
     static public List<String> group_list = new ArrayList<>();
     static public List<Shift_Model> shift_list = new ArrayList<>();
-
-
+    static public String driverLatLongTable = "driver_lat_long";
+    static public String studentLatLongTable = "student_lat_long";
+    public static android.location.Location driverLastLocation = null;
+    public static android.location.Location studentLastLocation = null;
     public static FirebaseAuth getInstance() {
         if (mAuth == null) {
             mAuth = FirebaseAuth.getInstance();
