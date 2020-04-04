@@ -4,20 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/frame_layout_left_right_top"
-    android:layout_marginTop="@dimen/margin20dp"
+    android:layout_marginTop="15dp"
     android:layout_marginRight="@dimen/frame_layout_left_right_top"
     tools:context=".Fragments.admin.AddStudent">
 
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_marginBottom="@dimen/margin20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="vertical"
         android:layout_above="@+id/btn_StudentInfo"
- >
+        android:layout_marginBottom="@dimen/margin20dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,8 +41,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
-                android:drawablePadding="@dimen/margin10dp"
                 android:drawableEnd="@mipmap/edit"
+                android:drawablePadding="@dimen/margin10dp"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Name"
@@ -62,10 +61,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
-                 android:textColor="@color/textColor"
+                android:text="Email"
+                android:textColor="@color/textColor"
                 android:textSize="@dimen/text_size_2"
-                android:textStyle="bold"
-                android:text="Email" />
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/StudentEmail"
@@ -73,8 +72,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
-                android:drawablePadding="@dimen/margin10dp"
                 android:drawableEnd="@mipmap/edit"
+                android:drawablePadding="@dimen/margin10dp"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Email"
@@ -92,10 +91,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="CNIC"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/text_size_2"
-                android:textStyle="bold"
-                android:text="CNIC" />
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/StudentCnic"
@@ -103,8 +102,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
-                android:drawablePadding="@dimen/margin10dp"
                 android:drawableEnd="@mipmap/edit"
+                android:drawablePadding="@dimen/margin10dp"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Cnic"
@@ -122,10 +121,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Contact"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/text_size_2"
-                android:textStyle="bold"
-                android:text="Contact" />
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/StudentContact"
@@ -133,8 +132,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
-                android:drawablePadding="@dimen/margin10dp"
                 android:drawableEnd="@mipmap/edit"
+                android:drawablePadding="@dimen/margin10dp"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Contact"
@@ -152,10 +151,10 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Address"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/text_size_2"
-                android:textStyle="bold"
-                android:text="Address" />
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/StudentAddress"
@@ -163,8 +162,8 @@
                 android:layout_height="@dimen/edit_text_height"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
-                android:drawablePadding="@dimen/margin10dp"
                 android:drawableEnd="@mipmap/edit"
+                android:drawablePadding="@dimen/margin10dp"
                 android:enabled="true"
                 android:gravity="center_vertical"
                 android:hint="Address"
@@ -175,16 +174,17 @@
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/hint"
                 android:textSize="@dimen/text_size_2" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+                android:text="Group"
                 android:textColor="@color/textColor"
                 android:textSize="@dimen/text_size_2"
-                android:textStyle="bold"
-                android:text="Group" />
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:id="@+id/rl"
@@ -215,7 +215,23 @@
             </RelativeLayout>
 
 
-         </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <fragment
+                    android:id="@+id/autocomplete_fragment"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
     </ScrollView>
 
     <Button
@@ -223,7 +239,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/button_design"
         android:layout_marginBottom="@dimen/margin10dp"
-         android:text="Add Student" />
+        android:background="@drawable/button_design"
+        android:text="Add Student" />
 </RelativeLayout>

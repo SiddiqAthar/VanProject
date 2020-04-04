@@ -54,12 +54,14 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull manageStudent_viewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final manageStudent_viewHolder holder, final int position) {
         holder.userName.setText(manageStudent_List.get(position).getStudent_name());
+        holder.btn_block_unBLock.setText( manageStudent_List.get(position).getStatus());
         holder.btn_block_unBLock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                msgBlockuser(manageStudent_List.get(position).getStudent_name(), manageStudent_List.get(position).getStatus(), manageStudent_List.get(position).getStudent_id());
+                msgBlockuser(manageStudent_List.get(position).getStudent_name(), manageStudent_List.get(position).getStatus(),
+                        manageStudent_List.get(position).getStudent_id(),holder.getAdapterPosition());
             }
         });
         holder.btn_edit.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +70,11 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
                 Bundle bundle = new Bundle();
                 bundle.putString("student_id", manageStudent_List.get(position).getStudent_id());
                 bundle.putString("student_name", manageStudent_List.get(position).getStudent_name());
-                AdminNav_Activity activity=(AdminNav_Activity) context;
+                bundle.putString("student_cnic", manageStudent_List.get(position).getStudent_cnic());
+                bundle.putString("student_contact", manageStudent_List.get(position).getStudent_contact());
+                bundle.putString("student_address", manageStudent_List.get(position).getStudent_address());
+
+                AdminNav_Activity activity = (AdminNav_Activity) context;
                 activity.replaceFragment(new AddStudent(), bundle);
             }
         });
@@ -93,7 +99,7 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
         }
     }
 
-    public void msgBlockuser(String student_name, final String student_status, final String student_id) {
+    public void msgBlockuser(String student_name, final String student_status, final String student_id, final int position) {
 
 
         final Dialog dialog = new Dialog(context);
@@ -120,10 +126,15 @@ public class Adapter_manageStudent extends RecyclerView.Adapter<Adapter_manageSt
                 } else if (student_status.equalsIgnoreCase("Blocked")) {
                     what = "UnBlocked";
                 }
+
                 updates.put("status", what);
                 ref.updateChildren(updates);
+
+                manageStudent_List.get(position).setStatus(what);
                 Toast.makeText(context, "User " + what + " Successfully", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
+                notifyItemChanged(position);
+
             }
         });
 

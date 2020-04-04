@@ -13,22 +13,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="1.4"
         android:background="@drawable/half_circle">
 
         <TextView
             android:id="@+id/textGrid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="ADMIN PANEL"
             android:fontFamily="serif"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="25sp" />
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_below="@+id/textGrid"
             android:layout_alignStart="@+id/textGrid"
             android:layout_alignEnd="@+id/textGrid"
@@ -37,6 +38,7 @@
             android:background="@color/white" />
 
     </RelativeLayout>
+
 
 
     <GridLayout

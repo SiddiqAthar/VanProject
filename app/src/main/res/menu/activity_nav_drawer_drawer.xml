@@ -7,27 +7,31 @@
 
         <item
             android:id="@+id/nav_manageFee"
-            android:icon="@drawable/home"
+            android:icon="@drawable/ic_fee"
             android:title="Manage Fee Record" />
         <item
-            android:id="@+id/nav_paySalary"
-            android:icon="@drawable/home"
-            android:title="Pay Salary" />
-        <item
             android:id="@+id/nav_manageStudents"
-            android:icon="@drawable/home"
+            android:icon="@drawable/ic_manage_student"
             android:title="Manage Student" />
         <item
+            android:id="@+id/nav_paySalary"
+            android:icon="@drawable/ic_pay_salary"
+            android:title="Pay Salary" />
+        <item
             android:id="@+id/nav_manageDrivers"
-            android:icon="@drawable/home"
+            android:icon="@drawable/ic_manage_driver"
             android:title="Manage Drivers" />
         <item
+            android:id="@+id/nav_manageVans"
+            android:icon="@drawable/ic_manage_van"
+            android:title="Manage Vans" />
+        <item
             android:id="@+id/nav_add_group"
-            android:icon="@drawable/home"
+            android:icon="@drawable/ic_add_group"
             android:title="Add Group" />
         <item
             android:id="@+id/nav_add_shift"
-            android:icon="@drawable/home"
+            android:icon="@drawable/ic_add_shift"
             android:title="Add Shift" />
 
     </group>
@@ -36,11 +40,11 @@
         <menu>
             <item
                 android:id="@+id/nav_complaintBox"
-                android:icon="@drawable/home"
+                android:icon="@drawable/ic_complaint"
                 android:title="Complaint Box" />
             <item
                 android:id="@+id/contactUs"
-                android:icon="@drawable/home"
+                android:icon="@drawable/ic_contact"
                 android:title="Contact Us" />
         </menu>
     </item>

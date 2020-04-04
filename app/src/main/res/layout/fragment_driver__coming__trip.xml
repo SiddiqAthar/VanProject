@@ -28,23 +28,34 @@
         android:background="@color/button_default" />
 
     <TextView
+        android:id="@+id/noUsersText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="You dont have any Trip"
+        android:visibility="gone" />
+
+
+    <RelativeLayout
+        android:layout_below="@+id/view"
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+     <TextView
         android:id="@+id/tv_tripDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view"
-        android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
+         android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
         android:background="@drawable/edittext_design"
         android:gravity="center_vertical"
         android:padding="@dimen/edit_text_padding"
          android:textColor="@color/textColor"
         android:textSize="@dimen/text_size_2" />
-
-
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_tripDetail"
+        android:layout_below="@+id/tv_tripDetail"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -73,8 +84,6 @@
 
 
     </LinearLayout>
-
-
     <View
         android:id="@+id/view2"
         android:layout_width="wrap_content"
@@ -85,8 +94,6 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="@dimen/margin10dp"
         android:background="@color/button_default" />
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tripStudents"
         android:layout_width="match_parent"
@@ -103,5 +110,6 @@
         android:layout_marginBottom="@dimen/margin10dp"
         android:text="Start Ride"
         android:textColor="@color/white"/>
+    </RelativeLayout>
 
 </RelativeLayout>

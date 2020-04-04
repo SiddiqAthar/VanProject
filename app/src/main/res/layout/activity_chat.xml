@@ -8,13 +8,6 @@
     android:orientation="vertical"
  >
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/chat_with_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorAccent"
-        app:titleTextColor="@android:color/white" />
-
     <!--<ScrollView-->
     <!--android:id="@+id/scrollView"-->
     <!--android:layout_width="match_parent"-->
@@ -35,15 +28,16 @@
     <!--</RelativeLayout>-->
     <!--</ScrollView>-->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_recycler_view"
+         android:id="@+id/chat_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@id/msg_bar"
-        android:layout_below="@id/chat_with_toolbar" />
+        android:padding="@dimen/text_size_5"/>
 
     <include
         android:id="@+id/msg_bar"
         layout="@layout/message_area"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

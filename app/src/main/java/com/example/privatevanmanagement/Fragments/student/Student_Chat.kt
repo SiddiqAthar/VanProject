@@ -24,7 +24,7 @@ class Student_Chat : Fragment() {
 
     var rootView: View? = null
 
-    internal var sendButton: ImageView? = null
+    internal var sendButton: Button? = null
     internal var messageArea: EditText? = null
 //    internal var scrollView: ScrollView? = null
     internal var chatRecView: RecyclerView? = null
@@ -48,7 +48,7 @@ class Student_Chat : Fragment() {
 
 
 
-        sendButton = rootView?.findViewById(R.id.sendButton) as ImageView
+        sendButton = rootView?.findViewById(R.id.sendButton) as Button
         messageArea = rootView?.findViewById(R.id.messageArea) as EditText
 //        scrollView = rootView?.findViewById(R.id.scrollView) as ScrollView
         chatRecView = rootView?.findViewById(R.id.chat_recycler_view) as RecyclerView

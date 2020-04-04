@@ -20,29 +20,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="dialog" parent="@android:style/Theme.Dialog">
-        <item name="android:typeface">monospace</item>
-        <item name="android:textSize">10sp</item>
-    </style>
-
-    <style name="Theme.D1NoTitleDim" parent="android:style/Theme.Translucent">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:splitMotionEvents">false</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="TextLabel" parent="TextAppearance.AppCompat">
-        <!-- Hint color and label color in FALSE state -->
-        <item name="android:textColorHint">@color/button_focused</item>
-        <item name="android:textSize">20sp</item>
-        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-        <item name="colorAccent">@color/button_focused</item>
-        <item name="android:splitMotionEvents">false</item>
-        <item name="colorControlNormal">@color/button_focused</item>
-        <item name="colorControlActivated">@color/button_focused</item>
-    </style>
 
 
 </resources>

@@ -14,14 +14,18 @@ import android.widget.Toast
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.models.VanDetail_Model
+import com.example.privatevanmanagement.utils.Objects
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.fragment_add_student.*
+import java.util.HashMap
 
 
 class AdminAddVan : Fragment() {
     var mainActivity: AdminNav_Activity? = null
 
     var rootView: View? = null
+    var vanId: String = ""
 
     var van_Registeration: EditText? = null
     var van_Model: EditText? = null
@@ -48,10 +52,41 @@ class AdminAddVan : Fragment() {
         )
         activity?.setTitle("Add Van")
 
-
         init(rootView)
 
+        if (arguments != null) {
+            reloadData()
+        }
+
         return rootView
+    }
+
+    private fun reloadData() {
+
+        van_Registeration!!.isEnabled = false
+        btn_AddVan!!.text = "Update Detail"
+
+        if (arguments!!.containsKey("vanId")) {
+            vanId = arguments!!.getString("vanId").toString()
+        }
+        if (arguments!!.containsKey("vanRegisteration")) {
+            van_Registeration!!.setText(arguments!!.getString("vanRegisteration"))
+        }
+        if (arguments!!.containsKey("vanModel")) {
+            van_Model!!.setText(arguments!!.getString("vanModel"))
+        }
+        if (arguments!!.containsKey("vanMake")) {
+            van_Make!!.setText(arguments!!.getString("vanMake"))
+        }
+        if (arguments!!.containsKey("vanColor")) {
+            van_Color!!.setText(arguments!!.getString("vanColor"))
+        }
+        if (arguments!!.containsKey("vanType")) {
+            van_Type!!.setText(arguments!!.getString("vanType"))
+        }
+        if (arguments!!.containsKey("vanCapacity")) {
+            van_Capacity!!.setText(arguments!!.getString("vanCapacity"))
+        }
     }
 
     private fun init(rootView: View?) {
@@ -70,18 +105,54 @@ class AdminAddVan : Fragment() {
 
         btn_AddVan?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                if (validateForm()) {
-                    pd = ProgressDialog(context)
-                    pd!!.setMessage("Adding Van Info")
-                    pd!!.setCancelable(false)
-                    pd!!.show()
-                    addVandetails()
-                    Toast.makeText(activity, "Add Successfully", Toast.LENGTH_SHORT).show();
-                    mainActivity!!.replaceFragment(Admin_home(), null)
+
+                if (arguments == null) {
+                    if (validateForm()) {
+
+                        pd = ProgressDialog(context)
+                        pd!!.setMessage("Adding Van Info")
+                        pd!!.setCancelable(false)
+                        pd!!.show()
+                        addVandetails()
+                        Toast.makeText(activity, "Add Successfully", Toast.LENGTH_SHORT).show();
+                        mainActivity!!.replaceFragment(Admin_home(), null)
+                    }
+                } else {
+                    updateVan(vanId)
                 }
+
             }
         })
     }
+
+
+    private fun updateVan(vanId: String) {
+
+        val ref = Objects.getFirebaseInstance().reference.child("AddVan").child(vanId)
+        val updates = HashMap<String, Any>()
+
+        if (!van_Model!!.text.toString().isNullOrEmpty())
+            updates["vanModel"] = van_Model!!.text.toString()
+        if (!van_Make!!.text.toString().isNullOrEmpty())
+            updates["vanMake"] = van_Make!!.text.toString()
+        if (!van_Color!!.text.toString().isNullOrEmpty())
+            updates["vanColor"] = van_Color!!.text.toString()
+        if (!van_Type!!.text.toString().isNullOrEmpty())
+            updates["vanType"] = van_Type!!.text.toString()
+        if (!van_Capacity!!.text.toString().isNullOrEmpty())
+            updates["vanCapacity"] = van_Capacity!!.text.toString()
+
+        if (updates.size > 0) {
+            ref.updateChildren(updates)
+            Toast.makeText(context, "Data updated", Toast.LENGTH_SHORT).show()
+            // at end go to main Home
+            mainActivity!!.replaceFragment(Admin_home(), null)
+        } else {
+            Toast.makeText(context, "Nothing to update", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
 
     private fun addVandetails() {
         databaseReference = FirebaseDatabase.getInstance().reference.child("AddVan").push()

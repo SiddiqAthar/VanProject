@@ -10,10 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.privatevanmanagement.R;
-import com.example.privatevanmanagement.models.Schedule_Student_Model;
 import com.example.privatevanmanagement.models.StudentDetail_Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter_scheduleVan extends RecyclerView.Adapter<Adapter_scheduleVan.Adapter_scheduleVan_viewHolder> {

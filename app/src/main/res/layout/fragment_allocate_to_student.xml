@@ -99,6 +99,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/button_design"
         android:layout_marginBottom="@dimen/margin10dp"
+        android:textColor="@color/white"
         android:text="Allocate" />
 
 </RelativeLayout>

@@ -52,7 +52,7 @@ public class Adapter_manageFeeextends extends RecyclerView.Adapter<Adapter_manag
     }
 
     @Override
-    public void onBindViewHolder(@NonNull manageFeeextends_viewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final manageFeeextends_viewHolder holder, final int position) {
         holder.userName.setText(manageFee_List.get(position).getStudent_name());
         holder.userAmmount.setText(manageFee_List.get(position).getAmmount());
         holder.userStatus.setText(manageFee_List.get(position).getFee_status());
@@ -60,7 +60,8 @@ public class Adapter_manageFeeextends extends RecyclerView.Adapter<Adapter_manag
         holder.shiftTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogManageFee(manageFee_List.get(position).getStudent_name(), manageFee_List.get(position).getFee_status(), manageFee_List.get(position).getStudent_id());
+                showDialogManageFee(manageFee_List.get(position).getStudent_name(), manageFee_List.get(position).getFee_status(),
+                        manageFee_List.get(position).getStudent_id(), holder.getAdapterPosition());
             }
         });
     }
@@ -87,7 +88,7 @@ public class Adapter_manageFeeextends extends RecyclerView.Adapter<Adapter_manag
     }
 
 
-    public void showDialogManageFee(String name, String status, final String student_id) {
+    public void showDialogManageFee(String name, String status, final String student_id, final int position) {
 
         new_status = status;
         final Dialog dialog = new Dialog(context);
@@ -111,20 +112,15 @@ public class Adapter_manageFeeextends extends RecyclerView.Adapter<Adapter_manag
 
                 if (!et_fee_new.getText().toString().isEmpty() && !new_status.isEmpty()) // agr new fee ammont empty na ho to Update kare
                 {
-/*
-                    DatabaseReference ref = Objects.getFirebaseInstance().getReference("StudentDetails")
-                            .child(student_id);
-*/
-
                     DatabaseReference ref = Objects.getFirebaseInstance().getReference().child("StudentDetails").child(student_id);
                     Map<String, Object> updates = new HashMap<String, Object>();
 
                     updates.put("fee_status", new_status);
                     updates.put("ammount", et_fee_new.getText().toString());
-//etc
-
                     ref.updateChildren(updates);
 
+                    manageFee_List.get(position).setFee_status(new_status);
+                    notifyItemChanged(position);
 
                     Toast.makeText(context, "Fee Details Updated", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();

@@ -37,6 +37,7 @@ public class Admin_ViewComplaints : Fragment() {
     ): View? {
 
         rootView = inflater.inflate(R.layout.fragment_admin_viewcomplaints, container, false)
+        activity?.setTitle("Complaint Box")
         init(rootView)
         return rootView
     }

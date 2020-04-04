@@ -18,7 +18,7 @@
             android:fontFamily="sans-serif-medium"
             android:text="User Name"
             android:textColor="@color/aqua"
-            android:textSize="@dimen/text_size_1" />
+            android:textSize="16dp" />
 
 
         <Button
@@ -31,10 +31,10 @@
             android:layout_weight="0.75"
             android:layout_marginRight="5dp"
             android:background="@drawable/button_design_green"
+            android:fontFamily="sans-serif-medium"
             android:text="Block"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_2"
-            android:textStyle="bold" />
+            android:textSize="13sp" />
 
         <Button
             android:paddingRight="05dp"
@@ -47,8 +47,8 @@
             android:layout_weight="0.75"
             android:background="@drawable/button_design_tag"
             android:text="Edit"
+            android:fontFamily="sans-serif-medium"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_2"
-            android:textStyle="bold" />
+            android:textSize="13sp" />
     </LinearLayout>
 </RelativeLayout>

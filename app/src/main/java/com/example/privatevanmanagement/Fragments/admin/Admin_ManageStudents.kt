@@ -33,28 +33,13 @@ public class Admin_ManageStudents : Fragment() {
     ): View? {
 
         rootView = inflater.inflate(R.layout.fragment_admin__manage_student, container, false)
+        activity?.setTitle("Manage Students")
         init(rootView)
         return rootView
     }
 
     private fun init(rootView: View?) {
         rv_manageStudent = rootView?.findViewById(R.id.rv_manageStudent)
-
-/*
-        ArrayList_Model = ArrayList<ManageFee_Model>()
-        //add dummy data
-        ArrayList_Model!!.add(ManageFee_Model("", "Siddiq", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Uzair", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Usman", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Zohaib", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Umer", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Ali", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Ahtisham", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Athar Iqbal", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Nabeeel Shoukat", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Abu Bakar", "", ""))
-        ArrayList_Model!!.add(ManageFee_Model("", "Zaheer", "", ""))
-*/
 
 
         rv_manageStudent?.setLayoutManager(LinearLayoutManager(activity))

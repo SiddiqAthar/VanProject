@@ -55,7 +55,7 @@ class Driver_Track : Fragment(), OnMapReadyCallback {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_student_track_vans, container, false)
 
-        activity?.setTitle("Track Your Van")
+        activity?.setTitle("Students")
 
 
         mMapView = rootView.findViewById(R.id.mapView) as MapView

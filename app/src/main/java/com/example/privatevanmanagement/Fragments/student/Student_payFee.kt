@@ -39,7 +39,6 @@ class Student_payFee : Fragment() {
         val rootView = inflater!!.inflate(R.layout.fragment_student_pay_fee, container, false)
         mContext = rootView.context
 
-        (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true);
         (activity as AppCompatActivity).supportActionBar!!.setTitle("Pay Fee");
 
         init(rootView)

@@ -1,69 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="@color/colorPrimaryDark"
-    android:gravity="bottom"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="10dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:background="@drawable/bglogin"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
         android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
-        android:contentDescription="@string/nav_header_desc"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@drawable/bus" />
+        android:layout_height="120dp" android:layout_centerInParent="true"
+         android:contentDescription="@string/nav_header_desc"
+         android:src="@drawable/bus" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Welcome:  "
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-        <TextView
-            android:id="@+id/header_user_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             android:singleLine="true"
-            android:text="User Name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/white" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="23dp"
-            android:layout_marginLeft="5dp"
-            android:text="Contact:  "
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/header_user_contact"
-            android:layout_width="wrap_content"
-            android:layout_height="23dp"
-            android:layout_marginLeft="5dp"
-            android:singleLine="true"
-            android:text="03xxxxxxxxx"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

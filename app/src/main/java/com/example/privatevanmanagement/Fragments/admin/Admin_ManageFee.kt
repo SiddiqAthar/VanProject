@@ -32,6 +32,8 @@ public class Admin_ManageFee : Fragment() {
     ): View? {
 
         rootView = inflater.inflate(R.layout.fragment_admin__manage_fee, container, false)
+        activity?.setTitle("Manage Fee")
+
         init(rootView)
         return rootView
     }

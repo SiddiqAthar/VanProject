@@ -12,19 +12,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.example.privatevanmanagement.ChatModule.ShowActivities.Users
+import com.example.privatevanmanagement.Fragments.ChangePassword
 import com.example.privatevanmanagement.Fragments.admin.*
-import com.example.privatevanmanagement.Fragments.driver.Driver_home
-import com.example.privatevanmanagement.Fragments.student.Student_home
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.models.StudentDetail_Model
-import com.example.privatevanmanagement.utils.MyInterface
 import com.example.privatevanmanagement.utils.Objects
-import com.example.privatevanmanagement.utils.Objects.UserType
-import com.example.privatevanmanagement.utils.SendNotification
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -49,7 +41,7 @@ class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelecte
         val toggle = ActionBarDrawerToggle(
             this,
             mDrawerLayout,
-            null,
+            toolbar,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
@@ -85,11 +77,10 @@ class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelecte
         if (id == R.id.action_settings) {
             startActivity(Intent(applicationContext, LoginActivity::class.java))
             FirebaseAuth.getInstance().signOut();
-            finish()
-
+             finishAffinity()
         }
-        if (id == R.id.action_chat) {
-            startActivity(Intent(applicationContext, Users::class.java))
+        if (id == R.id.action_change_pswd) {
+            replaceFragment(ChangePassword(),null)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -109,6 +100,12 @@ class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelecte
             replaceFragment(home, null)
         } else if (id == R.id.nav_manageStudents) {
             val home = Admin_ManageStudents()
+            replaceFragment(home, null)
+        } else if (id == R.id.nav_manageDrivers) {
+            val home = Admin_ManageDrivers()
+            replaceFragment(home, null)
+        }else if (id == R.id.nav_manageVans) {
+            val home = Admin_ManageVans()
             replaceFragment(home, null)
         } else if (id == R.id.nav_add_group) {
             showDialogAddGroup()

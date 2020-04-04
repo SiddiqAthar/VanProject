@@ -1,6 +1,8 @@
 package com.example.privatevanmanagement.activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +21,7 @@ import com.example.privatevanmanagement.models.StudentDetail_Model;
 import com.example.privatevanmanagement.utils.Objects;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,6 +41,7 @@ import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -55,6 +59,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.location.LocationManager.NETWORK_PROVIDER;
@@ -62,15 +67,14 @@ import static com.example.privatevanmanagement.utils.Objects.Token;
 import static com.example.privatevanmanagement.utils.Objects.group_list;
 import static com.example.privatevanmanagement.utils.Objects.shift_list;
 
-public class BaseActivity extends AppCompatActivity implements LocationListener {
-
-    Dialog dialog;
-    protected FrameLayout frameLayout;
+public class BaseActivity extends AppCompatActivity {
     LocationManager locationManager;
     static public final int REQUEST_LOCATION = 1;
     public static final long DISCONNECT_TIMEOUT = 600000; // 5 min = 5 * 60 * 1000 ms
     private static final int LOCATION_INTERVAL = 100;
     private static final float LOCATION_DISTANCE = 1f;
+
+
     DialogInterface.OnKeyListener keyListner = new DialogInterface.OnKeyListener() {
         @Override
         public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -85,36 +89,17 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getSupportActionBar().hide();
+        getLocation(true);
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(),"AIzaSyBLdi57ZGLkSrGDPD-7on9qCKd64vNlRAk");
+        }
+
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        getToken();
         group_list();
         shift_list();
-
     }
 
-    public void changeFragment(Fragment fragment, Bundle bundle) {
-
-        FrameLayout fl = (FrameLayout) findViewById(R.id.mlayout);
-        fl.removeAllViews();
-         if (bundle != null)
-            fragment.setArguments(bundle);
-        Field field = null;
-        try {
-            field = getSupportFragmentManager().getClass().getDeclaredField("mActive");
-            field.setAccessible(true);
-            ((SparseArray<Fragment>) field.get(getSupportFragmentManager())).clear();
-            field = getSupportFragmentManager().getClass().getDeclaredField("mAdded");
-            field.setAccessible(true);
-            ((ArrayList<Object>) field.get(getSupportFragmentManager())).clear();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        FragmentTransaction transaction1 = getSupportFragmentManager().beginTransaction();
-//        transaction1.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
-        transaction1.replace(R.id.mlayout, fragment);
-        transaction1.commitAllowingStateLoss();
-    }
 
     public boolean checkInternetConnection() {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
@@ -131,48 +116,12 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
                     ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
                 }
                 return;
-
             }
-            if (islocationServiceEnabled()) {
-
-                locationManager.requestLocationUpdates(NETWORK_PROVIDER, LOCATION_INTERVAL,
-                        LOCATION_DISTANCE, (LocationListener) BaseActivity.this);
-                locationManager.requestLocationUpdates(GPS_PROVIDER, LOCATION_INTERVAL,
-                        LOCATION_DISTANCE, (LocationListener) BaseActivity.this);
-                Criteria criteria = new Criteria();
-                criteria.setPowerRequirement(Criteria.POWER_HIGH);
-                criteria.setAccuracy(Criteria.ACCURACY_FINE);
-                String bestProvider = locationManager.getBestProvider(criteria, true);
-                Location lastknownlocationGps = locationManager.getLastKnownLocation(GPS_PROVIDER);
-                Location lastknownlocationNetwork = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
-                Location lastknownlocationBest = locationManager.getLastKnownLocation(bestProvider);
-
-                if (lastknownlocationGps != null) {
-                    Objects.location.Lat = lastknownlocationGps.getLatitude() + "";
-                    Objects.location.Lng = lastknownlocationGps.getLongitude() + "";
-                    Objects.location.Src = "GPS";
-                } else if (lastknownlocationNetwork != null) {
-                    Objects.location.Lat = lastknownlocationNetwork.getLatitude() + "";
-                    Objects.location.Lng = lastknownlocationNetwork.getLongitude() + "";
-                    Objects.location.Src = "NETWORK";
-                } else if (lastknownlocationBest != null) {
-                    Objects.location.Lat = lastknownlocationBest.getLatitude() + "";
-                    Objects.location.Lng = lastknownlocationBest.getLongitude() + "";
-                    Objects.location.Src = lastknownlocationBest.getProvider() + "";
-
-                } else {
-                    Objects.location.Lat = "0.00";
-                    Objects.location.Lng = "0.00";
-                }
-            } else {
+            if (!islocationServiceEnabled()) {
                 if (showDialog) {
-                    msgLocationDisbled("Objects services disabled. Turn on location services to use application");
+                    msgLocationDisbled("Turn on location services to use application");
                 }
-
             }
-
-
-            //   Toast.makeText(BaseActivity.this, "GetLocation: " + Objects.location.Lat + " " + Objects.location.Lng + " src:" +   Objects.location.Src, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -207,16 +156,12 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setOnKeyListener(keyListner);
-        dialog.setContentView(R.layout.dialog);
+        dialog.setContentView(R.layout.location_dialog);
         TextView text = (TextView) dialog.findViewById(R.id.successTextView);
         text.setMovementMethod(new ScrollingMovementMethod());
         text.setText(msg);
         Button dialogButton = (Button) dialog.findViewById(R.id.okButton);
         dialogButton.setText("Enable Location");
-        Button dialogcancel = (Button) dialog.findViewById(R.id.cancelButton);
-        dialogcancel.setText("Cancel");
-        dialogcancel.setVisibility(View.GONE);
-
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,59 +171,13 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        dialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
 
         dialog.show();
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
 
-    @Override
-    public void onLocationChanged(Location location) {
-        Objects.location.Lat = location.getLatitude() + "";
-        Objects.location.Lng = location.getLongitude() + "";
-        Log.d("location", Objects.location.Lat + " " + Objects.location.Lng);
-        //    Toast.makeText(BaseActivity.this, "Objects: " + Objects.location.Lat + " " + Objects.location.Lng + " ", Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
-
-    public void getToken()
-    {
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("Error", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        Token = task.getResult().getToken();
-
-                        Toast.makeText(BaseActivity.this, Token, Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
     public void group_list() {
         DatabaseReference ref = Objects.getFirebaseInstance().getReference().child("Groups");
@@ -318,9 +217,11 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
             }
         });
     }
-    public void replaceFragment(Fragment fragment, Bundle bundle) {
-        String backStateName = fragment.getClass().getName();
 
+    public void replaceFragment(Fragment fragment, Bundle bundle) {
+        hideKeyboard(this);
+
+        String backStateName = fragment.getClass().getName();
         if (bundle != null)
             fragment.setArguments(bundle);
 
@@ -336,13 +237,14 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
     }
 
     public void replaceFragmentUserActivity(Fragment fragment, Bundle bundle) {
+        hideKeyboard(this);
         String backStateName = fragment.getClass().getName();
-
         if (bundle != null)
             fragment.setArguments(bundle);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Boolean fragmentPopped = fragmentManager.popBackStackImmediate(backStateName, 0);
+
 
         if (!fragmentPopped) { //fragment not in back stack, create it.
             FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -352,5 +254,11 @@ public class BaseActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
-
+    public void hideKeyboard(Activity activity) {
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputManager != null && activity.getWindow().getDecorView().getRootView().getWindowToken() != null) {
+            inputManager.hideSoftInputFromWindow(activity.getWindow().getDecorView().getRootView().getWindowToken(), 0);
+            inputManager.hideSoftInputFromWindow(activity.getWindow().getDecorView().getRootView().getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+         }
+    }
 }

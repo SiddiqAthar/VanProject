@@ -11,7 +11,4 @@
         <item name="android:numbersSelectorColor">@color/button_pressed</item>
         <item name="android:headerBackground">@color/colorPrimary</item>
     </style>
-    <style name="spinnerTheme">
-        <item name="android:textColor">@color/textColor</item>
-    </style>
 </resources>

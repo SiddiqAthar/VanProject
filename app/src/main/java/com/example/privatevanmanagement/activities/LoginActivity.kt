@@ -1,5 +1,6 @@
 package com.example.privatevanmanagement.activities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -15,9 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.Token
 import com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID
 import com.example.privatevanmanagement.utils.Objects.UserType
+import com.google.android.gms.auth.GoogleAuthUtil.getToken
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -25,6 +29,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 
 class LoginActivity : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
@@ -32,18 +37,16 @@ class LoginActivity : AppCompatActivity() {
     var animslideUp: Animation? = null
     var image: ImageView? = null
     var btnSignIn: Button? = null
-    var btnNewUser: Button? = null
-    var btnForgotPassword: Button? = null
-    var email: EditText? = null
+     var email: EditText? = null
     var password: EditText? = null
     val user: Objects.UserID = Objects.UserID()
+    var pd: ProgressDialog? = null
 
     lateinit var editor: SharedPreferences.Editor
     lateinit var pref: SharedPreferences
 
     override fun onStart() {
         super.onStart()
-/*
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
             Globaluser_ID = FirebaseAuth.getInstance().currentUser?.uid.toString()
@@ -58,7 +61,17 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
         }
-*/
+    }
+    fun getToken() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("Error", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+                // Get new Instance ID token
+                Token = task.result!!.token
+            })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,9 +90,7 @@ class LoginActivity : AppCompatActivity() {
         image = findViewById(R.id.iv_icon) as ImageView
         image!!.startAnimation(animZoomIn)
         btnSignIn = findViewById(R.id.btn_SignIn) as Button
-        btnNewUser = findViewById(R.id.btn_createaccount) as Button
-        btnForgotPassword = findViewById(R.id.btn_forgotpassword) as Button
-        email = findViewById(R.id.Email) as EditText
+         email = findViewById(R.id.Email) as EditText
         email!!.startAnimation(animslideUp)
         password = findViewById(R.id.Password) as EditText
         password!!.startAnimation(animslideUp)
@@ -94,7 +105,11 @@ class LoginActivity : AppCompatActivity() {
         btnSignIn?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if (!TextUtils.isEmpty(email?.text.toString()) && !TextUtils.isEmpty(password?.text.toString())) {
-                    mAuth.signInWithEmailAndPassword(
+                    pd = ProgressDialog(this@LoginActivity)
+                    pd!!.setMessage("Signing In Wait")
+                    pd!!.setCancelable(false)
+                    pd!!.show()
+                     mAuth.signInWithEmailAndPassword(
                         email?.text.toString(),
                         password?.text.toString()
                     )
@@ -103,34 +118,17 @@ class LoginActivity : AppCompatActivity() {
                                 Globaluser_ID =
                                     FirebaseAuth.getInstance().currentUser?.uid.toString()
                                 checkUserType()
-
-                            } else if (email!!.text.toString().equals("admin@gmail.com")) {
-                                UserType = "admin"
-                                startActivity(
-                                    Intent(
-                                        this@LoginActivity,
-                                        AdminNav_Activity::class.java
-                                    )
-                                )
-                            } else {
+                            }  else {
                                 Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG)
                                     .show()
+                                pd!!.dismiss()
                             }
                         })
                 }
 
             }
         })
-        btnNewUser?.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                startActivity(Intent(this@LoginActivity, RegisterationActivity::class.java))
-            }
-        })
-        btnForgotPassword?.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-            }
-        })
-    }
+     }
 
     private fun createToken() {
         FirebaseInstanceId.getInstance().instanceId
@@ -162,12 +160,13 @@ class LoginActivity : AppCompatActivity() {
                     createToken()
                     startActivity(Intent(this@LoginActivity, UserActivity::class.java))
                 } else if (UserType.equals("Driver")) {
+                    createToken()
                     startActivity(Intent(this@LoginActivity, UserActivity::class.java))
                 } else if (UserType.equals("Admin")) {
                     startActivity(Intent(this@LoginActivity, AdminNav_Activity::class.java))
                 }
-
-            }
+                pd!!.dismiss()
+             }
 
             override fun onCancelled(databaseError: DatabaseError) {
 

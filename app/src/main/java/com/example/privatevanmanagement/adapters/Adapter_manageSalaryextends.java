@@ -20,19 +20,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.privatevanmanagement.R;
-import com.example.privatevanmanagement.models.ManageFee_Model;
-import com.example.privatevanmanagement.models.ManageSalary_Model;
+import com.example.privatevanmanagement.models.DriverDetail_Model;
+ import com.example.privatevanmanagement.utils.Objects;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Adapter_manageSalaryextends extends RecyclerView.Adapter<Adapter_manageSalaryextends.manageSalaryextends_viewHolder> {
 
 
-    ArrayList<ManageSalary_Model> manageSalary_List;
-Context context;
-    public Adapter_manageSalaryextends(ArrayList<ManageSalary_Model> manageSalary_List, Context context) {
+    ArrayList<DriverDetail_Model> manageSalary_List;
+    Context context;
+    String new_status = "";
+
+    public Adapter_manageSalaryextends(ArrayList<DriverDetail_Model> manageSalary_List, Context context) {
         this.manageSalary_List = manageSalary_List;
-        this.context=context;
+        this.context = context;
     }
 
     @NonNull
@@ -40,18 +45,20 @@ Context context;
     public manageSalaryextends_viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_manage_salary, parent, false);
-        manageSalaryextends_viewHolder viewHolder= new manageSalaryextends_viewHolder(view);
+        manageSalaryextends_viewHolder viewHolder = new manageSalaryextends_viewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull manageSalaryextends_viewHolder holder, final int position) {
-        holder.driverName.setText(manageSalary_List.get(position).getName());
-        holder.driverStatus.setText(manageSalary_List.get(position).getStatus());
+        holder.driverName.setText(manageSalary_List.get(position).getDriver_name());
+        holder.driverStatus.setText(manageSalary_List.get(position).getSalary_status());
         holder.edit_driver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogManageFee(manageSalary_List.get(position).getName());
+                showDialogManageFee(manageSalary_List.get(position).getDriver_name()
+                        ,manageSalary_List.get(position).getSalary_status()
+                        ,manageSalary_List.get(position).getDriver_id());
             }
         });
     }
@@ -77,7 +84,9 @@ Context context;
     }
 
 
-    public void showDialogManageFee(String name) {
+    public void showDialogManageFee(String driver_name, String salary_status, final String driver_id) {
+
+        new_status=salary_status;
 
         final Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
@@ -85,18 +94,32 @@ Context context;
 
 
         EditText et_driver_name = (EditText) dialog.findViewById(R.id.et_driver_name);
-        EditText et_driver_new = (EditText) dialog.findViewById(R.id.et_driver_new);
+        final EditText et_driver_new = (EditText) dialog.findViewById(R.id.et_driver_new);
         Spinner spinner_driver_status = (Spinner) dialog.findViewById(R.id.spinner_driver_status);
         ImageButton btn_closeDialog = (ImageButton) dialog.findViewById(R.id.btn_closeDialog);
 
 
-        et_driver_name.setText(name);
+        et_driver_name.setText(driver_name);
 
         Button btn_driver_managed = (Button) dialog.findViewById(R.id.btn_driver_managed);
         btn_driver_managed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //data update here then close dialog
+
+                if (!et_driver_new.getText().toString().isEmpty() && !new_status.isEmpty()) // agr new fee ammont empty na ho to Update kare
+                {
+                    DatabaseReference ref = Objects.getFirebaseInstance().getReference().child("DriverDetails").child(driver_id);
+                    Map<String, Object> updates = new HashMap<String, Object>();
+
+                    updates.put("salary_status", new_status);
+                    updates.put("salary_ammount", et_driver_new.getText().toString());
+                    ref.updateChildren(updates);
+
+                    Toast.makeText(context, "Fee Details Updated", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+
                 Toast.makeText(context, "Salary Details Updated", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
@@ -104,7 +127,7 @@ Context context;
 
 
         ArrayAdapter<String> arrayAdapter;
-        ArrayList<String> status_Array = new ArrayList<>();
+        final ArrayList<String> status_Array = new ArrayList<>();
         status_Array.add("Paid");
         status_Array.add("Un-Paid");
         arrayAdapter = new ArrayAdapter<String>(
@@ -116,6 +139,7 @@ Context context;
         spinner_driver_status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                new_status = status_Array.get(position);
 
             }
 

@@ -2,6 +2,7 @@ package com.example.privatevanmanagement.Fragments.admin
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +13,16 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.AdminNav_Activity
+import com.example.privatevanmanagement.activities.LoginActivity
 import com.example.privatevanmanagement.models.DriverDetail_Model
 import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.models.VanDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.*
 import com.example.privatevanmanagement.utils.SendNotification
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuth.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -48,13 +53,17 @@ class Admin_home : Fragment(), View.OnClickListener {
         val rootView = inflater!!.inflate(R.layout.fragment_admin_home, container, false)
         mContext = rootView.context
 
+        activity?.setTitle("PVM")
+
         if (student_modelList.isEmpty()) {
             pd = ProgressDialog(context)
             pd!!.setMessage("Fetching Data From Server")
             pd!!.setCancelable(false)
             pd!!.show()
             getStudentList()
+            getDriverList()
             getVanData()
+            getFreeVanData()
             getfreeDriverrData()
         }
         init(rootView)
@@ -87,6 +96,10 @@ class Admin_home : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         if (v?.id == R.id.add_newStudent) {
             mainActivity!!.replaceFragment(AddStudent(), null)
+
+
+
+
         } else if (v?.id == R.id.add_newDriver) {
             mainActivity!!.replaceFragment(AddDriver(), null)
         } else if (v?.id == R.id.add_newVan) {
@@ -189,21 +202,26 @@ class Admin_home : Fragment(), View.OnClickListener {
         })
     }
 
-    fun getVanData() {
-        val myRef = Objects.getFirebaseInstance().getReference()
-        val query = myRef.child("AddVan").orderByChild("assign_Status").equalTo("")
 
-        query.addValueEventListener(object : ValueEventListener {
+    fun getDriverList() {
+        val myRef = Objects.getFirebaseInstance().getReference("DriverDetails")
+        myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                vanList.clear()
+
+                driver_modelList.clear()
+
                 for (postSnapshot in snapshot.children) {
-                    val listDataRef = postSnapshot.getValue(VanDetail_Model::class.java)!!
-                    vanList.add(listDataRef)
+                    val listDataRef = postSnapshot.getValue(DriverDetail_Model::class.java)!!
+                    driver_modelList.add(listDataRef)
                 }
+                pd!!.dismiss()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 System.out.println("The read failed: " + databaseError.getMessage())
+                Toast.makeText(context, "Unable to fetch data from Server", Toast.LENGTH_LONG)
+                    .show()
+                pd!!.dismiss()
             }
         })
     }
@@ -227,5 +245,41 @@ class Admin_home : Fragment(), View.OnClickListener {
         })
     }
 
+    fun getVanData() {
+        val myRef = Objects.getFirebaseInstance().getReference()
+        val query = myRef.child("AddVan")
+
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                vanList.clear()
+                for (postSnapshot in snapshot.children) {
+                    val listDataRef = postSnapshot.getValue(VanDetail_Model::class.java)!!
+                    vanList.add(listDataRef)
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage())
+            }
+        })
+    }
+
+    fun getFreeVanData() {
+        val myRef = Objects.getFirebaseInstance().getReference()
+        val query = myRef.child("AddVan").orderByChild("assign_Status").equalTo("")
+
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                freevanList.clear()
+                for (postSnapshot in snapshot.children) {
+                    val listDataRef = postSnapshot.getValue(VanDetail_Model::class.java)!!
+                    freevanList.add(listDataRef)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage())
+            }
+        })
+    }
 
 }

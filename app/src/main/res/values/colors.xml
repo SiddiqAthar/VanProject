@@ -9,7 +9,6 @@
     <!-- MML design Colors -->
     <color name="textColor">#2d2c2c</color>
     <color name="white">#ffffff</color>
-    <color name="bgColor">#a0e2e2e2</color>
     <color name="button_new_pressed">#868686</color>
     <color name="button_pressed">#535353</color>
     <color name="button_focused">#e01f28</color>
@@ -21,6 +20,5 @@
     <color name="input_bg">#d60625</color>
     <color name="transparent">#ffffff</color>
     <color name="BlackColor">#000000</color>
-    <color name="user_info_row_bg">#9BBB58</color>
     <color name="lowOpacity">#00FFFFFF</color>
 </resources>

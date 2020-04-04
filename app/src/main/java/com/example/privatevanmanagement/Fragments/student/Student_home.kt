@@ -1,23 +1,21 @@
 package com.example.privatevanmanagement.Fragments.student
 
-import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import com.example.privatevanmanagement.ChatModule.ShowActivities.Student_chat_list
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.activities.UserActivity
 import com.example.privatevanmanagement.adapters.Spinner_Adapter
 import com.example.privatevanmanagement.models.Shift_Model
-import com.example.privatevanmanagement.utils.MyInterface
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.shift_list
 import java.util.*
@@ -77,18 +75,36 @@ class Student_home : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if (v?.id == R.id.stud_setTime) {
-            showDialogSetTime("Set")
-        } else if (v?.id == R.id.stud_editTime) {
-            showDialogSetTime("Update")
-        } else if (v?.id == R.id.stud_payFee) {
-            mainActivity!!.replaceFragmentUserActivity(Student_payFee(), null)
-        } else if (v?.id == R.id.stud_trackVan) {
-            mainActivity!!.replaceFragmentUserActivity(Student_TrackVans(), null)
-        } else if (v?.id == R.id.stud_sendComplaint) {
+        if (Objects.getStudentDetailInstance().status.equals("UnBlocked")) {// agr status unbloced ni hai to sirf complaint ya fee submit kara skta
+            if (v?.id == R.id.stud_setTime) {
+                if (Objects.getStudentDetailInstance().shift_time.equals(""))  // agr shift already set ni hai to
+                    showDialogSetTime("Set")
+                else {
+                    Toast.makeText(context, "Time already set", Toast.LENGTH_SHORT).show()
+                }
+            } else if (v?.id == R.id.stud_editTime) {
+
+                if (!Objects.getStudentDetailInstance().shift_time.equals(""))  // agr shift already set ni hai to
+                    showDialogSetTime("Update")
+                else {
+                    Toast.makeText(context, "Need to Set Time first", Toast.LENGTH_SHORT).show()
+                }
+
+            } else if (v?.id == R.id.stud_trackVan) {
+                mainActivity!!.replaceFragmentUserActivity(Student_TrackVans(), null)
+            } else if (v?.id == R.id.stud_chatDriver) {
+                startActivity(Intent(context, Student_chat_list::class.java))
+            }
+            else if (v?.id == R.id.stud_payFee) {
+                mainActivity!!.replaceFragmentUserActivity(Student_payFee(), null)
+            }
+        }
+         else if (v?.id == R.id.stud_sendComplaint) {
             showDialogMakeComplaint()
-        } else if (v?.id == R.id.stud_chatDriver) {
-//            mainActivity!!.replaceFragmentUserActivity(Student_Chat(), null)
+        }
+        else
+        {
+            Toast.makeText(context, "Sorry you're temporarily blocked. Make Complaint", Toast.LENGTH_SHORT).show()
         }
     }
 

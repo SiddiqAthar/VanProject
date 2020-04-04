@@ -1,12 +1,11 @@
 package com.example.privatevanmanagement.Fragments.admin
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-
+import androidx.fragment.app.Fragment
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.adapters.Spinner_FreeDriver_Adapter
@@ -15,7 +14,13 @@ import com.example.privatevanmanagement.models.DriverDetail_Model
 import com.example.privatevanmanagement.models.VanDetail_Model
 import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.sortedList
-import java.util.HashMap
+import com.example.privatevanmanagement.utils.SendNotification
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Allocate_toStudent : Fragment() {
 
@@ -27,11 +32,13 @@ class Allocate_toStudent : Fragment() {
     private lateinit var driverName_adapter: Adapter
     var btn_Allocate_toStudent: Button? = null
 
+    var userRef2: DatabaseReference? = null
     //selected Van and Driver
     var selected_van_id: String? = null
     var selected_van_registeration: String? = null
     var selected_driver_id: String? = null
     var selected_driver_name: String? = null
+    var dummyArrayList: ArrayList<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +53,7 @@ class Allocate_toStudent : Fragment() {
         rootView = inflater.inflate(R.layout.fragment_allocate_to_student, container, false)
         activity?.setTitle("Allocate to Student")
 
+        dummyArrayList = ArrayList()
 
         init(rootView)
 
@@ -62,7 +70,7 @@ class Allocate_toStudent : Fragment() {
 
         vanNumber_adapter = Spinner_Van_Adapter(
             this!!.context!!, R.id.spinner_item_tv, R.id.spinner_item_tv,
-            Objects.vanList as ArrayList<VanDetail_Model>
+            Objects.freevanList as ArrayList<VanDetail_Model>
         )
         vanNumber_Spinner?.adapter = vanNumber_adapter as Spinner_Van_Adapter
 
@@ -102,16 +110,31 @@ class Allocate_toStudent : Fragment() {
             }
         }
 
-
-
         btn_Allocate_toStudent!!.setOnClickListener(View.OnClickListener {
 
-            updateVaninfo()
-            updateStudentinfo()
-            updateDriverinfo()
+            if (!selected_van_id.isNullOrEmpty() || !selected_driver_id.isNullOrEmpty()) {
+
+                updateVaninfo()
+                updateStudentinfo()
+                updateDriverinfo()
+                updateScheduledList()
+
+                sendMessageToStudent("Dear Student your driver is " + selected_driver_name + " with Van " + selected_van_registeration)
+                sendMessageToDriver("Dear you have allocated van "+selected_van_registeration+".")
+
+            }
 
         })
 
+    }
+
+
+    private fun updateScheduledList() {
+        userRef2 = Objects.getFirebaseInstance().getReference().child("scheduled_list")
+            .child(selected_driver_id.toString())
+        for (i in 0 until sortedList.size) {
+            userRef2!!.child(sortedList.get(i).student_id).setValue(sortedList.get(i).student_name)
+        }
     }
 
     private fun updateVaninfo() {
@@ -128,10 +151,11 @@ class Allocate_toStudent : Fragment() {
         }
     }
 
+
     private fun updateStudentinfo() {
         for (i in 0 until sortedList.size) {
-            val ref = Objects.getFirebaseInstance().reference.child("StudentDetails").child(
-                sortedList.get(i).student_id)
+            val ref = Objects.getFirebaseInstance().reference.child("StudentDetails")
+                .child(sortedList.get(i).student_id)
 
             val updates = HashMap<String, Any>()
 
@@ -144,10 +168,11 @@ class Allocate_toStudent : Fragment() {
             }
 
         }
-     }
+    }
 
     private fun updateDriverinfo() {
-        val ref = Objects.getFirebaseInstance().reference.child("DriverDetails").child(selected_driver_id.toString())
+        val ref = Objects.getFirebaseInstance().reference.child("DriverDetails")
+            .child(selected_driver_id.toString())
         val updates = HashMap<String, Any>()
 
         updates["assigned_status"] = "Yes"
@@ -162,6 +187,57 @@ class Allocate_toStudent : Fragment() {
         mainActivity!!.replaceFragment(Admin_home(), null)
     }
 
+    private fun sendMessageToStudent(toString: String) {
+        var userList = ArrayList<String>()
+        val myRef = Objects.getFirebaseInstance().getReference("Token")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (i in 0 until sortedList.size) {
+                    for (postSnapshot in snapshot.children) {
+                        if(sortedList.get(i).student_id.equals(postSnapshot.key))
+                        userList.add(postSnapshot.value.toString())
+                    }
+                }
+                msgsendToStudent(userList, toString)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage())
+            }
+        })
+    }
 
+
+    private fun sendMessageToDriver(toString: String) {
+        val myRef =
+            Objects.getFirebaseInstance().getReference("Token").child(selected_driver_id.toString())
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var userList = ArrayList<String>()
+                userList.add(snapshot.key.toString())
+                msgsendToDriver(userList, toString)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage())
+            }
+        })
+    }
+
+    fun msgsendToStudent(to: ArrayList<String>, body: String) {
+
+/*        for (i in 0 until sortedList.size) {
+            if (to.get(i).equals(sortedList.get(i).student_id)) {
+                dummyArrayList!!.add(sortedList.get(i).student_id)
+            }
+        }*/
+        var sendNoteaa = SendNotification()
+        sendNoteaa.execute(to, body);
+    }
+
+    fun msgsendToDriver(to: ArrayList<String>, body: String) {
+
+        var sendNoteaa = SendNotification()
+        sendNoteaa.execute(to, body);
+    }
 
 }

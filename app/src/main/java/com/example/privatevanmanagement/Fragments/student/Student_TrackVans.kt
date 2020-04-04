@@ -65,7 +65,7 @@ class Student_TrackVans : Fragment(), OnMapReadyCallback {
 
         try {
             MapsInitializer.initialize(activity!!.applicationContext)
-        } catch (e: Exception) {
+        } catch (e: kotlin.Exception) {
             e.printStackTrace()
         }
 

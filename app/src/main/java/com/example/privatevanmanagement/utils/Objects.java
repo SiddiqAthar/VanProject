@@ -1,13 +1,12 @@
 package com.example.privatevanmanagement.utils;
 
+import com.example.privatevanmanagement.ChatModule.Model.ChatList;
 import com.example.privatevanmanagement.models.AdminDetail_Model;
 import com.example.privatevanmanagement.models.DriverDetail_Model;
-import com.example.privatevanmanagement.models.Schedule_Student_Model;
 import com.example.privatevanmanagement.models.Shift_Model;
 import com.example.privatevanmanagement.models.StudentDetail_Model;
 import com.example.privatevanmanagement.models.VanDetail_Model;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -19,11 +18,14 @@ public class Objects {
     static public FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     static public String Token = "";
     static public String UserType = "";
+
     static public List<StudentDetail_Model> student_modelList = new ArrayList<>();
     static public List<StudentDetail_Model> sortedList = new ArrayList<>();
     static public List<VanDetail_Model> vanList = new ArrayList<>();
+    static public List<VanDetail_Model> freevanList = new ArrayList<>();
     static public List<DriverDetail_Model> driver_modelList = new ArrayList<>();
     static public List<DriverDetail_Model> freeDriverList = new ArrayList<>();
+    static public List<ChatList> scheduled_list = new ArrayList<>();
     static public List<String> group_list = new ArrayList<>();
     static public List<Shift_Model> shift_list = new ArrayList<>();
 

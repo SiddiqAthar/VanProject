@@ -46,6 +46,7 @@
         android:layout_below="@id/Email"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:text="default123"
         android:background="@drawable/edittext_design"
         android:drawableLeft="@mipmap/password"
         android:drawablePadding="@dimen/margin10dp"
@@ -64,23 +65,4 @@
         android:background="@drawable/login_button_round"
         android:textColor="@color/white"
         android:text="Sign In" />
-
-
-    <Button
-        android:visibility="gone"
-        android:id="@+id/btn_createaccount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/btn_forgotpassword"
-        android:text="Create account" />
-
-    <Button
-        android:visibility="gone"
-        android:id="@+id/btn_forgotpassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="Forgot Password" />
-
-
 </RelativeLayout>

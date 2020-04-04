@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.adapters.Adapter_manageSalaryextends
-import com.example.privatevanmanagement.models.ManageSalary_Model
+import com.example.privatevanmanagement.models.DriverDetail_Model
+import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.driver_modelList
 import java.util.*
 
 
@@ -20,7 +22,7 @@ public class Admin_ManageSalary : Fragment() {
 
     private var rv_manageSalary: RecyclerView? = null
     private var adapter_manageSalary: Adapter_manageSalaryextends? = null
-    var ArrayList_Model: ArrayList<ManageSalary_Model>? = null
+    var ArrayList_Model: ArrayList<DriverDetail_Model>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,27 +30,14 @@ public class Admin_ManageSalary : Fragment() {
     ): View? {
 
         rootView = inflater.inflate(R.layout.fragment_admin__manage_salary, container, false)
+        activity?.setTitle("Pay Salary")
+
         init(rootView)
         return rootView
     }
 
     private fun init(rootView: View?) {
         rv_manageSalary = rootView?.findViewById(R.id.rv_manageSalary)
-
-        ArrayList_Model = ArrayList<ManageSalary_Model>()
-        //add dummy data
-        ArrayList_Model!!.add(ManageSalary_Model("", "Siddiq", "Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Uzair", "Un-Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Usman", "Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Zohaib", "Un-Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Umer", "Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Ali", "Un-Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Ahtisham", "Un-Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Athar Iqbal", "Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Nabeeel Shoukat", "Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Abu Bakar", "Un-Paid"))
-        ArrayList_Model!!.add(ManageSalary_Model("", "Zaheer", "Un-Paid"))
-
 
         rv_manageSalary?.setLayoutManager(LinearLayoutManager(activity))
         rv_manageSalary?.setNestedScrollingEnabled(false)
@@ -60,8 +49,25 @@ public class Admin_ManageSalary : Fragment() {
             )
         )
 
-        adapter_manageSalary = Adapter_manageSalaryextends(ArrayList_Model, activity)
-        rv_manageSalary?.setAdapter(adapter_manageSalary)
+        if (Objects.student_modelList.isNullOrEmpty()) // agr list empty hai to jae
+        {
+            val adminHome = Admin_home()
+            adminHome.getStudentList()
+            adapter_manageSalary = Adapter_manageSalaryextends(
+                driver_modelList as ArrayList<DriverDetail_Model>?,
+                activity
+            )
+            adapter_manageSalary!!.notifyDataSetChanged()
+            rv_manageSalary?.setAdapter(adapter_manageSalary)
 
+        } else {
+            adapter_manageSalary = Adapter_manageSalaryextends(
+                driver_modelList as ArrayList<DriverDetail_Model>?,
+                activity
+            )
+            adapter_manageSalary!!.notifyDataSetChanged()
+            rv_manageSalary?.setAdapter(adapter_manageSalary)
+        }
     }
+
 }

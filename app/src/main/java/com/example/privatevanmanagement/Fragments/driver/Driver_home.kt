@@ -1,8 +1,8 @@
 package com.example.privatevanmanagement.Fragments.driver
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +10,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-
+import androidx.fragment.app.Fragment
+import com.example.privatevanmanagement.ChatModule.ShowActivities.Driver_chat_list
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.UserActivity
-import com.example.privatevanmanagement.models.DriverDetail_Model
 import com.example.privatevanmanagement.utils.Objects
-import com.example.privatevanmanagement.utils.Objects.driver_modelList
+import com.example.privatevanmanagement.utils.Objects.scheduled_list
 import com.example.privatevanmanagement.utils.SendNotification
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -42,11 +42,9 @@ class Driver_home : Fragment(), View.OnClickListener {
         }
         val rootView = inflater!!.inflate(R.layout.fragment_driver_home, container, false)
         mContext = rootView.context
+        activity?.setTitle("PVM")
 
-        if(driver_modelList.isEmpty())
-            getDriverList()
-
-        init(rootView)
+         init(rootView)
 
         return rootView
 
@@ -70,21 +68,10 @@ class Driver_home : Fragment(), View.OnClickListener {
         if (v?.id == R.id.driver_comingTrip) {
             mainActivity!!.replaceFragmentUserActivity(Driver_Coming_Trip(), null)
         } else if (v?.id == R.id.driver_chat) {
-//            mainActivity!!.replaceFragmentUserActivity(AddDriver(), null)
+            startActivity(Intent(context, Driver_chat_list::class.java))
         } else if (v?.id == R.id.driver_announcment) {
             showDialogMakeAnnouncment()
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        (activity as AppCompatActivity).supportActionBar!!.hide()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity as AppCompatActivity).supportActionBar!!.show()
     }
 
 
@@ -128,32 +115,7 @@ class Driver_home : Fragment(), View.OnClickListener {
         }
     }
 
-
-    fun getDriverList() {
-        val myRef = Objects.getFirebaseInstance().getReference("DriverDetails")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                driver_modelList.clear()
-
-                for (postSnapshot in snapshot.children) {
-                    val listDataRef = postSnapshot.getValue(DriverDetail_Model::class.java)!!
-                    driver_modelList.add(listDataRef)
-                 }
-              }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                System.out.println("The read failed: " + databaseError.getMessage())
-                Toast.makeText(context, "Unable to fetch data from Server", Toast.LENGTH_LONG)
-                    .show()
-             }
-        })
-    }
-
-
-
     private fun sendMessage(toString: String) {
-//        val myRef = Objects.getFirebaseInstance().getReference("Token").child(Globaluser_ID)
         val myRef = Objects.getFirebaseInstance().getReference("Token")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -174,7 +136,6 @@ class Driver_home : Fragment(), View.OnClickListener {
         var sendNoteaa = SendNotification()
         sendNoteaa.execute(to, body);
     }
-
 
 
 

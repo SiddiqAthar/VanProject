@@ -20,7 +20,12 @@ import android.widget.ArrayAdapter
 import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects.group_list
-import java.util.HashMap
+ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+ import android.util.Log
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import java.util.*
 
 
 class AddStudent : Fragment() {
@@ -28,8 +33,13 @@ class AddStudent : Fragment() {
 
     var password: String? = "default123"
     var selectedGroup: String? = null
+
     var bundle_student_id: String? = null
     var bundle_student_name: String? = null
+    var bundle_student_contact: String? = null
+    var bundle_student_cnic: String? = null
+    var bundle_student_address: String? = null
+
     var rootView: View? = null
     var Email_tv: TextView? = null
     var StudentName: EditText? = null
@@ -41,8 +51,8 @@ class AddStudent : Fragment() {
     var arrayAdapter: ArrayAdapter<String>? = null
     var group: String? = null
     var btn_StudentInfo: Button? = null
-    lateinit var databaseReference: DatabaseReference
     var pd: ProgressDialog? = null
+    lateinit var databaseReference: DatabaseReference
 
     var mainActivity: AdminNav_Activity? = null
 
@@ -68,26 +78,13 @@ class AddStudent : Fragment() {
         init(rootView)
 
         if (arguments != null) {
-            //visibility gone due to no need of change Email
-            StudentEmail!!.visibility = View.GONE
-            Email_tv!!.visibility = View.GONE
-
-
-            if (arguments!!.containsKey("student_id")) {
-                bundle_student_id = arguments!!.getString("student_id")
-            }
-            if (arguments!!.containsKey("student_name")) {
-                bundle_student_name = arguments!!.getString("student_name")
-            }
-            // update wali side sy a rha hai, to update k mutabiq kam karna hai ab uska
-            btn_StudentInfo!!.text = "Update Detail"
-            StudentName!!.isEnabled = false
-            StudentName?.setText(bundle_student_name)
+            reloadData()
         }
 
 
         return rootView
     }
+
 
     private fun init(rootView: View?) {
 //        mAuth = FirebaseAuth.getInstance()
@@ -108,7 +105,7 @@ class AddStudent : Fragment() {
         btn_StudentInfo?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 //                createAccount(StudentEmail!!.text.toString(), "default123")
-                if (bundle_student_name.isNullOrEmpty()) {
+                if (arguments == null) {
                     if (validateForm()) {
                         // add new
                         pd = ProgressDialog(context)
@@ -116,16 +113,12 @@ class AddStudent : Fragment() {
                         pd!!.setCancelable(false)
                         pd!!.show()
                         createAccount(StudentEmail!!.text.toString(), "default123")
+
                     }
                 } else {
                     //update existing
-                    updateAccount(bundle_student_name!!, bundle_student_id!!)
-
-                    // at end go to main Home
-                    mainActivity!!.replaceFragment(Admin_home(), null)
-                }
-
-
+                    updateAccount(bundle_student_id!!)
+                 }
             }
         })
 
@@ -136,21 +129,70 @@ class AddStudent : Fragment() {
         )
 
         group_Spinner?.adapter = arrayAdapter
-        group_Spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                println("Error")
+        group_Spinner?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    println("Error")
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                ) {
+                    group = parent?.getItemAtPosition(position).toString()
+                }
+
             }
 
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                group = parent?.getItemAtPosition(position).toString()
+
+        val autocompleteFragment = (activity as AdminNav_Activity).getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
+
+// Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
+
+// Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                Log.i("YES", "Place: " + place.getName() + ", " + place.getId())
             }
 
-        }
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                Log.i("cs", "An error occurred: $status")
+            }
+        })
 
     }
 
+    private fun reloadData() {
+        //visibility gone due to no need of change Email
+        StudentEmail!!.visibility = View.GONE
+        Email_tv!!.visibility = View.GONE
+
+        if (arguments!!.containsKey("student_id")) {
+            bundle_student_id = arguments!!.getString("student_id")
+        }
+        if (arguments!!.containsKey("student_name")) {
+            bundle_student_name = arguments!!.getString("student_name")
+        }
+        if (arguments!!.containsKey("student_cnic")) {
+            bundle_student_cnic = arguments!!.getString("student_cnic")
+        }
+        if (arguments!!.containsKey("student_contact")) {
+            bundle_student_contact = arguments!!.getString("student_contact")
+        }
+        if (arguments!!.containsKey("student_address")) {
+            bundle_student_address = arguments!!.getString("student_address")
+        }
+
+        // update wali side sy a rha hai, to update k mutabiq kam karna hai ab uska
+        btn_StudentInfo!!.text = "Update Detail"
+        StudentName!!.isEnabled = false
+        StudentName?.setText(bundle_student_name)
+        StudentCnic?.setText(bundle_student_cnic)
+        StudentContact?.setText(bundle_student_contact)
+        StudentAddress?.setText(bundle_student_address)
+    }
 
     private fun createAccount(email: String, password: String) {
         Objects.getInstance()?.createUserWithEmailAndPassword(email, password)
@@ -208,8 +250,7 @@ class AddStudent : Fragment() {
                         "Send Credentials to User",
                         StudentEmail?.text.toString()
                     )
-                }
-                else {
+                } else {
                     Toast.makeText(
                         activity, "Authentication failed.",
                         Toast.LENGTH_SHORT
@@ -219,7 +260,7 @@ class AddStudent : Fragment() {
             }
     }
 
-    private fun updateAccount(name: String, student_id: String) {
+    private fun updateAccount(student_id: String) {
 
 
         val ref = Objects.getFirebaseInstance().reference.child("StudentDetails").child(student_id)
@@ -237,10 +278,11 @@ class AddStudent : Fragment() {
         if (!group.isNullOrEmpty())
             updates["group"] = group.toString()
 
-
         if (updates.size > 0) {
             ref.updateChildren(updates)
             Toast.makeText(context, "Data updated", Toast.LENGTH_SHORT).show()
+            // at end go to main Home
+            mainActivity!!.replaceFragment(Admin_home(), null)
         } else {
             Toast.makeText(context, "Nothing to update", Toast.LENGTH_SHORT).show()
         }
@@ -307,57 +349,6 @@ class AddStudent : Fragment() {
         )
 
     }
-
-
-    // extra useless Code
-
-    /*  private fun getVanDta2() {
-          var databaseReferenc = Objects.getFirebaseInstance().reference.child("AddVan")
-              .child(Objects.UserID.Globaluser_ID)
-
-          databaseReferenc.addListenerForSingleValueEvent(object : ValueEventListener {
-              override fun onCancelled(p0: DatabaseError) {
-              }
-
-              override fun onDataChange(dataSnapshot: DataSnapshot) {
-                  for (productSnapshot in dataSnapshot.getChildren()) {
-  //                var request_key = productSnapshot.key.toString()
-                      var From_UId = productSnapshot.key.toString()
-                      var userInfo = databaseReferenc.child(From_UId)
-                      userInfo.addListenerForSingleValueEvent(object : ValueEventListener {
-                          override fun onCancelled(p0: DatabaseError) {}
-                          override fun onDataChange(p0: DataSnapshot) {
-                              Objects.getVanDetailInstance().vanID = From_UId.toString()
-                              Objects.getVanDetailInstance()!!.vanModel =
-                                  p0.child("VanModel").getValue().toString()
-                              Objects.getVanDetailInstance().vanName =
-                                  p0.child("VanName").getValue().toString()
-                              Objects.getVanDetailInstance().vanNumber =
-                                  p0.child("VanNumber").getValue().toString()
-  //                            van_array!!.add(
-  //                                VanDetail_Model(
-  //                                    Objects.getVanDetailInstance().vanID,
-  //                                    Objects.getVanDetailInstance().vanModel,
-  //                                    Objects.getVanDetailInstance().vanName,
-  //                                    Objects.getVanDetailInstance().vanNumber
-  //                                )
-  //                            )
-                              *//*                van_array!!.add(
-                                                    Objects.getVanDetailInstance().vanID.toString()
-                                                    )*//*
-
-                            arrayAdapter!!.notifyDataSetChanged()
-                        }
-                    })
-
-                }
-//            itemArrayAdapter.setListData(postArray)
-//            itemArrayAdapter.notifyDataSetChanged()
-            }
-        })
-
-
-    }*/
 
     private fun validateForm(): Boolean {
         var valid = true

@@ -8,10 +8,15 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
 
     <application
         android:allowBackup="true"
@@ -63,12 +68,7 @@
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
         <activity android:name=".activities.UserActivity" />
-        <activity android:name=".activities.AddDetails" />
-        <activity android:name=".activities.RegisterationActivity" />
-        <activity android:name=".ChatModule.ShowActivities.Register" />
-        <activity android:name=".ChatModule.ShowActivities.Chat" />
-        <activity android:name=".ChatModule.ShowActivities.Users" />
-        <activity
+         <activity
             android:name=".activities.AdminNav_Activity"
             android:label="@string/title_activity_nav"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -76,8 +76,8 @@
         <activity
             android:name=".activities.BaseActivity"
             android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme.NoActionBar" /> <!-- <activity android:name=".ChatModule.ShowActivities.Login"> -->
-        <activity android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+         <activity android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -85,6 +85,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ChatModule.ShowActivities.Student_chat_list" />
+        <activity android:name=".ChatModule.ShowActivities.Driver_chat_list" />
+        <activity android:name=".ChatModule.ShowActivities.Chat" />
 
     </application>
 

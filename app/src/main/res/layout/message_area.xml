@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
+    android:background="@drawable/bubble_to"
     android:orientation="horizontal">
 
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,4 +33,38 @@
             android:padding="4dp"
             android:src="@drawable/ic_send_mail" />
     </LinearLayout>
+-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/editext_bg_chat"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/messageArea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:hint="Message"
+            android:inputType="textNoSuggestions|textMultiLine"
+            android:maxLines="3"
+            android:minLines="1"
+            android:paddingLeft="15dp"
+            android:paddingTop="8dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="8dp"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/ic_send_black_24dp"  />
+    </LinearLayout>
+
 </LinearLayout>
