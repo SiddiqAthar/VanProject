@@ -37,6 +37,9 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -78,14 +81,13 @@
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar" />
          <activity android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
+            android:theme="@style/AppTheme.NoActionBar" > <!-- <activity android:name=".ChatModule.ShowActivities.Login"> -->
+             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
+         </activity>
         <activity android:name=".ChatModule.ShowActivities.Student_chat_list" />
         <activity android:name=".ChatModule.ShowActivities.Driver_chat_list" />
         <activity android:name=".ChatModule.ShowActivities.Chat" />

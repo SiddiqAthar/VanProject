@@ -74,6 +74,11 @@ class LoginActivity : AppCompatActivity() {
             })
     }
 
+    fun sethardCodedPassword() {
+        email?.setText("driver.1@gmail.com")
+        password?.setText("default123")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -94,6 +99,7 @@ class LoginActivity : AppCompatActivity() {
         email!!.startAnimation(animslideUp)
         password = findViewById(R.id.Password) as EditText
         password!!.startAnimation(animslideUp)
+        sethardCodedPassword()
 
 
 

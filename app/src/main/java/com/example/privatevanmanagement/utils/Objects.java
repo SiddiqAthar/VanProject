@@ -28,8 +28,10 @@ public class Objects {
     static public List<ChatList> scheduled_list = new ArrayList<>();
     static public List<String> group_list = new ArrayList<>();
     static public List<Shift_Model> shift_list = new ArrayList<>();
-
-
+    static public String driverLatLongTable = "driver_lat_long";
+    static public String studentLatLongTable = "student_lat_long";
+    public static android.location.Location driverLastLocation = null;
+    public static android.location.Location studentLastLocation = null;
     public static FirebaseAuth getInstance() {
         if (mAuth == null) {
             mAuth = FirebaseAuth.getInstance();
