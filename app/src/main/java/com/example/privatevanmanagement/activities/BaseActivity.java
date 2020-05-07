@@ -91,10 +91,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getLocation(true);
 
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(),"AIzaSyBLdi57ZGLkSrGDPD-7on9qCKd64vNlRAk");
-        }
-
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         group_list();
         shift_list();
@@ -181,14 +177,13 @@ public class BaseActivity extends AppCompatActivity {
 
     public void group_list() {
         DatabaseReference ref = Objects.getFirebaseInstance().getReference().child("Groups");
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 group_list.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     group_list.add(postSnapshot.getKey().toString());
-                    // here you can access to name property like university.name
-                }
+                 }
             }
 
             @Override

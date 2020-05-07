@@ -31,10 +31,44 @@
 
 
     <TextView
-        android:id="@+id/tv2"
+        android:id="@+id/tv1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/view"
+        android:text=" Select Servie "
+        android:textColor="@color/button_default_green"
+        android:textSize="@dimen/font_size_Normal"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv1"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <RadioButton
+            android:id="@+id/radio_pirates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Pick" />
+
+        <RadioButton
+            android:id="@+id/radio_ninjas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Drop" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radioGroup"
         android:text=" Select Group "
         android:textColor="@color/button_default_green"
         android:textSize="@dimen/font_size_Normal"
@@ -52,12 +86,12 @@
             android:id="@+id/group_Spinner"
             android:layout_width="match_parent"
             android:layout_height="35dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/spinner_iv"
             android:background="@null"
             android:popupBackground="@color/input_bg"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/text_size_2"
-            android:layout_toLeftOf="@+id/spinner_iv"
-            android:layout_marginRight="5dp"/>
+            android:textSize="@dimen/text_size_2" />
 
         <ImageView
             android:id="@+id/spinner_iv"
@@ -93,11 +127,11 @@
             android:id="@+id/shit_Spinner"
             android:layout_width="match_parent"
             android:layout_height="35dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/spinner_iv2"
             android:background="@null"
             android:textColor="@color/textColor"
-            android:textSize="@dimen/text_size_2"
-            android:layout_toLeftOf="@+id/spinner_iv2"
-            android:layout_marginRight="5dp"/>
+            android:textSize="@dimen/text_size_2" />
 
         <ImageView
             android:id="@+id/spinner_iv2"
@@ -115,20 +149,21 @@
         android:id="@+id/rv_Schedule"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/btn_schedule"
         android:layout_below="@+id/rl2"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_above="@+id/btn_schedule"/>
+        android:layout_marginBottom="10dp" />
 
     <Button
         android:id="@+id/btn_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/button_design"
         android:layout_marginBottom="@dimen/margin10dp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_design"
         android:text="Allocate Van" />
 
 

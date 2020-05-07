@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:weightSum="11">
 
-
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -13,13 +12,14 @@
         android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/getStudent"
-        android:layout_width="wrap_content"
+        android:id="@+id/arrived"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/margin10dp"
-        android:text="getDir" />
-
+        android:layout_margin="34dp"
+        android:background="@drawable/button_design"
+        android:text="arrival"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

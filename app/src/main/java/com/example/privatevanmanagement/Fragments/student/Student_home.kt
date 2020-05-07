@@ -98,6 +98,9 @@ class Student_home : Fragment(), View.OnClickListener {
             else if (v?.id == R.id.stud_payFee) {
                 mainActivity!!.replaceFragmentUserActivity(Student_payFee(), null)
             }
+            else if (v?.id == R.id.stud_sendComplaint) {
+                showDialogMakeComplaint()
+            }
         }
          else if (v?.id == R.id.stud_sendComplaint) {
             showDialogMakeComplaint()
@@ -221,6 +224,8 @@ class Student_home : Fragment(), View.OnClickListener {
             if (!shift.equals(drop) && updates.size > 0) {
                 ref.updateChildren(updates)
                 Toast.makeText(context, msg + " Time Successfully", Toast.LENGTH_SHORT).show()
+                Objects.getStudentDetailInstance().shift_time=shift.toString()
+                Objects.getStudentDetailInstance().drop_time=drop.toString()
                 alertDialog.dismiss()
             } else {
                 Toast.makeText(context, "Pick and Drop time can't be Same", Toast.LENGTH_SHORT)

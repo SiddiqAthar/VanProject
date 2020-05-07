@@ -1,30 +1,32 @@
 package com.example.privatevanmanagement.Fragments.admin
 
+import android.Manifest
+import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.utils.Objects
-import android.widget.AdapterView
-import android.widget.Toast
-import com.google.firebase.database.*
-import android.widget.ArrayAdapter
 import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.models.StudentDetail_Model
+import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.utils.Objects.group_list
- import com.google.android.libraries.places.widget.AutocompleteSupportFragment
- import android.util.Log
-import com.google.android.gms.common.api.Status
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.firebase.database.DatabaseReference
+import kotlinx.android.synthetic.main.custom_trip_student.*
+
 import java.util.*
 
 
@@ -40,19 +42,24 @@ class AddStudent : Fragment() {
     var bundle_student_cnic: String? = null
     var bundle_student_address: String? = null
 
+    var lat: String? = null
+    var long: String? = null
+
     var rootView: View? = null
     var Email_tv: TextView? = null
     var StudentName: EditText? = null
     var StudentEmail: EditText? = null
     var StudentCnic: EditText? = null
     var StudentContact: EditText? = null
-    var StudentAddress: EditText? = null
+    var StudentAddress: TextView? = null
     var group_Spinner: Spinner? = null
     var arrayAdapter: ArrayAdapter<String>? = null
     var group: String? = null
     var btn_StudentInfo: Button? = null
     var pd: ProgressDialog? = null
     lateinit var databaseReference: DatabaseReference
+
+    private val PLACE_PICKER_REQUEST = 1
 
     var mainActivity: AdminNav_Activity? = null
 
@@ -97,7 +104,7 @@ class AddStudent : Fragment() {
         StudentEmail = rootView?.findViewById(R.id.StudentEmail) as EditText
         StudentCnic = rootView?.findViewById(R.id.StudentCnic) as EditText
         StudentContact = rootView?.findViewById(R.id.StudentContact) as EditText
-        StudentAddress = rootView?.findViewById(R.id.StudentAddress) as EditText
+        StudentAddress = rootView?.findViewById(R.id.StudentAddress) as TextView
         group_Spinner = rootView?.findViewById(R.id.group_Spinner) as Spinner
 
 
@@ -118,8 +125,15 @@ class AddStudent : Fragment() {
                 } else {
                     //update existing
                     updateAccount(bundle_student_id!!)
-                 }
+                }
             }
+        })
+
+        StudentAddress!!.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                onAddPlaceButtonClicked()
+            }
+
         })
 
         arrayAdapter = ArrayAdapter<String>(
@@ -142,27 +156,8 @@ class AddStudent : Fragment() {
                 }
 
             }
-
-
-        val autocompleteFragment = (activity as AdminNav_Activity).getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-
-// Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
-
-// Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // TODO: Get info about the selected place.
-                Log.i("YES", "Place: " + place.getName() + ", " + place.getId())
-            }
-
-            override fun onError(status: Status) {
-                // TODO: Handle the error.
-                Log.i("cs", "An error occurred: $status")
-            }
-        })
-
     }
+
 
     private fun reloadData() {
         //visibility gone due to no need of change Email
@@ -206,8 +201,8 @@ class AddStudent : Fragment() {
                     newPost.setValue(
                         StudentDetail_Model(
                             Objects.getInstance().currentUser?.uid.toString(),
-                            "0.0",
-                            "0.0",
+                            lat,
+                            long,
                             StudentName!!.text.toString(),
                             StudentEmail!!.text.toString(),
                             StudentCnic!!.text.toString(),
@@ -218,6 +213,7 @@ class AddStudent : Fragment() {
                             "Un-Paid",
                             "2000",
                             "UnBlocked",
+                            "",
                             "",
                             "",
                             "",
@@ -377,8 +373,63 @@ class AddStudent : Fragment() {
         } else {
             StudentContact!!.error = null
         }
+        if (TextUtils.isEmpty(StudentAddress!!.text.toString())) {
+            StudentAddress!!.error = "Address Required"
+            valid = false
+        } else {
+            StudentAddress!!.error = null
+        }
 
         return valid
+    }
+
+    fun onAddPlaceButtonClicked() {
+        if (ActivityCompat.checkSelfPermission(
+                this!!.context!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(
+                this!!.context!!, "Permission_message",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+        try {
+            val builder = PlacePicker.IntentBuilder()
+            val i = builder.build(activity)
+            startActivityForResult(
+                i,
+                PLACE_PICKER_REQUEST
+            )
+        } catch (e: GooglePlayServicesRepairableException) {
+            Log.e(
+                "Tag1",
+                String.format("GooglePlayServices Not Available [%s]", e.message)
+            )
+        } catch (e: GooglePlayServicesNotAvailableException) {
+            Log.e(
+                "Tag2",
+                String.format("GooglePlayServices Not Available [%s]", e.message)
+            )
+        } catch (e: java.lang.Exception) {
+            Log.e(
+                "Tag3",
+                String.format("PlacePicker Exception: %s", e.message)
+            )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                val place: Place = PlacePicker.getPlace(data, this.context)
+                StudentAddress!!.setText(place.address.toString())
+                lat = place.latLng!!.latitude.toString()
+                long = place.latLng!!.longitude.toString()
+            }
+        }
     }
 
 

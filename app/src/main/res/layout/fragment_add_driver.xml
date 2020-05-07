@@ -155,10 +155,10 @@
                 android:textSize="@dimen/text_size_2"
                 android:textStyle="bold" />
 
-            <EditText
+            <TextView
                 android:id="@+id/DriverAddress"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/edit_text_height"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/step1_lso_reg_items_margin_top"
                 android:background="@drawable/edittext_design"
                 android:drawablePadding="@dimen/margin10dp"
@@ -167,9 +167,12 @@
                 android:gravity="center_vertical"
                 android:hint="Address"
                 android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-                android:maxLength="30"
-                android:padding="@dimen/edit_text_padding"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:paddingLeft="@dimen/edit_text_padding"
+                android:paddingRight="@dimen/edit_text_padding"
+                android:paddingTop="@dimen/margin10dp"
+                android:paddingBottom="@dimen/margin10dp"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/hint"
                 android:textSize="@dimen/text_size_2" />
@@ -190,6 +193,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/button_design"
+        android:textColor="@color/white"
         android:layout_marginBottom="@dimen/margin10dp"
         android:text="Add Driver" />
 

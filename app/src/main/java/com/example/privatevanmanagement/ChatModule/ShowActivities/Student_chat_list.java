@@ -43,6 +43,9 @@ public class Student_chat_list extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Chat Room");
 
+        usersList = (ListView) findViewById(R.id.usersList);
+        noUsersText = (TextView) findViewById(R.id.noUsersText);
+
         pd = new ProgressDialog(this);
         pd.setMessage("Loading...");
         pd.show();
@@ -63,43 +66,50 @@ public class Student_chat_list extends AppCompatActivity {
             }
         };
 
-        DatabaseReference userRef = Objects.getFirebaseInstance().getReference("DriverDetails").child(Objects.getStudentDetailInstance().getDriver_id());
-        usersList = (ListView) findViewById(R.id.usersList);
-        noUsersText = (TextView) findViewById(R.id.noUsersText);
-        userRef.addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        if (!Objects.getStudentDetailInstance().getDriver_id().equals("")) {
+            DatabaseReference userRef = Objects.getFirebaseInstance().getReference("DriverDetails").child(Objects.getStudentDetailInstance().getDriver_id());
+            userRef.addValueEventListener(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
 /*
                 for (DataSnapshot child : dataSnapshot.getChildren()) {*/
 
-                DriverDetail_Model listDataRef = dataSnapshot.getValue(DriverDetail_Model.class);
+                    DriverDetail_Model listDataRef = dataSnapshot.getValue(DriverDetail_Model.class);
 
-                al.add(listDataRef);
+                    al.add(listDataRef);
 
 //                al.add(dataSnapshot.child("driver_name").getValue().toString());
 
-                /*                }*/
-                if (al.isEmpty()) {
-                    noUsersText.setVisibility(View.VISIBLE);
-                    usersList.setVisibility(View.GONE);
-                } else {
-                    noUsersText.setVisibility(View.GONE);
-                    usersList.setVisibility(View.VISIBLE);
-                    ArrayList<String> arrayList= new ArrayList<>();
-                    arrayList.add(al.get(0).getDriver_name());
-                    usersList.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_list,  arrayList));
-                    userRef2 = com.example.privatevanmanagement.utils.Objects.getFirebaseInstance().getReference().child("users").child(al.get(0).getDriver_id());
-                    userRef2.setValue(al.get(0).getDriver_name());
+                    /*                }*/
+                    if (al.isEmpty()) {
+                        noUsersText.setVisibility(View.VISIBLE);
+                        usersList.setVisibility(View.GONE);
+                    } else {
+                        noUsersText.setVisibility(View.GONE);
+                        usersList.setVisibility(View.VISIBLE);
+                        ArrayList<String> arrayList = new ArrayList<>();
+                        arrayList.add(al.get(0).getDriver_name());
+                        usersList.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_list, arrayList));
+                        userRef2 = com.example.privatevanmanagement.utils.Objects.getFirebaseInstance().getReference().child("users").child(al.get(0).getDriver_id());
+                        userRef2.setValue(al.get(0).getDriver_name());
+                    }
+                    pd.dismiss();
                 }
-                pd.dismiss();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        }
+        else
+        {
+            pd.dismiss();
+            noUsersText.setVisibility(View.VISIBLE);
+            usersList.setVisibility(View.GONE);
+        }
 
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

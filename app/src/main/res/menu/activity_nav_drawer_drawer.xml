@@ -26,6 +26,14 @@
             android:icon="@drawable/ic_manage_van"
             android:title="Manage Vans" />
         <item
+            android:id="@+id/nav_manageGroups"
+            android:icon="@drawable/ic_manage_van"
+            android:title="Manage Groups" />
+        <item
+            android:id="@+id/nav_manageShifts"
+            android:icon="@drawable/ic_manage_van"
+            android:title="Manage Shifts" />
+        <item
             android:id="@+id/nav_add_group"
             android:icon="@drawable/ic_add_group"
             android:title="Add Group" />

@@ -1,9 +1,5 @@
 package com.example.privatevanmanagement.ChatModule.Model;
 
-/**
- * Created by vaibhav on 1/15/18.
- */
-
 public class ChatModel {
     public ChatModel(String message, String user) {
         this.message = message;

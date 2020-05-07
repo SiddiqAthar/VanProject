@@ -142,7 +142,7 @@ public class PermissionUtils {
     }
 
     public static boolean hasLocationPermissionGranted(Context context) {
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ||
                 (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }

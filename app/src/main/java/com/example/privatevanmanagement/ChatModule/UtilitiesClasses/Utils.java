@@ -3,9 +3,6 @@ package com.example.privatevanmanagement.ChatModule.UtilitiesClasses;
 import android.content.Context;
 import android.content.Intent;
 
-/**
- * Created by vaibhav on 11/8/17.
- */
 
 public class Utils {
 

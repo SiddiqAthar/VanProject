@@ -1,10 +1,6 @@
 package com.example.privatevanmanagement.ChatModule.Model;
 
-/**
- * Created by vaibhav on 1/15/18.
- */
-
-public class ChatList {
+ public class ChatList {
 
     public ChatList() {
 

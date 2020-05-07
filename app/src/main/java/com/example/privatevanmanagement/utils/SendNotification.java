@@ -20,15 +20,17 @@ public class SendNotification extends AsyncTask<Object, Void, String> {
         try {
 
             final String apiKey = "AAAAVWpukD4:APA91bF2NLmTyCpQfJYPT7_nZNZ4O2OJKeIEvAn5ZjRRmsOu-TByqLWZWVN7Tkp1BlncDdx-1JdEgrviefrJm2njnuwqP0g4rSAA5kVGtVLEfPF4L8hkiv6ZzQn3fM-nvJGA7OtonbqX";
-            URL url = new URL("https://fcm.googleapis.com/fcm/send");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "key=" + apiKey);
-            conn.setDoOutput(true);
+
             for(int i=0;i<users.size();i++)
             {
+                URL url = new URL("https://fcm.googleapis.com/fcm/send");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Authorization", "key=" + apiKey);
+                conn.setDoOutput(true);
+
                 JSONObject message = new JSONObject();
                 message.put("to", users.get(i));
                 message.put("priority", "high");
@@ -50,6 +52,7 @@ public class SendNotification extends AsyncTask<Object, Void, String> {
                     response.append(inputLine);
                 }
                 in.close();
+                conn.disconnect();
             }
 
              return "";

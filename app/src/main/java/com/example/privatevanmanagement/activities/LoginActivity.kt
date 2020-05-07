@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
     var animslideUp: Animation? = null
     var image: ImageView? = null
     var btnSignIn: Button? = null
-     var email: EditText? = null
+    var email: EditText? = null
     var password: EditText? = null
     val user: Objects.UserID = Objects.UserID()
     var pd: ProgressDialog? = null
@@ -62,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
     fun getToken() {
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
@@ -74,10 +75,6 @@ class LoginActivity : AppCompatActivity() {
             })
     }
 
-    fun sethardCodedPassword() {
-        email?.setText("driver.1@gmail.com")
-        password?.setText("default123")
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,13 +92,10 @@ class LoginActivity : AppCompatActivity() {
         image = findViewById(R.id.iv_icon) as ImageView
         image!!.startAnimation(animZoomIn)
         btnSignIn = findViewById(R.id.btn_SignIn) as Button
-         email = findViewById(R.id.Email) as EditText
+        email = findViewById(R.id.Email) as EditText
         email!!.startAnimation(animslideUp)
         password = findViewById(R.id.Password) as EditText
         password!!.startAnimation(animslideUp)
-        sethardCodedPassword()
-
-
 
 
         editor = pref.edit();
@@ -115,7 +109,7 @@ class LoginActivity : AppCompatActivity() {
                     pd!!.setMessage("Signing In Wait")
                     pd!!.setCancelable(false)
                     pd!!.show()
-                     mAuth.signInWithEmailAndPassword(
+                    mAuth.signInWithEmailAndPassword(
                         email?.text.toString(),
                         password?.text.toString()
                     )
@@ -124,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
                                 Globaluser_ID =
                                     FirebaseAuth.getInstance().currentUser?.uid.toString()
                                 checkUserType()
-                            }  else {
+                            } else {
                                 Toast.makeText(this@LoginActivity, "Error Login", Toast.LENGTH_LONG)
                                     .show()
                                 pd!!.dismiss()
@@ -134,7 +128,7 @@ class LoginActivity : AppCompatActivity() {
 
             }
         })
-     }
+    }
 
     private fun createToken() {
         FirebaseInstanceId.getInstance().instanceId
@@ -172,7 +166,7 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(Intent(this@LoginActivity, AdminNav_Activity::class.java))
                 }
                 pd!!.dismiss()
-             }
+            }
 
             override fun onCancelled(databaseError: DatabaseError) {
 

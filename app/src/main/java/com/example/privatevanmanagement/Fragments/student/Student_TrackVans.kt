@@ -3,6 +3,8 @@ package com.example.privatevanmanagement.Fragments.student
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,12 +34,20 @@ import com.google.firebase.database.*
 class Student_TrackVans : Fragment(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
+    val mainHandler = Handler(Looper.getMainLooper())
+
+
+    val pick_by_driverID: String = Objects.getStudentDetailInstance().driver_id
+    val pick_by_driverName: String = Objects.getStudentDetailInstance().driver_name
+//    val get:String=Objects.getStudentDetailInstance().driver_id
+
     lateinit var rootView: View
     var googleMap: GoogleMap? = null
     internal lateinit var mLocationRequest: LocationRequest
     internal var mGoogleApiClient: GoogleApiClient? = null
     internal var mCurrLocationMarker: Marker? = null
     var mapFragment: SupportMapFragment? = null
+    var arrived: Button? = null
     lateinit var geoFire: GeoFire
     var mAuth: FirebaseAuth? = null
     var firebaseUsers: FirebaseUser? = null
@@ -59,61 +69,72 @@ class Student_TrackVans : Fragment(), OnMapReadyCallback, GoogleApiClient.Connec
 
     private fun initViews(rootView: View?) {
         mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        arrived = rootView!!.findViewById(R.id.arrived) as Button
+        arrived!!.visibility = View.GONE
         mapFragment?.getMapAsync(this)
         databaseReference = FirebaseDatabase.getInstance().reference
         mAuth = FirebaseAuth.getInstance()
-        isOnline = FirebaseDatabase.getInstance().reference.child(".info/connected")
+//        isOnline = FirebaseDatabase.getInstance().reference.child(".info/connected")
         currentUserRef = FirebaseDatabase.getInstance().getReference(Objects.studentLatLongTable)
-        isOnline!!.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //We will remove value from Service Providers LatLng when Service Provider Disconnected
-                currentUserRef!!.onDisconnect().removeValue()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-
-            }
-        })
+//        isOnline!!.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                //We will remove value from Service Providers LatLng when Service Provider Disconnected
+//                currentUserRef!!.onDisconnect().removeValue()
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//
+//            }
+//        })
         geoFire = GeoFire(currentUserRef)
         setUpLocation()
-        getDriverBtn = rootView?.findViewById(R.id.getStudent) as Button
-        getDriverBtn?.setText("Get Driver")
-        getDriverBtn?.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                val driverLocation =
-                    GeoFire(FirebaseDatabase.getInstance().getReference(Objects.driverLatLongTable))
-                driverLocation.getLocation("VNrkHgtg95WeDWq3sQ3VXLB7gkk1",
-                    object : LocationCallback {
-                        override fun onLocationResult(key: String?, location: GeoLocation?) {
-                            if (location != null) {
 
+
+        mainHandler.postDelayed(object : Runnable {
+            override fun run() {
+                getDirection()
+                mainHandler.postDelayed(this, 2000)
+            }
+        }, 4000)
+
+        /*    getDriverBtn = rootView?.findViewById(R.id.getStudent) as Button
+            getDriverBtn?.setText("Get Driver")
+            getDriverBtn?.setOnClickListener(object : View.OnClickListener {
+                override fun onClick(v: View?) {
+                    val driverLocation =
+                        GeoFire(FirebaseDatabase.getInstance().getReference(Objects.driverLatLongTable))
+                    driverLocation.getLocation(pick_by_driverID,
+                        object : LocationCallback {
+                            override fun onLocationResult(key: String?, location: GeoLocation?) {
+                                if (location != null) {
+
+    *//*
                                 FirebaseDatabase.getInstance().getReference("DriverDetails")
-                                    .child("VNrkHgtg95WeDWq3sQ3VXLB7gkk1")
+                                    .child(pick_by_driverID)
                                     .addValueEventListener(object : ValueEventListener {
                                         override fun onDataChange(p0: DataSnapshot) {
                                             val driverInfo =
                                                 p0.getValue(DriverDetail_Model::class.java)
+*//*
                                             googleMap?.addMarker(
                                                 MarkerOptions().icon(
                                                     BitmapDescriptorFactory
-                                                        .defaultMarker(
-                                                            BitmapDescriptorFactory.HUE_CYAN
-                                                        )
+                                                        .fromResource(R.drawable.busicon)
                                                 ).position(
                                                     LatLng(
                                                         location.latitude,
                                                         location.longitude
                                                     )
                                                 )
-                                                    .title(driverInfo!!.driver_name)
+                                                    .title(pick_by_driverName)
                                             )
 
-
+*//*
                                         }
 
                                         override fun onCancelled(p0: DatabaseError) {
                                         }
-                                    })
+                                    })*//*
 
                             }
                         }
@@ -122,8 +143,55 @@ class Student_TrackVans : Fragment(), OnMapReadyCallback, GoogleApiClient.Connec
 
                         }
                     })
+
             }
-        })
+        })*/
+    }
+
+    private fun getDirection() {
+        val driverLocation =
+            GeoFire(FirebaseDatabase.getInstance().getReference(Objects.driverLatLongTable))
+        driverLocation.getLocation(pick_by_driverID,
+            object : LocationCallback {
+                override fun onLocationResult(key: String?, location: GeoLocation?) {
+                    if (location != null) {
+
+/*
+                                FirebaseDatabase.getInstance().getReference("DriverDetails")
+                                    .child(pick_by_driverID)
+                                    .addValueEventListener(object : ValueEventListener {
+                                        override fun onDataChange(p0: DataSnapshot) {
+                                            val driverInfo =
+                                                p0.getValue(DriverDetail_Model::class.java)
+*/
+                        googleMap?.addMarker(
+                            MarkerOptions().icon(
+                                BitmapDescriptorFactory
+                                    .fromResource(R.drawable.busicon)
+                            ).position(
+                                LatLng(
+                                    location.latitude,
+                                    location.longitude
+                                )
+                            )
+                                .title(pick_by_driverName)
+                        )
+
+/*
+                                        }
+
+                                        override fun onCancelled(p0: DatabaseError) {
+                                        }
+                                    })*/
+
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError?) {
+
+                }
+            })
+
     }
 
     private fun setUpLocation() {
@@ -140,7 +208,6 @@ class Student_TrackVans : Fragment(), OnMapReadyCallback, GoogleApiClient.Connec
         mLocationRequest.setInterval(5000)
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
         mLocationRequest.setSmallestDisplacement(10.0f)
-
 
     }
 

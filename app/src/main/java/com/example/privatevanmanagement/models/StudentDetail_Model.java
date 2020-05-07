@@ -21,11 +21,12 @@ public class StudentDetail_Model {
     String allocated_van = "";
     String driver_id = "";
     String driver_name = "";
+    String arrival = "";
 
     public StudentDetail_Model() {
     }
 
-    public StudentDetail_Model(String student_id,String lat,String longi, String student_name, String student_email, String student_cnic, String student_contact, String student_address, String group, String fee_status, String ammount, String status, String shift_time, String drop_time, String allocated_van, String driver_id, String driver_name) {
+    public StudentDetail_Model(String student_id,String lat,String longi, String student_name, String student_email, String student_cnic, String student_contact, String student_address, String group, String fee_status, String ammount, String status, String shift_time, String drop_time, String allocated_van, String driver_id, String driver_name, String arrival) {
         this.student_id = student_id;
         this.lat = lat;
         this.longi = longi;
@@ -43,6 +44,7 @@ public class StudentDetail_Model {
         this.allocated_van = allocated_van;
         this.driver_id = driver_id;
         this.driver_name = driver_name;
+        this.arrival = arrival;
     }
 
     public String getStudent_id() {
@@ -179,5 +181,13 @@ public class StudentDetail_Model {
 
     public void setDriver_name(String driver_name) {
         this.driver_name = driver_name;
+    }
+
+    public String getArrival() {
+        return arrival;
+    }
+
+    public void setArrival(String arrival) {
+        this.arrival = arrival;
     }
 }

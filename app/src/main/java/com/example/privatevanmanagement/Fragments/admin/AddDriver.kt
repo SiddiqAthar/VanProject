@@ -1,5 +1,7 @@
 package com.example.privatevanmanagement.Fragments.admin
 
+import android.Manifest
+import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -12,26 +14,41 @@ import com.example.privatevanmanagement.utils.Objects
 import com.example.privatevanmanagement.R
 import com.google.firebase.auth.FirebaseAuth
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.text.TextUtils
+import android.util.Log
 import android.widget.*
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.models.DriverDetail_Model
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.firebase.database.*
 import java.util.HashMap
 
 
 class AddDriver : Fragment() {
+    private val PLACE_PICKER_REQUEST = 1
+
+
     var bundle_driver_id: String? = null
     var password: String = "default123"
     var rootView: View? = null
     var mainActivity: AdminNav_Activity? = null
+
+    var lat: String? = null
+    var long: String? = null
+
+
     var DriverName: EditText? = null
     var DriverEmail: EditText? = null
     var Email_tv: TextView? = null
     var DriverCnic: EditText? = null
     var DriverContact: EditText? = null
-    var DriverAddress: EditText? = null
+    var DriverAddress: TextView? = null
     var spinnerVan_Driver: Spinner? = null
     var arrayAdapter: ArrayAdapter<String>? = null
     var van_array: ArrayList<String> = ArrayList()
@@ -73,7 +90,7 @@ class AddDriver : Fragment() {
         Email_tv = rootView?.findViewById(R.id.Email_tv) as TextView
         DriverCnic = rootView?.findViewById(R.id.DriverCnic) as EditText
         DriverContact = rootView?.findViewById(R.id.DriverContact) as EditText
-        DriverAddress = rootView?.findViewById(R.id.DriverAddress) as EditText
+        DriverAddress = rootView?.findViewById(R.id.DriverAddress) as TextView
         spinnerVan_Driver = rootView?.findViewById(R.id.spinnerVan_Driver) as Spinner
 
 
@@ -93,6 +110,12 @@ class AddDriver : Fragment() {
                     updateAccount(bundle_driver_id.toString())
 
                 }
+            }
+        })
+
+        DriverAddress?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                onAddPlaceButtonClicked()
             }
         })
 
@@ -155,8 +178,8 @@ class AddDriver : Fragment() {
                     newPost.setValue(
                         DriverDetail_Model(
                             Objects.getInstance().currentUser?.uid.toString(),
-                            "0.0",
-                            "0.0",
+                            lat,
+                            long,
                             DriverName!!.text.toString(),
                             DriverEmail!!.text.toString(),
                             DriverCnic!!.text.toString(),
@@ -310,7 +333,7 @@ class AddDriver : Fragment() {
         } else {
             DriverContact!!.error = null
         }
-        if (TextUtils.isEmpty(DriverAddress!!.text.toString())) {
+        if (DriverAddress!!.text.toString().equals("")) {
             DriverAddress!!.error = "Address Required"
             valid = false
         } else {
@@ -319,16 +342,55 @@ class AddDriver : Fragment() {
 
         return valid
     }
+
+    fun onAddPlaceButtonClicked() {
+        if (ActivityCompat.checkSelfPermission(
+                this!!.context!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(
+                this!!.context!!, "Permission_message",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+        try {
+            val builder = PlacePicker.IntentBuilder()
+            val i = builder.build(activity)
+            startActivityForResult(
+                i,
+                PLACE_PICKER_REQUEST
+            )
+        } catch (e: GooglePlayServicesRepairableException) {
+            Log.e(
+                "Tag1",
+                String.format("GooglePlayServices Not Available [%s]", e.message)
+            )
+        } catch (e: GooglePlayServicesNotAvailableException) {
+            Log.e(
+                "Tag2",
+                String.format("GooglePlayServices Not Available [%s]", e.message)
+            )
+        } catch (e: java.lang.Exception) {
+            Log.e(
+                "Tag3",
+                String.format("PlacePicker Exception: %s", e.message)
+            )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                val place: Place = PlacePicker.getPlace(data, this.context)
+                DriverAddress!!.setText(place.address.toString())
+                DriverAddress!!.error = null
+                lat = place.latLng!!.latitude.toString()
+                long = place.latLng!!.longitude.toString()
+            }
+        }
+    }
 }
 
-
-;
-//    fun openNew(fragment: Fragment) {
-//        val fragmentManager = activity?.getSupportFragmentManager()
-//        val fragmentTransaction = fragmentManager?.beginTransaction()
-//        if (fragmentTransaction != null) {
-//            fragmentTransaction.replace(R.id.mlayout, fragment)
-//            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                .addToBackStack("std").commit()
-//        }
-//    }

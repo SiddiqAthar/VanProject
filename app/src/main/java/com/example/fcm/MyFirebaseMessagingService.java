@@ -21,6 +21,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import static com.example.privatevanmanagement.utils.Objects.UserID.Globaluser_ID;
+import static com.example.privatevanmanagement.utils.Objects.UserType;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
@@ -30,8 +31,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void updateUserToken(String s) {
-        DatabaseReference databaseReference = Objects.getFirebaseInstance().getReference().child("Token").child(Globaluser_ID);
-        databaseReference.setValue(s);
+        if (!UserType.equals("Admin")) {
+            DatabaseReference databaseReference = Objects.getFirebaseInstance().getReference().child("Token").child(Globaluser_ID);
+            databaseReference.setValue(s);
+        }
     }
 
     @Override

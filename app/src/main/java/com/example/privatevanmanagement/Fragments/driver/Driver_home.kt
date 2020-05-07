@@ -1,5 +1,6 @@
 package com.example.privatevanmanagement.Fragments.driver
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +15,9 @@ import androidx.fragment.app.Fragment
 import com.example.privatevanmanagement.ChatModule.ShowActivities.Driver_chat_list
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.UserActivity
+import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects
-import com.example.privatevanmanagement.utils.Objects.scheduled_list
+import com.example.privatevanmanagement.utils.Objects.*
 import com.example.privatevanmanagement.utils.SendNotification
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -31,6 +33,7 @@ class Driver_home : Fragment(), View.OnClickListener {
     var driver_comingTrip: CardView? = null
     var driver_chat: CardView? = null
     var driver_announcement: CardView? = null
+    var pd: ProgressDialog? = null
 
 
     override fun onCreateView(
@@ -40,11 +43,16 @@ class Driver_home : Fragment(), View.OnClickListener {
         if (container != null) {
             container.removeAllViews()
         }
+
         val rootView = inflater!!.inflate(R.layout.fragment_driver_home, container, false)
         mContext = rootView.context
         activity?.setTitle("PVM")
 
-         init(rootView)
+        pd = ProgressDialog(context)
+        pd!!.setMessage("Loading Trip Data")
+        pd!!.setCancelable(false)
+
+        init(rootView)
 
         return rootView
 
@@ -66,12 +74,65 @@ class Driver_home : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.driver_comingTrip) {
-            mainActivity!!.replaceFragmentUserActivity(Driver_Coming_Trip(), null)
+            pd?.show()
+            getAllocatedStudentList()
+//             mainActivity!!.replaceFragmentUserActivity(Driver_Coming_Trip(), null)
         } else if (v?.id == R.id.driver_chat) {
             startActivity(Intent(context, Driver_chat_list::class.java))
         } else if (v?.id == R.id.driver_announcment) {
             showDialogMakeAnnouncment()
         }
+    }
+
+    fun getAllocatedStudentList() {
+        val myRef = Objects.getFirebaseInstance().getReference()
+        val query = myRef.child("StudentDetails").orderByChild("driver_id")
+            .equalTo(Objects.UserID.Globaluser_ID)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                student_modelList.clear()
+                for (postSnapshot in snapshot.children) {
+                    val listDataRef = postSnapshot.getValue(StudentDetail_Model::class.java)!!
+                    if (postSnapshot.child("arrival").value!!.equals("")
+                        || postSnapshot.child("arrival").value!!.equals("dropped"))// agr ar    rival status abi tk null hai to jae driver
+                    {
+                        student_modelList.add(listDataRef)
+                    }
+                    /*  // to reset all data we use another dummy list name as sorted
+                      else if (!postSnapshot.child("arrival").value!!.equals(""))// agr arrival status sirf empty na ho tooooo
+                      {
+                          sortedList.add(listDataRef)
+                      }*/
+                }
+
+                pd!!.dismiss()
+                mainActivity!!.replaceFragmentUserActivity(Driver_Track(), null)
+
+
+                if (student_modelList.size > 0) {
+                    // agr ride already started hai to. . . list get kary or nxt frag pe move ho jae
+                    if (Objects.getDriverDetailInstance().assigned_status.equals("riding")) {
+                        pd!!.dismiss()
+                        mainActivity!!.replaceFragmentUserActivity(Driver_Track(), null)
+                    } else {
+                        pd!!.dismiss()
+                        mainActivity!!.replaceFragmentUserActivity(Driver_Coming_Trip(), null)
+                    }
+                } else if (student_modelList.size == 0) {
+                    pd!!.dismiss()
+                    mainActivity!!.replaceFragmentUserActivity(Driver_Coming_Trip(), null)
+                }
+
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                System.out.println("The read failed: " + databaseError.getMessage())
+            }
+        })
+
     }
 
 
@@ -136,8 +197,6 @@ class Driver_home : Fragment(), View.OnClickListener {
         var sendNoteaa = SendNotification()
         sendNoteaa.execute(to, body);
     }
-
-
 
 
 }

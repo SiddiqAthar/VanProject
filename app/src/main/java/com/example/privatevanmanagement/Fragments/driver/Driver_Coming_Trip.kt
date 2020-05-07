@@ -45,34 +45,36 @@ class Driver_Coming_Trip : Fragment() {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_driver__coming__trip, container, false)
         activity?.setTitle("Coming Trips")
+
         init(rootView)
         return rootView
     }
 
     private fun init(rootView: View?) {
         mainActivity = activity as UserActivity
+
+
         noUsersText = rootView?.findViewById(R.id.noUsersText)
         layout = rootView?.findViewById(R.id.layout)
         rv_tripStudents = rootView?.findViewById(R.id.rv_tripStudents)
         tv_tripDetail = rootView?.findViewById(R.id.tv_tripDetail)
         btn_start_ride = rootView?.findViewById(R.id.btn_start_ride)
 
-        if (Objects.getDriverDetailInstance().van_number.isNullOrEmpty())
-        {
-            layout!!.visibility=View.GONE
-            noUsersText!!.visibility=View.VISIBLE
-        }
-        else
-        {
-            layout!!.visibility=View.VISIBLE
-            noUsersText!!.visibility=View.GONE
+
+        if (Objects.getDriverDetailInstance().van_number.isNullOrEmpty()) {
+            layout!!.visibility = View.GONE
+            noUsersText!!.visibility = View.VISIBLE
+        } else {
+            layout!!.visibility = View.VISIBLE
+            noUsersText!!.visibility = View.GONE
             tv_tripDetail!!.setText(
-                "You have ride with following Student. Your Van number is " + Objects.getDriverDetailInstance().van_number
+                "You have ride with following Student on "+ Objects.getDriverDetailInstance().shift_start_time+
+                        ". Your Van number is " + Objects.getDriverDetailInstance().van_number
             )
         }
 
+//        getAllocatedStudentList()
 
-        getAllocatedStudentList()
 
         rv_tripStudents?.setLayoutManager(LinearLayoutManager(activity))
         rv_tripStudents?.setNestedScrollingEnabled(false)
@@ -84,14 +86,30 @@ class Driver_Coming_Trip : Fragment() {
             )
         )
 
+        adapter_comingTrip = Adapter_comingTrip(
+            student_modelList as ArrayList<StudentDetail_Model>?,
+            activity
+        )
+        adapter_comingTrip!!.notifyDataSetChanged()
+        rv_tripStudents?.setAdapter(adapter_comingTrip)
 
         btn_start_ride!!.setOnClickListener(View.OnClickListener {
-            mainActivity!!.replaceFragmentUserActivity(Driver_Track(), null)
+
+            val ref = Objects.getFirebaseInstance().reference.child("DriverDetails")
+                .child(Objects.UserID.Globaluser_ID)
+            val updates = HashMap<String, Any>()
+            updates["assigned_status"] = "riding"
+            if (updates.size > 0) {
+                ref.updateChildren(updates)
+                Objects.driverDetail_model.assigned_status = "riding"
+                mainActivity!!.replaceFragmentUserActivity(Driver_Track(), null)
+            }
         })
 
 
     }
 
+/*
     fun getAllocatedStudentList() {
         val myRef = Objects.getFirebaseInstance().getReference()
         val query = myRef.child("StudentDetails").orderByChild("driver_id")
@@ -101,16 +119,24 @@ class Driver_Coming_Trip : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 student_modelList.clear()
                 for (postSnapshot in snapshot.children) {
-                    val listDataRef = postSnapshot.getValue(StudentDetail_Model::class.java)!!
-                    student_modelList.add(listDataRef)
-
+                    if (postSnapshot.child("arrival").value!!.equals(""))// agr arrival status abi tk null hai to jae driver
+                    {
+                        val listDataRef = postSnapshot.getValue(StudentDetail_Model::class.java)!!
+                        student_modelList.add(listDataRef)
+                    }
                 }
-                adapter_comingTrip = Adapter_comingTrip(
-                    student_modelList as ArrayList<StudentDetail_Model>?,
-                    activity
-                )
-                adapter_comingTrip!!.notifyDataSetChanged()
-                rv_tripStudents?.setAdapter(adapter_comingTrip)
+                // agr ride already started hai to. . . list get kary or nxt frag pe move ho jae
+                if (Objects.getDriverDetailInstance().assigned_status.equals("riding")) {
+                    mainActivity!!.replaceFragmentUserActivity(Driver_Track(), null)
+                }
+                else {
+                    adapter_comingTrip = Adapter_comingTrip(
+                        student_modelList as ArrayList<StudentDetail_Model>?,
+                        activity
+                    )
+                    adapter_comingTrip!!.notifyDataSetChanged()
+                    rv_tripStudents?.setAdapter(adapter_comingTrip)
+                }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -119,4 +145,5 @@ class Driver_Coming_Trip : Fragment() {
         })
 
     }
+*/
 }

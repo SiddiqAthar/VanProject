@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    tools:context=".Fragments.admin.Admin_ManageFee">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text=" Manage Group Details "
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/text_size_1"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_below="@+id/tv"
+        android:layout_alignStart="@+id/tv"
+        android:layout_alignEnd="@+id/tv"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:background="@color/button_default" />
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_below="@id/view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+            android:layout_weight="2"
+             android:text=" Group Name"
+            android:textColor="@color/BlackColor"
+            android:textSize="@dimen/text_size_2"
+            android:textStyle="bold" />
+
+        <TextView
+             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/step2_lso_reg_items_margin_top"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Remove"
+            android:textColor="@color/BlackColor"
+            android:textSize="@dimen/text_size_2"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_below="@+id/ll"
+        android:layout_alignStart="@+id/ll"
+        android:layout_alignEnd="@+id/ll"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="@dimen/margin10dp"
+        android:background="@color/button_default" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_manageGroups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view2" />
+
+</RelativeLayout>

@@ -1,14 +1,10 @@
 package com.example.privatevanmanagement.activities
 
-import android.annotation.SuppressLint
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import com.example.privatevanmanagement.ChatModule.Model.ChatList
@@ -19,79 +15,25 @@ import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.models.DriverDetail_Model
 import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.utils.Objects
-import com.google.android.gms.common.api.Status
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.TypeFilter
-import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import java.util.*
+import com.google.firebase.iid.FirebaseInstanceId
+import java.io.File
 
 
 class UserActivity : BaseActivity() {
 
     var pd: ProgressDialog? = null
-    var AUTOCOMPLETE_REQUEST_CODE: Int = 1;
-    lateinit var placesClient: PlacesClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-/*
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, "AIzaSyBLdi57ZGLkSrGDPD-7on9qCKd64vNlRAk")
-        }
-        placesClient = Places.createClient(this)
 
 
-        var fields: List<Place.Field> = Arrays.asList(
-            Place.Field.LAT_LNG, Place.Field.NAME,
-            Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS
-        )
-        var intent: Intent =
-            Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                .setCountry("PAK").setTypeFilter(TypeFilter.ESTABLISHMENT).build(this)
-        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE)
-*/
-
-
-
-/*
-
-        val autocompleteFragment =
-            supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment?
-
-// Specify the types of place data to return.
-        autocompleteFragment!!
-            .setTypeFilter(TypeFilter.CITIES)
-            .setCountry("PAK")
-
-        autocompleteFragment!!.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME))
-// Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // TODO: Get info about the selected place.
-                Log.i("YES", "Place: " + place.getName() + ", " + place.latLng!!.latitude)
-
-            }
-
-            override fun onError(status: Status) {
-                // TODO: Handle the error.
-                Log.i("NO", "An error occurred: $status")
-            }
-        })
-*/
 
         supportActionBar!!.setTitle("Van Management")
 
@@ -104,6 +46,7 @@ class UserActivity : BaseActivity() {
             Objects.UserType = "driver"
             driver_detail()
             replaceFragmentUserActivity(Driver_home(), null)
+
 
         } else if (Objects.UserType!!.equals("Student")) {
             Objects.UserType = "student"
@@ -119,24 +62,6 @@ class UserActivity : BaseActivity() {
                 moveTaskToBack(true)
             }
         })
-    }
-
-    @SuppressLint("MissingSuperCall")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                var place: Place = Autocomplete.getPlaceFromIntent(data!!);
-                Toast.makeText(this, "Place is " + place.name.toString(), Toast.LENGTH_SHORT).show()
-//                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                Toast.makeText(this, "Place ERRROR ", Toast.LENGTH_SHORT).show()
-                // TODO: Handle the error.
-                var status: Status = Autocomplete.getStatusFromIntent(data!!);
-//                Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
-        }
     }
 
     fun student_detail() {
@@ -234,8 +159,11 @@ class UserActivity : BaseActivity() {
         when (item.getItemId()) {
             R.id.action_settings -> {
                 startActivity(Intent(applicationContext, LoginActivity::class.java))
+                clearApplicationData()
                 FirebaseAuth.getInstance().signOut();
+                FirebaseInstanceId.getInstance().deleteInstanceId()
                 finishAffinity()
+
             }
             R.id.action_change_pswd -> {
                 replaceFragmentUserActivity(ChangePassword(), null)
@@ -245,4 +173,31 @@ class UserActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    fun clearApplicationData() {
+        val cache: File = cacheDir
+        val appDir = File(cache.getParent())
+        if (appDir.exists()) {
+            val children: Array<String> = appDir.list()
+            for (s in children) {
+                if (s != "lib") {
+                    deleteDir(File(appDir, s))
+                }
+            }
+        }
+    }
+
+    fun deleteDir(dir: File?): Boolean {
+        if (dir != null && dir.isDirectory) {
+            val children = dir.list()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+        }
+        return dir!!.delete()
+    }
+
 }

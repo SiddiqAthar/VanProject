@@ -14,7 +14,10 @@ import androidx.fragment.app.Fragment
 import com.example.privatevanmanagement.R
 import com.example.privatevanmanagement.activities.AdminNav_Activity
 import com.example.privatevanmanagement.activities.LoginActivity
+import com.example.privatevanmanagement.adapters.Spinner_Adapter
+import com.example.privatevanmanagement.adapters.TrackVan_Spinner_Adapter
 import com.example.privatevanmanagement.models.DriverDetail_Model
+import com.example.privatevanmanagement.models.Shift_Model
 import com.example.privatevanmanagement.models.StudentDetail_Model
 import com.example.privatevanmanagement.models.VanDetail_Model
 import com.example.privatevanmanagement.utils.Objects
@@ -26,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import java.util.HashMap
 
 
 class Admin_home : Fragment(), View.OnClickListener {
@@ -98,8 +102,6 @@ class Admin_home : Fragment(), View.OnClickListener {
             mainActivity!!.replaceFragment(AddStudent(), null)
 
 
-
-
         } else if (v?.id == R.id.add_newDriver) {
             mainActivity!!.replaceFragment(AddDriver(), null)
         } else if (v?.id == R.id.add_newVan) {
@@ -107,7 +109,7 @@ class Admin_home : Fragment(), View.OnClickListener {
         } else if (v?.id == R.id.add_scheduleVan) {
             mainActivity!!.replaceFragment(Schedule_Van(), null)
         } else if (v?.id == R.id.add_TrackVan) {
-            mainActivity!!.replaceFragment(Admin_TrackVans(), null)
+            showDialogTrackVan()
         } else if (v?.id == R.id.add_announcmnet) {
             showDialogMakeAnnouncment()
         }
@@ -190,14 +192,16 @@ class Admin_home : Fragment(), View.OnClickListener {
                 }
                 /* adapter_manageFee = Adapter_manageFeeextends(Objects.student_modelList, activity)
                  rv_manageFee?.setAdapter(adapter_manageFee)*/
-                pd!!.dismiss()
+                if (pd != null && pd!!.isShowing)
+                    pd!!.dismiss()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 System.out.println("The read failed: " + databaseError.getMessage())
                 Toast.makeText(context, "Unable to fetch data from Server", Toast.LENGTH_LONG)
                     .show()
-                pd!!.dismiss()
+                if (pd != null && pd!!.isShowing)
+                    pd!!.dismiss()
             }
         })
     }
@@ -214,14 +218,16 @@ class Admin_home : Fragment(), View.OnClickListener {
                     val listDataRef = postSnapshot.getValue(DriverDetail_Model::class.java)!!
                     driver_modelList.add(listDataRef)
                 }
-                pd!!.dismiss()
+                if (pd != null && pd!!.isShowing)
+                    pd!!.dismiss()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 System.out.println("The read failed: " + databaseError.getMessage())
                 Toast.makeText(context, "Unable to fetch data from Server", Toast.LENGTH_LONG)
                     .show()
-                pd!!.dismiss()
+                if (pd != null && pd!!.isShowing)
+                    pd!!.dismiss()
             }
         })
     }
@@ -257,6 +263,7 @@ class Admin_home : Fragment(), View.OnClickListener {
                     vanList.add(listDataRef)
                 }
             }
+
             override fun onCancelled(databaseError: DatabaseError) {
                 System.out.println("The read failed: " + databaseError.getMessage())
             }
@@ -281,5 +288,89 @@ class Admin_home : Fragment(), View.OnClickListener {
             }
         })
     }
+
+
+    fun showDialogTrackVan() {
+        val dialogBuilder = AlertDialog.Builder(this!!.activity!!)
+        val inflater = this!!.layoutInflater
+        dialogBuilder.setCancelable(false)
+        val dialogView = inflater.inflate(R.layout.dialog_track_van, null)
+        dialogBuilder.setView(dialogView)
+        val alertDialog = dialogBuilder.create()
+        val van_Spinner = dialogView.findViewById(R.id.van_Spinner) as Spinner
+        val btn_search = dialogView.findViewById(R.id.btn_search) as Button
+        val btn_closeDialog = dialogView.findViewById(R.id.btn_closeDialog) as ImageButton
+
+        var van_spinner_adapter: Adapter
+
+        var driver_modelList_dummy = ArrayList<DriverDetail_Model>()
+        driver_modelList_dummy.addAll(driver_modelList)
+
+        // pickup and dropoff adapter will be same
+        van_spinner_adapter = TrackVan_Spinner_Adapter(
+            this!!.context!!, R.id.spinner_item_tv
+            , driver_modelList_dummy
+        )
+
+        //set adapter to both spinner'S
+        van_Spinner?.adapter = van_spinner_adapter
+
+        van_Spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>,
+                view: View,
+                position: Int,
+                l: Long
+            ) {
+                trackDriverbyVan.clear()
+                if (driver_modelList.get(position).assigned_status.equals("riding")) // track usi ko kare gy jo gari chla rha hoga
+                    trackDriverbyVan.add(driver_modelList.get(position))
+                if (trackDriverbyVan.size <= 0) {
+                    Toast.makeText(
+                        context,
+                        "No Van is riding or allocated to Track",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>) {}
+        })
+
+        btn_search.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                if (trackDriverbyVan.size > 0) {
+                    mainActivity!!.replaceFragment(Admin_TrackVans(), null)
+                } else {
+                    Toast.makeText(
+                        context,
+                        "No Van is riding or allocated to Track",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                alertDialog.dismiss()
+
+            }
+
+        })
+        btn_closeDialog.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                alertDialog.dismiss()
+            }
+
+        })
+
+        // alertDialog.show()
+        if (alertDialog.isShowing) {
+            alertDialog.dismiss()
+        } else {
+            alertDialog.show()
+            alertDialog.getWindow()!!.setLayout(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+    }
+
 
 }

@@ -35,6 +35,7 @@ class Allocate_toStudent : Fragment() {
     var userRef2: DatabaseReference? = null
     //selected Van and Driver
     var selected_van_id: String? = null
+    var selected_shift = ""
     var selected_van_registeration: String? = null
     var selected_driver_id: String? = null
     var selected_driver_name: String? = null
@@ -57,6 +58,11 @@ class Allocate_toStudent : Fragment() {
 
         init(rootView)
 
+        if (arguments != null) {
+            if (arguments!!.containsKey("selected_shift")) {
+                selected_shift = arguments!!.getString("selected_shift").toString()
+            }
+        }
         return rootView
     }
 
@@ -120,7 +126,7 @@ class Allocate_toStudent : Fragment() {
                 updateScheduledList()
 
                 sendMessageToStudent("Dear Student your driver is " + selected_driver_name + " with Van " + selected_van_registeration)
-                sendMessageToDriver("Dear you have allocated van "+selected_van_registeration+".")
+                sendMessageToDriver("Dear you have allocated van " + selected_van_registeration + ".")
 
             }
 
@@ -133,9 +139,12 @@ class Allocate_toStudent : Fragment() {
         userRef2 = Objects.getFirebaseInstance().getReference().child("scheduled_list")
             .child(selected_driver_id.toString())
         for (i in 0 until sortedList.size) {
+
             userRef2!!.child(sortedList.get(i).student_id).setValue(sortedList.get(i).student_name)
         }
+
     }
+
 
     private fun updateVaninfo() {
         val ref = Objects.getFirebaseInstance().reference.child("AddVan")
@@ -178,6 +187,7 @@ class Allocate_toStudent : Fragment() {
         updates["assigned_status"] = "Yes"
         updates["driver_van_id"] = selected_van_id.toString()
         updates["van_number"] = selected_van_registeration.toString()
+        updates["shift_start_time"] = selected_shift
 
         if (updates.size > 0) {
             ref.updateChildren(updates)
@@ -194,12 +204,13 @@ class Allocate_toStudent : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (i in 0 until sortedList.size) {
                     for (postSnapshot in snapshot.children) {
-                        if(sortedList.get(i).student_id.equals(postSnapshot.key))
-                        userList.add(postSnapshot.value.toString())
+                        if (sortedList.get(i).student_id.equals(postSnapshot.key))
+                            userList.add(postSnapshot.value.toString())
                     }
                 }
                 msgsendToStudent(userList, toString)
             }
+
             override fun onCancelled(databaseError: DatabaseError) {
                 System.out.println("The read failed: " + databaseError.getMessage())
             }

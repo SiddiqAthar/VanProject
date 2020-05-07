@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.iid.FirebaseInstanceId
+import java.io.File
 
 
 class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener{
@@ -76,8 +78,11 @@ class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelecte
          val id = item.itemId
         if (id == R.id.action_settings) {
             startActivity(Intent(applicationContext, LoginActivity::class.java))
+             clearApplicationData()
             FirebaseAuth.getInstance().signOut();
-             finishAffinity()
+            FirebaseInstanceId.getInstance().deleteInstanceId()
+
+            finishAffinity()
         }
         if (id == R.id.action_change_pswd) {
             replaceFragment(ChangePassword(),null)
@@ -106,6 +111,12 @@ class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelecte
             replaceFragment(home, null)
         }else if (id == R.id.nav_manageVans) {
             val home = Admin_ManageVans()
+            replaceFragment(home, null)
+        }else if (id == R.id.nav_manageGroups) {
+            val home = Admin_ManageGroup()
+            replaceFragment(home, null)
+        } else if (id == R.id.nav_manageShifts) {
+            val home = Admin_ManageShift()
             replaceFragment(home, null)
         } else if (id == R.id.nav_add_group) {
             showDialogAddGroup()
@@ -158,9 +169,7 @@ class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelecte
         val btn_addGroup = dialogView.findViewById(R.id.btn_addGroup) as Button
         val btn_closeDialog = dialogView.findViewById(R.id.btn_closeDialog) as ImageButton
 
-
-
-        btn_addGroup.setOnClickListener(View.OnClickListener {
+         btn_addGroup.setOnClickListener(View.OnClickListener {
             if (!et_add_Group.text.isNullOrEmpty()) {
                 //add data here on firebase and send notification
                 val newPost2 =
@@ -256,5 +265,32 @@ class AdminNav_Activity : BaseActivity(), NavigationView.OnNavigationItemSelecte
         }
         return "" + hour + ":" + minute + " " + am_pm
     }
+
+    fun clearApplicationData() {
+        val cache: File = cacheDir
+        val appDir = File(cache.getParent())
+        if (appDir.exists()) {
+            val children: Array<String> = appDir.list()
+            for (s in children) {
+                if (s != "lib") {
+                    deleteDir(File(appDir, s))
+                }
+            }
+        }
+    }
+
+    fun deleteDir(dir: File?): Boolean {
+        if (dir != null && dir.isDirectory) {
+            val children = dir.list()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+        }
+        return dir!!.delete()
+    }
+
 
 }

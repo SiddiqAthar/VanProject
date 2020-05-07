@@ -1,52 +1,59 @@
 package com.example.privatevanmanagement.Fragments.admin
 
-import android.Manifest
-import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.privatevanmanagement.R
-import com.example.privatevanmanagement.utils.Objects.location
+import com.example.privatevanmanagement.utils.Objects
+import com.example.privatevanmanagement.utils.Objects.trackDriverbyVan
+import com.example.privatevanmanagement.utils.PermissionUtils
+import com.firebase.geofire.GeoFire
+import com.firebase.geofire.GeoLocation
+import com.firebase.geofire.LocationCallback
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 
 
-class Admin_TrackVans : Fragment(), OnMapReadyCallback {
+class Admin_TrackVans : Fragment(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
-  var locationManager: LocationManager?=null
-  var locationListener: LocationListener?=null
-    lateinit var rootView: View
+
+    val mainHandler = Handler(Looper.getMainLooper())
+
     var mMapView: MapView? = null
-    lateinit var googleMap : GoogleMap
-    internal lateinit var mLastLocation: Location
-    internal lateinit var mLocationResult: LocationRequest
-    internal lateinit var mLocationCallback: LocationCallback
-    internal var mCurrLocationMarker: Marker? = null
-    internal var mGoogleApiClient: GoogleApiClient? = null
+    lateinit var rootView: View
+    var googleMap: GoogleMap? = null
     internal lateinit var mLocationRequest: LocationRequest
-    internal var mFusedLocationClient: FusedLocationProviderClient? = null
+    internal var mGoogleApiClient: GoogleApiClient? = null
+    internal var mCurrLocationMarker: Marker? = null
+    internal var mUserLocationMarker: Marker? = null
+
+    var mapFragment: SupportMapFragment? = null
+    lateinit var geoFire: GeoFire
+    var mAuth: FirebaseAuth? = null
+    var firebaseUsers: FirebaseUser? = null
+    var databaseReference: DatabaseReference? = null
+    var isOnline: DatabaseReference? = null
+    var currentUserRef: DatabaseReference? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,167 +61,164 @@ class Admin_TrackVans : Fragment(), OnMapReadyCallback {
     ): View? {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_admin__track_vans, container, false)
-
         activity?.setTitle("Track Vans")
-
-
-        mMapView = rootView.findViewById(R.id.mapView) as MapView
-        mMapView!!.onCreate(savedInstanceState)
-
-        mMapView!!.onResume() // needed to get the map to display immediately
-
-        try {
-            MapsInitializer.initialize(activity!!.applicationContext)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-
-        mMapView!!.getMapAsync(OnMapReadyCallback { mMap ->
-            googleMap = mMap
-
-            // For showing a move to my location button
-            googleMap.setMyLocationEnabled(true)
-
-//            // For dropping a marker at a point on the Map
-//            val sydney = LatLng(-34.0, 151.0)
-//            mMap.addMarker(MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"))
-//
-//            // For zooming automatically to the location of the marker
-//            val cameraPosition = CameraPosition.Builder().target(sydney).zoom(12f).build()
-//            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-        })
-
+        initViews(rootView);
 
         return rootView;
     }
 
-
-
-
-    fun updateMap(location: Location) {
-        val userlocation = LatLng(location.latitude, location.longitude)
-//        position_lat = location.latitude.toString()
-//        position_lang = location.longitude.toString()
-         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userlocation, 15f))
-
-        val latLng = LatLng(location.latitude, location.longitude)
-
-        val markerOptions = MarkerOptions()
-        markerOptions.position(latLng)
-        markerOptions.title("Current Position")
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-        mCurrLocationMarker = googleMap!!.addMarker(markerOptions)
-
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(
-                        this!!.context!!,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) === PackageManager.PERMISSION_GRANTED
-                ) {
-
-
-                    locationManager!!.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        0,
-                        0f,
-                        locationListener
-                    )
-                    val lastLocation =
-                        locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                    updateMap(lastLocation!!)
+    private fun initViews(rootView: View?) {
+        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
+        databaseReference = FirebaseDatabase.getInstance().reference
+        mAuth = FirebaseAuth.getInstance()
+//        isOnline = FirebaseDatabase.getInstance().reference.child(".info/connected")
+        currentUserRef = FirebaseDatabase.getInstance().getReference(Objects.driverLatLongTable)
+//        isOnline!!.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                //We will remove value from Service Providers LatLng when Service Provider Disconnected
+//                currentUserRef!!.onDisconnect().removeValue()
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//
+//            }
+//        })
+        geoFire = GeoFire(currentUserRef)
+        if (trackDriverbyVan.size > 0) {
+            mainHandler.postDelayed(object : Runnable {
+                override fun run() {
+                    getDirection()
+                    mainHandler.postDelayed(this, 2000)
                 }
-            }
+            }, 4000)
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-       this.googleMap = googleMap
 
+    private fun getDirection() {
+        val driverLocation =
+            GeoFire(FirebaseDatabase.getInstance().getReference(Objects.driverLatLongTable))
+        driverLocation.getLocation(
+            trackDriverbyVan.get(0).driver_id,
+            object : LocationCallback {
+                override fun onLocationResult(key: String?, location: GeoLocation?) {
+                    if (location != null) {
+                        if (mUserLocationMarker != null) {
+                            mUserLocationMarker?.remove()
+                        }
 
-        locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                 updateMap(location)
-
-            }
-
-            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-
-            }
-
-            override fun onProviderEnabled(provider: String) {
-
-            }
-
-            override fun onProviderDisabled(provider: String) {
-
-            }
-        }
-        if (Build.VERSION.SDK_INT < 23) {
-
-            if (ActivityCompat.checkSelfPermission(
-                    this!!.context!!,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) !== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this!!.context!!, Manifest.permission.ACCESS_COARSE_LOCATION
-                ) !== PackageManager.PERMISSION_GRANTED
-            ) {
-                 return
-            }
-            locationManager!!.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                0,
-                0f,
-                locationListener
-            )
-        } else {
-            if (ContextCompat.checkSelfPermission(
-                    this!!.context!!,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) !== PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    (this!!.context as Activity?)!!,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    1
-                )
-            } else {
-                locationManager!!.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    100,
-                    10f,
-                    locationListener
-                )
-                val lastLocation =
-                    locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                if (lastLocation != null) {
-                     updateMap(lastLocation!!)
-                }
-                if (lastLocation == null) {
-
-                    locationManager!!.requestLocationUpdates(
-                        LocationManager.NETWORK_PROVIDER,
-                        100,
-                        10f,
-                        locationListener
-                    )
-                    val lastLocation2 =
-                        locationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                    if (lastLocation2 != null) {
-                         updateMap(lastLocation2!!)
+                        mUserLocationMarker = googleMap?.addMarker(
+                            MarkerOptions().icon(
+                                BitmapDescriptorFactory
+                                    .fromResource(R.drawable.busicon)
+                            ).position(
+                                LatLng(
+                                    location.latitude,
+                                    location.longitude
+                                )
+                            )
+                                .title(trackDriverbyVan.get(0).driver_name)
+                        )
                     }
+                    /*else {
+                   geoFire.setLocation(trackDriverbyVan.get(0).driver_id, GeoLocation(
+                       trackDriverbyVan.get(0).driver_lat.toDouble()
+                       , trackDriverbyVan.get(0).driver_longi.toDouble()
+                   ), object : GeoFire.CompletionListener {
+                       override fun onComplete(
+                           key: String?,
+                           error: DatabaseError?
+                       ) {
+                           if (mUserLocationMarker != null) {
+                               mUserLocationMarker?.remove()
+                           }
+                           mUserLocationMarker = googleMap?.addMarker(
+                               MarkerOptions().title(trackDriverbyVan.get(0).driver_name)
+                                   .position(
+                                       LatLng(
+                                           Objects.driverDetail_model.driver_lat.toDouble()
+                                           ,
+                                           Objects.driverDetail_model.driver_longi.toDouble()
+                                       )
+                                   )
+                                   .icon(
+                                       BitmapDescriptorFactory
+                                           .fromResource(R.drawable.pin)
+                                   )
+                           )
+                       }
+                   })
+
+                   }*/
                 }
-            }
+
+                override fun onCancelled(databaseError: DatabaseError?) {
+
+                }
+            })
+
+    }
+
+
+    override fun onMapReady(map: GoogleMap?) {
+        if (PermissionUtils.hasLocationPermissionGranted(context)) {
+            this.googleMap = map
+            googleMap?.isMyLocationEnabled = true
+            googleMap?.setMapType(GoogleMap.MAP_TYPE_NORMAL)
+            googleMap?.setTrafficEnabled(false)
+            googleMap?.setIndoorEnabled(false)
+            googleMap?.setBuildingsEnabled(false)
+            googleMap?.getUiSettings()?.setZoomControlsEnabled(true)
+
+
+//            displayLocation()
+
         }
+    }
 
-     }
+    override fun onConnected(p0: Bundle?) {
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        mGoogleApiClient?.connect()
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+    }
+
+    override fun onLocationChanged(p0: Location?) {
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (mGoogleApiClient != null)
+            mGoogleApiClient?.connect()
+    }
 
 
+    private fun setUpLocation() {
+        if (PermissionUtils.hasLocationPermissionGranted(context)) {
+            buildGoogleApiClient()
+            createLocationRequest()
+        } else {
+            PermissionUtils.requestLocationPermissions(activity, 101)
+        }
+    }
+
+    private fun buildGoogleApiClient() {
+        mGoogleApiClient =
+            GoogleApiClient.Builder(context!!).addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build()
+    }
+
+    private fun createLocationRequest() {
+        mLocationRequest = LocationRequest()
+        mLocationRequest.setInterval(5000)
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        mLocationRequest.setSmallestDisplacement(10.0f)
+
+    }
 
 }

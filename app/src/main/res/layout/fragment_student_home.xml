@@ -276,18 +276,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_weight="2"
+                    android:layout_weight="1.8"
                     android:src="@drawable/shout" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2"
                     android:text="Send Complaint"
                     android:fontFamily="serif"
-                    android:textAlignment="center"
                     android:textColor="#000"
+                    android:textAlignment="center"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
